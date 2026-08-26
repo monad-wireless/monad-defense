@@ -83,6 +83,7 @@ Fields common to all three kinds:
 | `tags` | [string] | |
 | `title` | string? | the `###` heading above the card — a short name where the prompt is a whole question |
 | `see_also` | [string]? | card ids. **Symmetric by construction** — the compiler writes the reverse link too. |
+| `example` | string? | **one named instance of the thing, with its own numbers.** Its own field, not a paragraph inside the answer: a definition with no example still reads as finished, so its absence has to be countable. `edu deck audit` lists every card carrying neither this nor a figure. Rendered under its own "In the real world" heading. |
 | `figures` | [Figure]? | any kind of card may carry any kind of figure |
 
 Per-kind fields:
@@ -203,6 +204,25 @@ a stacked block. It never scrolls sideways.
 Positions are computed from message order, so the picture is of **time** rather
 than of position: a protocol exchange cannot come out crooked, and a reordered
 one needs no re-authoring.
+
+### `code`
+
+```json
+{ "kind": "code", "caption": "…", "language": "shell",
+  "steps": [ { "run": "cat /sys/class/net/wlp1s0mon0/type",
+               "output": "803",
+               "note": "Radiotap — this interface hands up PHY metadata." } ] }
+```
+
+Commands and what they print — a term as the machine reports it. `language` is
+`shell` | `python` | `text`, and only `shell` draws a prompt character. `output`
+and `note` are both optional: some commands are worth showing for what they DO
+rather than what they say, and inventing a plausible output would ship a
+fiction.
+
+Whitespace inside `run` and `output` is preserved exactly. A command scrolls
+horizontally in its own row rather than wrapping, because a wrapped command is
+one a reader copies wrong; output and notes wrap like prose. At most six steps.
 
 ## Adding a figure kind
 

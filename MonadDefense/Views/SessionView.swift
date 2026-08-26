@@ -258,6 +258,9 @@ struct SessionView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .background(.background.secondary, in: .rect(cornerRadius: 14))
             }
+            if let example = card.example, !example.isEmpty {
+                ExampleBlock(text: example, tint: card.track.tint)
+            }
             FigureStack(figures: card.figures, tint: card.track.tint)
             RelatedCardsRow(card: card, reading: $readingTarget)
             SourceChips(anchors: card.anchors, sources: card.sources)

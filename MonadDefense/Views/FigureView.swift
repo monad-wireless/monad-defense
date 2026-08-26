@@ -42,6 +42,8 @@ struct FigureView: View {
             TableFigureView(table: table, tint: tint)
         case .sequence(let sequence):
             SequenceFigureView(sequence: sequence, tint: tint)
+        case .code(let code):
+            CodeFigureView(figure: code, tint: tint)
         case .unsupported(let kind):
             Label(
                 "This card has a \(kind) figure a newer version of the app can show.",

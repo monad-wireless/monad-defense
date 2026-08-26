@@ -58,11 +58,16 @@ launch.
 |---|---|
 | `edu deck list` | which decks exist, with their track, level and card count |
 | `edu deck coverage` | which thesis claims the bank drills, and which it leaves undrilled |
+| `edu deck audit` | which cards define a term without showing one — no example and no figure. `--track core`, `--strict` to fail |
 | `edu deck spine --check` | has a research question drifted from `thesis/Foundation.md`? Writes nothing. |
 | `edu deck booklet` | the A5 reading-edition PDF of the same corpus |
 
-`coverage` is **advisory**. A claim may legitimately have no card, so an
-uncovered claim is a finding rather than a failure. An unresolvable *anchor*,
+`coverage` and `audit` are both **advisory**. A claim may legitimately have no
+card, and a lifecycle-vocabulary quiz has nothing to plot — so a gap is a
+worklist entry rather than a failure, and `--strict` is the caller's choice.
+`audit` exists because the 2026-08-26 curation pass rejected nineteen cards and
+eighteen of them had the same shape: a correct definition with no instance and
+no picture. Counting that shape is cheaper than finding it by reading. An unresolvable *anchor*,
 by contrast, fails `validate` outright, with a nearest-match suggestion.
 
 ## Two rules that cost real work when broken

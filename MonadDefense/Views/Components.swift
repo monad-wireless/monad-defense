@@ -89,6 +89,38 @@ struct SourceChips: View {
     }
 }
 
+/// One named instance of the thing, with its own numbers.
+///
+/// Its own block, with its own heading, because that is the difference between
+/// an example a reader finds and an example a reader skips. The 2026-08-26
+/// curation pass asked for a real-world example on nineteen separate cards —
+/// giving it a heading is what makes its absence visible next time.
+struct ExampleBlock: View {
+    let text: String
+    var tint: Color = Theme.accent
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Label("In the real world", systemImage: "mappin.and.ellipse")
+                .font(.caption2.weight(.semibold))
+                .textCase(.uppercase)
+                .foregroundStyle(tint)
+            Text(cardMarkdown(text))
+                .font(.footnote)
+                .fontDesign(.serif)
+                .lineSpacing(3)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(14)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(.background.secondary, in: .rect(cornerRadius: 14))
+        .overlay(alignment: .leading) {
+            Rectangle().fill(tint).frame(width: 3)
+        }
+        .clipShape(.rect(cornerRadius: 14))
+    }
+}
+
 struct ActionCard: View {
     let title: String
     let subtitle: String

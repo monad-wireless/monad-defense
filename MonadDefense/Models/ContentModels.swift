@@ -327,6 +327,29 @@ struct ImageFigure: Decodable, Hashable {
     let alt: String
 }
 
+/// One command, what it printed, and why you would run it.
+struct CodeStep: Decodable, Hashable, Identifiable {
+    let run: String
+    let output: String?
+    let note: String?
+
+    var id: String { run }
+}
+
+/// Commands and their output — the term as the machine reports it.
+///
+/// A definition of PHY is one thing; `iw dev` on a real card is another, and
+/// the second is what makes the first stick. Text, not a raster, so it scales
+/// with the reader's type size like everything else here.
+struct CodeFigure: Decodable, Hashable {
+    let caption: String
+    /// `shell` | `python` | `text`. Only `shell` gets a prompt character.
+    let language: String
+    let steps: [CodeStep]
+
+    var prompt: String { language == "shell" ? "$" : "" }
+}
+
 /// The discriminated figure. An unknown `kind` decodes to `.unsupported`
 /// rather than failing the whole bank — a bank compiled by a newer pipeline
 /// should degrade to "this card has a picture you cannot see yet", never to a
@@ -337,6 +360,7 @@ enum Figure: Decodable, Hashable, Identifiable {
     case image(ImageFigure)
     case table(TableFigure)
     case sequence(SequenceFigure)
+    case code(CodeFigure)
     case unsupported(String)
 
     private enum CodingKeys: String, CodingKey { case kind }
@@ -350,6 +374,7 @@ enum Figure: Decodable, Hashable, Identifiable {
         case "image": self = .image(try ImageFigure(from: decoder))
         case "table": self = .table(try TableFigure(from: decoder))
         case "sequence": self = .sequence(try SequenceFigure(from: decoder))
+        case "code": self = .code(try CodeFigure(from: decoder))
         default: self = .unsupported(kind)
         }
     }
@@ -361,6 +386,7 @@ enum Figure: Decodable, Hashable, Identifiable {
         case .image(let f): f.caption
         case .table(let f): f.caption
         case .sequence(let f): f.caption
+        case .code(let f): f.caption
         case .unsupported: ""
         }
     }
@@ -372,6 +398,7 @@ enum Figure: Decodable, Hashable, Identifiable {
         case .image(let f): "image|\(f.asset)"
         case .table(let f): "table|\(f.caption)"
         case .sequence(let f): "sequence|\(f.caption)"
+        case .code(let f): "code|\(f.caption)"
         case .unsupported(let k): "unsupported|\(k)"
         }
     }
@@ -392,6 +419,12 @@ struct Card: Decodable, Identifiable, Hashable {
     /// Free-form provenance. Never validated.
     let sources: [String]
     let tags: [String]
+
+    /// One named instance of the thing, with its own numbers. Its own field
+    /// rather than a paragraph inside `back`, because a definition and an
+    /// example fail differently: prose with no example still reads as
+    /// finished. Given its own heading below, so a reader looks for it.
+    let example: String?
 
     // flash
     let front: String?
