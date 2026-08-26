@@ -1,0 +1,16 @@
+// Base.xcconfig — tracked. Per-developer values live in Local.xcconfig, which
+// is gitignored.
+//
+// The point of this file is that a clone signs with its OWN team without ever
+// editing a tracked file. Xcode writes DEVELOPMENT_TEAM back into
+// project.pbxproj whenever it signs, so a team id set there returns in a later
+// commit no matter how often it is removed. Set it here instead and it cannot.
+
+// Defaults. Local.xcconfig overrides them because it is included after.
+MONAD_DEVELOPMENT_TEAM =
+MONAD_BUNDLE_ID = Sibyx.monad-knowledge
+
+#include? "Local.xcconfig"
+
+DEVELOPMENT_TEAM = $(MONAD_DEVELOPMENT_TEAM)
+PRODUCT_BUNDLE_IDENTIFIER = $(MONAD_BUNDLE_ID)

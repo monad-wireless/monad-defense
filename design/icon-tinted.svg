@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <!-- monad-defense app mark.
+       Sibling of the monad-app mark: same M, same palette, same three arcs.
+       The arcs are MIRRORED so they open toward the M rather than away from
+       it. monad-app broadcasts a measurement outward; this app brings the
+       same knowledge back. Accent roles are swapped too, so the two icons
+       differ in weight as well as in silhouette at dock size. -->
+  
+
+  <!-- M -->
+  <path fill="#FFFFFF" d="M145 680 V320 H232 L327 497 L422 320 H510 V680 H437 V452 L355 600 H299 L218 452 V680 Z"/>
+
+  <!-- Three arcs, opening left toward the M -->
+  <g fill="none" stroke="#FFFFFF" stroke-opacity="0.72" stroke-width="46" stroke-linecap="round">
+    <path d="M940 545 A110 110 0 0 0 830 655"/>
+    <path d="M940 440 A215 215 0 0 0 725 655"/>
+    <path d="M940 335 A320 320 0 0 0 620 655"/>
+  </g>
+
+  <!-- The origin, in ink: the thing the intervals return to -->
+  <circle cx="940" cy="655" r="44" fill="#FFFFFF"/>
+</svg>

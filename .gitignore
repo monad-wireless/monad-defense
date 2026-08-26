@@ -1,0 +1,40 @@
+# macOS
+.DS_Store
+
+# Xcode — per-developer state
+xcuserdata/
+*.xcworkspace/xcuserdata/
+**/xcshareddata/WorkspaceSettings.xcsettings
+*.xcuserstate
+*.xcscmblueprint
+*.moved-aside
+
+# Xcode — build products
+DerivedData/
+build/
+*.ipa
+*.dSYM.zip
+*.dSYM
+*.hmap
+*.xcarchive
+
+# Per-developer signing (team id, bundle id). Base.xcconfig includes it
+# optionally, so its absence is not an error.
+Configuration/Local.xcconfig
+
+# Swift Package Manager
+.swiftpm/
+.build/
+Packages/
+Package.resolved
+
+# Playgrounds
+timeline.xctimeline
+playground.xcworkspace
+
+# Instruments
+*.trace
+
+# Curation exports pulled off the device for `edu deck curation`
+defense-curation-*.json
+defense-curation-*.md

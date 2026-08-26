@@ -1,0 +1,35 @@
+MIT License
+
+Copyright (c) 2026 MonadCount / monad-wireless
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+This license covers the SOFTWARE in this repository: the Swift sources under
+MonadDefense/, the hand-authored project and configuration files, the icon
+sources under design/, and the documentation under docs/.
+
+It does NOT cover the STUDY CONTENT — MonadDefense/Resources/DeckBank.json,
+MonadDefense/Resources/Figures/, and the screenshots under design/screenshots/.
+That material is the text and the measured results of a doctoral thesis in
+progress. It is published here so the app is legible and reproducible, not for
+reuse. All rights to it are reserved.
+
+Reuse the app; recompile it against your own bank.

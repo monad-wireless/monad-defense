@@ -1,0 +1,11 @@
+// Copy to Local.xcconfig (gitignored) to build for a device.
+//
+// A simulator build needs neither line. Signing for hardware needs the team
+// id, which Xcode shows under Settings › Accounts › Manage Certificates, or
+// `security find-identity -v -p codesigning` prints in the parentheses.
+
+MONAD_DEVELOPMENT_TEAM = ABCDE12345
+
+// Optional. Change it to install alongside somebody else's build rather than
+// colliding with it.
+// MONAD_BUNDLE_ID = dev.example.defense
