@@ -1,5 +1,5 @@
 {
-  "bank_version": "27b2b680cefe",
+  "bank_version": "7d9b31fb9a6d",
   "cards": [
     {
       "anchors": [
@@ -129519,7 +129519,8 @@
       "see_also": [
         "abbr-0011",
         "chc-0001",
-        "form-0001"
+        "form-0001",
+        "ws501-ofdm-0009"
       ],
       "sources": [
         "ma2020_4782"
@@ -129582,7 +129583,9 @@
       "kind": "flash",
       "see_also": [
         "abbr-0015",
-        "abbr-0031"
+        "abbr-0031",
+        "ws501-ofdm-0003",
+        "ws501-ofdm-0009"
       ],
       "sources": [],
       "tags": [],
@@ -130138,6 +130141,3175 @@
       "title": "Delivery numbers",
       "track": "WS501",
       "why": "Two consequences. Two arms captured at different times are not comparable\non delivery, so channel fill is logged as a covariate for every analysis\nwindow. And a rate that \"failed\" may only have met a busy channel.\n"
+    },
+    {
+      "anchors": [],
+      "back": "A reflected copy arrives late. If the delay is comparable to the symbol\nperiod, the echo of symbol *n* lands inside the slot of symbol *n+1* — the\nreceiver is decoding two symbols at once. This is **inter-symbol\ninterference** (ISI).\n\nThe damage is set by the RATIO of echo delay to symbol period, not by the\ndelay alone. Lengthen the symbol and the same room becomes harmless.\n\nNote what this is *not*. It is not weak signal and it is not noise. Adding\ntransmit power makes it worse, because it amplifies the echo too.\n",
+      "deck": "ws501-ofdm-from-zero",
+      "defense": false,
+      "difficulty": "basics",
+      "example": "Bensky's own indoor numbers (p. 291). Reflections indoors give multipath\ndelays \"on the order of **100 ns** but may be as long as **250 ns**\".\n\nA 10 Mbit/s stream has a 100 ns bit period, so the echo covers a whole bit:\nthe signal \"can be completely overlapped by its reflection\". Hold the echo at\n100 ns and stretch the symbol to the 802.11a value of 3.2 µs, and the same\nreflection touches 100 / 3200 = **3.1%** of it.\n\nSame room, same wall, same echo. Two orders of magnitude of difference in\nwhat it costs.\n",
+      "figures": [
+        {
+          "caption": "Echo delay fixed at 100 ns throughout. Only the symbol period changes. Contaminated fraction is delay ÷ symbol period, capped at 100%.",
+          "columns": [
+            "Symbol period",
+            "Example rate",
+            "Echo touches"
+          ],
+          "emphasis": [
+            3
+          ],
+          "kind": "table",
+          "rows": [
+            [
+              "100 ns",
+              "10 Mbit/s (Bensky's case)",
+              "100%"
+            ],
+            [
+              "800 ns",
+              "—",
+              "12.5%"
+            ],
+            [
+              "3.2 µs",
+              "802.11a OFDM symbol",
+              "3.1%"
+            ],
+            [
+              "3.2 µs + 0.8 µs prefix",
+              "802.11a on air",
+              "0%"
+            ]
+          ]
+        }
+      ],
+      "front": "A room adds echoes to a radio signal. Why does that destroy a FAST link but\nnot a slow one?\n",
+      "id": "ws501-ofdm-0001",
+      "kind": "flash",
+      "see_also": [
+        "ws501-ofdm-0002",
+        "ws501-ofdm-0005"
+      ],
+      "sources": [
+        "bensky2019_6c00"
+      ],
+      "tags": [],
+      "title": "Why a fast signal dies indoors",
+      "track": "WS501",
+      "why": "This is the question OFDM answers. Every design choice that follows — long\nsymbols, many subcarriers, the cyclic prefix — is a way of making that ratio\nsmall.\n"
+    },
+    {
+      "anchors": [],
+      "back": "It splits one fast stream across **N parallel subcarriers**, each carrying\n1/N of the bits. Every lane's symbol is N times longer, and N lanes transmit\nat the same instant.\n\nAggregate rate is unchanged. Bensky states the bookkeeping directly (p. 120):\n\"The symbol period is increased in each subchannel by the number of\nsubchannels, so the overall symbol rate doesn't change.\"\n\nSo the immunity is bought with **bandwidth arranged differently**, not with\nthroughput given up.\n",
+      "deck": "ws501-ofdm-from-zero",
+      "defense": false,
+      "difficulty": "basics",
+      "example": "802.11a on a 20 MHz channel. 48 subcarriers carry data.\n\nAt the 54 Mbit/s rate the link moves 216 data bits per symbol. Sent\nserially, each bit would occupy 4 µs / 216 ≈ **18.5 ns** — five times\nshorter than the room's own echo, so unrecoverable. Sent in parallel across\n48 subcarriers, each subcarrier holds its value for the full **3.2 µs**.\n\nIdentical bit rate. The echo went from fatal to negligible purely by\nrearranging which bits travel together.\n",
+      "figures": [
+        {
+          "aspect": 2.4,
+          "caption": "One fast lane becomes N slow lanes. The serial-to-parallel converter is where the symbol period is bought, and nothing is discarded to pay for it.",
+          "edges": [
+            {
+              "arrow": "end",
+              "dashed": false,
+              "source": "src",
+              "target": "sp"
+            },
+            {
+              "arrow": "end",
+              "dashed": false,
+              "source": "sp",
+              "target": "l1"
+            },
+            {
+              "arrow": "end",
+              "dashed": false,
+              "source": "sp",
+              "target": "l2"
+            },
+            {
+              "arrow": "end",
+              "dashed": false,
+              "label": "÷48",
+              "source": "sp",
+              "target": "ln"
+            },
+            {
+              "arrow": "none",
+              "dashed": true,
+              "source": "ln",
+              "target": "note"
+            }
+          ],
+          "kind": "diagram",
+          "nodes": [
+            {
+              "emphasis": true,
+              "h": 0.26,
+              "id": "src",
+              "label": "fast bit stream\n18.5 ns per bit",
+              "shape": "rounded",
+              "w": 0.22,
+              "x": 0.13,
+              "y": 0.42
+            },
+            {
+              "emphasis": false,
+              "h": 0.18,
+              "id": "sp",
+              "label": "S → P",
+              "shape": "rounded",
+              "w": 0.11,
+              "x": 0.38,
+              "y": 0.42
+            },
+            {
+              "emphasis": false,
+              "h": 0.16,
+              "id": "l1",
+              "label": "lane 1 · 3.2 µs",
+              "shape": "rounded",
+              "w": 0.24,
+              "x": 0.68,
+              "y": 0.14
+            },
+            {
+              "emphasis": false,
+              "h": 0.16,
+              "id": "l2",
+              "label": "lane 2 · 3.2 µs",
+              "shape": "rounded",
+              "w": 0.24,
+              "x": 0.68,
+              "y": 0.36
+            },
+            {
+              "emphasis": false,
+              "h": 0.16,
+              "id": "ln",
+              "label": "lane 48 · 3.2 µs",
+              "shape": "rounded",
+              "w": 0.24,
+              "x": 0.68,
+              "y": 0.58
+            },
+            {
+              "emphasis": false,
+              "h": 0.22,
+              "id": "note",
+              "label": "same bits per second,\n173× longer symbol",
+              "shape": "note",
+              "w": 0.3,
+              "x": 0.68,
+              "y": 0.85
+            }
+          ]
+        }
+      ],
+      "front": "Sending slower defeats the echo but costs throughput. What does OFDM do\ninstead, and why is it not just \"sending slower\"?\n",
+      "id": "ws501-ofdm-0002",
+      "kind": "flash",
+      "see_also": [
+        "ws501-ofdm-0001",
+        "ws501-ofdm-0003"
+      ],
+      "sources": [
+        "bensky2019_6c00"
+      ],
+      "tags": [],
+      "title": "The trade OFDM makes",
+      "track": "WS501",
+      "why": "Committees probe here to find out whether you understand OFDM as a\nmultiplexing scheme or have memorised \"it uses an FFT\".\n"
+    },
+    {
+      "anchors": [],
+      "deck": "ws501-ofdm-from-zero",
+      "defense": false,
+      "difficulty": "basics",
+      "example": "802.11a, worked forwards from two chosen numbers.\n\nThe sampling rate is 20 MHz and the transform is 64 points, so\nf₀ = 20 MHz / 64 = **312.5 kHz** and T = 64 / 20 MHz = **3.2 µs**. Check the\nlaw: 1 / 3.2 µs = 312.5 kHz. It holds because it was never optional.\n\nNow read the consequence backwards. To halve the subcarrier spacing you must\ndouble the symbol period — which is precisely what 802.11ax does to buy\nrobustness in dense deployments. You cannot have narrow subcarriers and short\nsymbols.\n",
+      "explanation": "Two subcarriers are **orthogonal** when the integral of their product over\none symbol period is exactly zero. Bensky (p. 292): \"There will be no\ninterference between them if all the subcarriers are orthogonal — that is,\nif the integral of any two different subcarriers over the symbol period is\nzero. It is easy to show that this condition exists if the frequency\ndifference between adjacent subcarriers is the inverse of the symbol period.\"\n\nThat is the whole design, and it is a constraint rather than a tuning knob.\nChoose the symbol period and the spacing is fixed. Choose the spacing and\nthe symbol period is fixed. There is no third choice.\n\nThe receiver's demodulator IS that integral: multiply the incoming sum by a\nclean copy of the wanted subcarrier, integrate over T, and every other\nsubcarrier contributes zero. In practice no oscillator does this. Bensky\n(pp. 121–122): \"the subcarriers are created through an inverse discrete\nFourier transform, implemented as a fast Fourier transform, IFFT\". The\northogonality is a property of the transform, not of the hardware.\n",
+      "fields": [
+        {
+          "meaning": "symbol period — how long each subcarrier holds its value",
+          "symbol": "T"
+        },
+        {
+          "meaning": "spacing between adjacent subcarriers, and the lowest subcarrier frequency",
+          "symbol": "f_{0}"
+        }
+      ],
+      "figures": [
+        {
+          "caption": "The two quantities are one quantity. The marked crossing is 802.11a; every other OFDM system in the book sits somewhere else on the same curve.",
+          "frames": [
+            {
+              "curves": [
+                {
+                  "dashed": false,
+                  "label": "f₀ = 1 / T",
+                  "points": [
+                    [
+                      0.5,
+                      2.0
+                    ],
+                    [
+                      0.550336,
+                      1.817073
+                    ],
+                    [
+                      0.600671,
+                      1.664804
+                    ],
+                    [
+                      0.651007,
+                      1.536082
+                    ],
+                    [
+                      0.701342,
+                      1.425837
+                    ],
+                    [
+                      0.751678,
+                      1.330357
+                    ],
+                    [
+                      0.802013,
+                      1.246862
+                    ],
+                    [
+                      0.852349,
+                      1.173228
+                    ],
+                    [
+                      0.902685,
+                      1.107807
+                    ],
+                    [
+                      0.95302,
+                      1.049296
+                    ],
+                    [
+                      1.003356,
+                      0.996656
+                    ],
+                    [
+                      1.053691,
+                      0.949045
+                    ],
+                    [
+                      1.104027,
+                      0.905775
+                    ],
+                    [
+                      1.154362,
+                      0.866279
+                    ],
+                    [
+                      1.204698,
+                      0.830084
+                    ],
+                    [
+                      1.255034,
+                      0.796791
+                    ],
+                    [
+                      1.305369,
+                      0.766067
+                    ],
+                    [
+                      1.355705,
+                      0.737624
+                    ],
+                    [
+                      1.40604,
+                      0.711217
+                    ],
+                    [
+                      1.456376,
+                      0.686636
+                    ],
+                    [
+                      1.506711,
+                      0.663697
+                    ],
+                    [
+                      1.557047,
+                      0.642241
+                    ],
+                    [
+                      1.607383,
+                      0.622129
+                    ],
+                    [
+                      1.657718,
+                      0.603239
+                    ],
+                    [
+                      1.708054,
+                      0.585462
+                    ],
+                    [
+                      1.758389,
+                      0.568702
+                    ],
+                    [
+                      1.808725,
+                      0.552876
+                    ],
+                    [
+                      1.85906,
+                      0.537906
+                    ],
+                    [
+                      1.909396,
+                      0.523726
+                    ],
+                    [
+                      1.959732,
+                      0.510274
+                    ],
+                    [
+                      2.010067,
+                      0.497496
+                    ],
+                    [
+                      2.060403,
+                      0.485342
+                    ],
+                    [
+                      2.110738,
+                      0.473768
+                    ],
+                    [
+                      2.161074,
+                      0.462733
+                    ],
+                    [
+                      2.211409,
+                      0.4522
+                    ],
+                    [
+                      2.261745,
+                      0.442136
+                    ],
+                    [
+                      2.312081,
+                      0.432511
+                    ],
+                    [
+                      2.362416,
+                      0.423295
+                    ],
+                    [
+                      2.412752,
+                      0.414465
+                    ],
+                    [
+                      2.463087,
+                      0.405995
+                    ],
+                    [
+                      2.513423,
+                      0.397864
+                    ],
+                    [
+                      2.563758,
+                      0.390052
+                    ],
+                    [
+                      2.614094,
+                      0.382542
+                    ],
+                    [
+                      2.66443,
+                      0.375315
+                    ],
+                    [
+                      2.714765,
+                      0.368356
+                    ],
+                    [
+                      2.765101,
+                      0.36165
+                    ],
+                    [
+                      2.815436,
+                      0.355185
+                    ],
+                    [
+                      2.865772,
+                      0.348946
+                    ],
+                    [
+                      2.916107,
+                      0.342923
+                    ],
+                    [
+                      2.966443,
+                      0.337104
+                    ],
+                    [
+                      3.016779,
+                      0.331479
+                    ],
+                    [
+                      3.067114,
+                      0.326039
+                    ],
+                    [
+                      3.11745,
+                      0.320775
+                    ],
+                    [
+                      3.167785,
+                      0.315678
+                    ],
+                    [
+                      3.218121,
+                      0.31074
+                    ],
+                    [
+                      3.268456,
+                      0.305955
+                    ],
+                    [
+                      3.318792,
+                      0.301314
+                    ],
+                    [
+                      3.369128,
+                      0.296813
+                    ],
+                    [
+                      3.419463,
+                      0.292444
+                    ],
+                    [
+                      3.469799,
+                      0.288201
+                    ],
+                    [
+                      3.520134,
+                      0.28408
+                    ],
+                    [
+                      3.57047,
+                      0.280075
+                    ],
+                    [
+                      3.620805,
+                      0.276182
+                    ],
+                    [
+                      3.671141,
+                      0.272395
+                    ],
+                    [
+                      3.721477,
+                      0.268711
+                    ],
+                    [
+                      3.771812,
+                      0.265125
+                    ],
+                    [
+                      3.822148,
+                      0.261633
+                    ],
+                    [
+                      3.872483,
+                      0.258232
+                    ],
+                    [
+                      3.922819,
+                      0.254919
+                    ],
+                    [
+                      3.973154,
+                      0.251689
+                    ],
+                    [
+                      4.02349,
+                      0.24854
+                    ],
+                    [
+                      4.073826,
+                      0.24547
+                    ],
+                    [
+                      4.124161,
+                      0.242474
+                    ],
+                    [
+                      4.174497,
+                      0.23955
+                    ],
+                    [
+                      4.224832,
+                      0.236696
+                    ],
+                    [
+                      4.275168,
+                      0.233909
+                    ],
+                    [
+                      4.325503,
+                      0.231187
+                    ],
+                    [
+                      4.375839,
+                      0.228528
+                    ],
+                    [
+                      4.426174,
+                      0.225929
+                    ],
+                    [
+                      4.47651,
+                      0.223388
+                    ],
+                    [
+                      4.526846,
+                      0.220904
+                    ],
+                    [
+                      4.577181,
+                      0.218475
+                    ],
+                    [
+                      4.627517,
+                      0.216099
+                    ],
+                    [
+                      4.677852,
+                      0.213773
+                    ],
+                    [
+                      4.728188,
+                      0.211498
+                    ],
+                    [
+                      4.778523,
+                      0.20927
+                    ],
+                    [
+                      4.828859,
+                      0.207088
+                    ],
+                    [
+                      4.879195,
+                      0.204952
+                    ],
+                    [
+                      4.92953,
+                      0.202859
+                    ],
+                    [
+                      4.979866,
+                      0.200809
+                    ],
+                    [
+                      5.030201,
+                      0.198799
+                    ],
+                    [
+                      5.080537,
+                      0.19683
+                    ],
+                    [
+                      5.130872,
+                      0.194899
+                    ],
+                    [
+                      5.181208,
+                      0.193005
+                    ],
+                    [
+                      5.231544,
+                      0.191148
+                    ],
+                    [
+                      5.281879,
+                      0.189327
+                    ],
+                    [
+                      5.332215,
+                      0.187539
+                    ],
+                    [
+                      5.38255,
+                      0.185786
+                    ],
+                    [
+                      5.432886,
+                      0.184064
+                    ],
+                    [
+                      5.483221,
+                      0.182375
+                    ],
+                    [
+                      5.533557,
+                      0.180716
+                    ],
+                    [
+                      5.583893,
+                      0.179087
+                    ],
+                    [
+                      5.634228,
+                      0.177487
+                    ],
+                    [
+                      5.684564,
+                      0.175915
+                    ],
+                    [
+                      5.734899,
+                      0.174371
+                    ],
+                    [
+                      5.785235,
+                      0.172854
+                    ],
+                    [
+                      5.83557,
+                      0.171363
+                    ],
+                    [
+                      5.885906,
+                      0.169897
+                    ],
+                    [
+                      5.936242,
+                      0.168457
+                    ],
+                    [
+                      5.986577,
+                      0.16704
+                    ],
+                    [
+                      6.036913,
+                      0.165648
+                    ],
+                    [
+                      6.087248,
+                      0.164278
+                    ],
+                    [
+                      6.137584,
+                      0.162931
+                    ],
+                    [
+                      6.187919,
+                      0.161605
+                    ],
+                    [
+                      6.238255,
+                      0.160301
+                    ],
+                    [
+                      6.288591,
+                      0.159018
+                    ],
+                    [
+                      6.338926,
+                      0.157755
+                    ],
+                    [
+                      6.389262,
+                      0.156513
+                    ],
+                    [
+                      6.439597,
+                      0.155289
+                    ],
+                    [
+                      6.489933,
+                      0.154085
+                    ],
+                    [
+                      6.540268,
+                      0.152899
+                    ],
+                    [
+                      6.590604,
+                      0.151731
+                    ],
+                    [
+                      6.64094,
+                      0.150581
+                    ],
+                    [
+                      6.691275,
+                      0.149448
+                    ],
+                    [
+                      6.741611,
+                      0.148333
+                    ],
+                    [
+                      6.791946,
+                      0.147233
+                    ],
+                    [
+                      6.842282,
+                      0.14615
+                    ],
+                    [
+                      6.892617,
+                      0.145083
+                    ],
+                    [
+                      6.942953,
+                      0.144031
+                    ],
+                    [
+                      6.993289,
+                      0.142994
+                    ],
+                    [
+                      7.043624,
+                      0.141972
+                    ],
+                    [
+                      7.09396,
+                      0.140965
+                    ],
+                    [
+                      7.144295,
+                      0.139972
+                    ],
+                    [
+                      7.194631,
+                      0.138993
+                    ],
+                    [
+                      7.244966,
+                      0.138027
+                    ],
+                    [
+                      7.295302,
+                      0.137075
+                    ],
+                    [
+                      7.345638,
+                      0.136135
+                    ],
+                    [
+                      7.395973,
+                      0.135209
+                    ],
+                    [
+                      7.446309,
+                      0.134295
+                    ],
+                    [
+                      7.496644,
+                      0.133393
+                    ],
+                    [
+                      7.54698,
+                      0.132503
+                    ],
+                    [
+                      7.597315,
+                      0.131625
+                    ],
+                    [
+                      7.647651,
+                      0.130759
+                    ],
+                    [
+                      7.697987,
+                      0.129904
+                    ],
+                    [
+                      7.748322,
+                      0.12906
+                    ],
+                    [
+                      7.798658,
+                      0.128227
+                    ],
+                    [
+                      7.848993,
+                      0.127405
+                    ],
+                    [
+                      7.899329,
+                      0.126593
+                    ],
+                    [
+                      7.949664,
+                      0.125791
+                    ],
+                    [
+                      8.0,
+                      0.125
+                    ]
+                  ]
+                }
+              ],
+              "value": null
+            }
+          ],
+          "kind": "plot",
+          "markers": [
+            {
+              "axis": "x",
+              "label": "802.11a symbol, 3.2 µs",
+              "value": 3.2
+            },
+            {
+              "axis": "y",
+              "label": "312.5 kHz",
+              "value": 0.3125
+            }
+          ],
+          "x_label": "symbol period T (µs)",
+          "y_label": "subcarrier spacing f₀ (MHz)"
+        }
+      ],
+      "id": "ws501-ofdm-0003",
+      "kind": "formula",
+      "latex": "T = \\frac{1}{f_{0}}",
+      "question": "Subcarriers packed side by side should interfere. State the condition that\nmakes them not interfere, and say what it forces.\n",
+      "reading": "The symbol period equals the reciprocal of the spacing between adjacent\nsubcarriers.\n",
+      "see_also": [
+        "ws501-ch-0004",
+        "ws501-ofdm-0002",
+        "ws501-ofdm-0004"
+      ],
+      "sources": [
+        "bensky2019_6c00"
+      ],
+      "tags": [],
+      "title": "The orthogonality condition",
+      "track": "WS501"
+    },
+    {
+      "anchors": [],
+      "deck": "ws501-ofdm-from-zero",
+      "defense": false,
+      "difficulty": "basics",
+      "example": "Four subcarriers, all set to phase 0°, is the worst case for the power\namplifier.\n\nAt t = 0 every term equals its amplitude, so the four add coherently and the\nwaveform peaks at 4× the amplitude of any single subcarrier. Averaged over\nthe symbol the power is far lower. That gap is the **peak-to-average power\nratio**, and with 48 subcarriers rather than four it is why an OFDM amplifier\nmust be sized for a peak it almost never reaches.\n\nThe same picture read the other way is the payload: four QPSK subcarriers\ncarry 8 bits in one 3.2 µs symbol, and the messy-looking sum is those 8 bits.\n",
+      "explanation": "Bensky Eq. 4.8, p. 122. Three things are worth reading out of it.\n\nFirst, `x_k` is constant across T. Modulating a subcarrier means setting an\namplitude and a phase once, then leaving it alone — which is exactly what\nmakes the symbol long, and therefore what makes the echo small.\n\nSecond, the modulation order lives entirely in what values `x_k` may take.\nTwo bits gives four phases 90° apart, which is QPSK. Six bits gives 64\namplitude-and-phase combinations, which is 64-QAM. Nothing else in the\nequation changes.\n\nThird, the sum looks like noise on an oscilloscope and is not. It is N\nindependent numbers written down simultaneously, and the FFT reads them back\nexactly because of the condition on the previous card.\n",
+      "fields": [
+        {
+          "meaning": "subcarrier index — which lane",
+          "symbol": "k"
+        },
+        {
+          "meaning": "the complex symbol on lane k, held CONSTANT for the whole period T",
+          "symbol": "x_{k}"
+        },
+        {
+          "meaning": "maximum amplitude of subcarrier k",
+          "symbol": "A_{k}"
+        },
+        {
+          "meaning": "subcarrier spacing, so lane k sits at frequency k·f₀",
+          "symbol": "f_{0}"
+        },
+        {
+          "meaning": "number of subcarriers",
+          "symbol": "N"
+        }
+      ],
+      "figures": [
+        {
+          "caption": "Four subcarriers at f₀ through 4f₀, all at phase 0°, and their sum. The sum carries every lane's symbol at once; its peak is where the peak-to-average power problem comes from.",
+          "frames": [
+            {
+              "curves": [
+                {
+                  "dashed": false,
+                  "label": "sum of four subcarriers",
+                  "points": [
+                    [
+                      0.0,
+                      4.0
+                    ],
+                    [
+                      0.004184,
+                      3.98964
+                    ],
+                    [
+                      0.008368,
+                      3.958644
+                    ],
+                    [
+                      0.012552,
+                      3.907266
+                    ],
+                    [
+                      0.016736,
+                      3.835922
+                    ],
+                    [
+                      0.020921,
+                      3.745192
+                    ],
+                    [
+                      0.025105,
+                      3.635813
+                    ],
+                    [
+                      0.029289,
+                      3.50867
+                    ],
+                    [
+                      0.033473,
+                      3.364787
+                    ],
+                    [
+                      0.037657,
+                      3.205321
+                    ],
+                    [
+                      0.041841,
+                      3.03155
+                    ],
+                    [
+                      0.046025,
+                      2.844856
+                    ],
+                    [
+                      0.050209,
+                      2.646721
+                    ],
+                    [
+                      0.054393,
+                      2.438704
+                    ],
+                    [
+                      0.058577,
+                      2.222431
+                    ],
+                    [
+                      0.062762,
+                      1.999581
+                    ],
+                    [
+                      0.066946,
+                      1.771867
+                    ],
+                    [
+                      0.07113,
+                      1.541022
+                    ],
+                    [
+                      0.075314,
+                      1.308781
+                    ],
+                    [
+                      0.079498,
+                      1.076871
+                    ],
+                    [
+                      0.083682,
+                      0.846986
+                    ],
+                    [
+                      0.087866,
+                      0.620781
+                    ],
+                    [
+                      0.09205,
+                      0.399851
+                    ],
+                    [
+                      0.096234,
+                      0.185718
+                    ],
+                    [
+                      0.100418,
+                      -0.02018
+                    ],
+                    [
+                      0.104603,
+                      -0.216503
+                    ],
+                    [
+                      0.108787,
+                      -0.402019
+                    ],
+                    [
+                      0.112971,
+                      -0.575617
+                    ],
+                    [
+                      0.117155,
+                      -0.736314
+                    ],
+                    [
+                      0.121339,
+                      -0.88326
+                    ],
+                    [
+                      0.125523,
+                      -1.01575
+                    ],
+                    [
+                      0.129707,
+                      -1.133222
+                    ],
+                    [
+                      0.133891,
+                      -1.235266
+                    ],
+                    [
+                      0.138075,
+                      -1.321621
+                    ],
+                    [
+                      0.142259,
+                      -1.392178
+                    ],
+                    [
+                      0.146444,
+                      -1.446978
+                    ],
+                    [
+                      0.150628,
+                      -1.486209
+                    ],
+                    [
+                      0.154812,
+                      -1.510198
+                    ],
+                    [
+                      0.158996,
+                      -1.519414
+                    ],
+                    [
+                      0.16318,
+                      -1.514452
+                    ],
+                    [
+                      0.167364,
+                      -1.496029
+                    ],
+                    [
+                      0.171548,
+                      -1.464973
+                    ],
+                    [
+                      0.175732,
+                      -1.422217
+                    ],
+                    [
+                      0.179916,
+                      -1.368779
+                    ],
+                    [
+                      0.1841,
+                      -1.30576
+                    ],
+                    [
+                      0.188285,
+                      -1.234322
+                    ],
+                    [
+                      0.192469,
+                      -1.155682
+                    ],
+                    [
+                      0.196653,
+                      -1.071094
+                    ],
+                    [
+                      0.200837,
+                      -0.981837
+                    ],
+                    [
+                      0.205021,
+                      -0.889199
+                    ],
+                    [
+                      0.209205,
+                      -0.794468
+                    ],
+                    [
+                      0.213389,
+                      -0.698912
+                    ],
+                    [
+                      0.217573,
+                      -0.603771
+                    ],
+                    [
+                      0.221757,
+                      -0.510242
+                    ],
+                    [
+                      0.225941,
+                      -0.419468
+                    ],
+                    [
+                      0.230126,
+                      -0.332525
+                    ],
+                    [
+                      0.23431,
+                      -0.250413
+                    ],
+                    [
+                      0.238494,
+                      -0.174047
+                    ],
+                    [
+                      0.242678,
+                      -0.104247
+                    ],
+                    [
+                      0.246862,
+                      -0.041732
+                    ],
+                    [
+                      0.251046,
+                      0.012884
+                    ],
+                    [
+                      0.25523,
+                      0.059102
+                    ],
+                    [
+                      0.259414,
+                      0.096536
+                    ],
+                    [
+                      0.263598,
+                      0.124918
+                    ],
+                    [
+                      0.267782,
+                      0.144097
+                    ],
+                    [
+                      0.271967,
+                      0.154041
+                    ],
+                    [
+                      0.276151,
+                      0.15483
+                    ],
+                    [
+                      0.280335,
+                      0.146661
+                    ],
+                    [
+                      0.284519,
+                      0.129834
+                    ],
+                    [
+                      0.288703,
+                      0.104753
+                    ],
+                    [
+                      0.292887,
+                      0.071917
+                    ],
+                    [
+                      0.297071,
+                      0.031914
+                    ],
+                    [
+                      0.301255,
+                      -0.014592
+                    ],
+                    [
+                      0.305439,
+                      -0.066864
+                    ],
+                    [
+                      0.309623,
+                      -0.124108
+                    ],
+                    [
+                      0.313808,
+                      -0.18548
+                    ],
+                    [
+                      0.317992,
+                      -0.250098
+                    ],
+                    [
+                      0.322176,
+                      -0.317053
+                    ],
+                    [
+                      0.32636,
+                      -0.385423
+                    ],
+                    [
+                      0.330544,
+                      -0.454279
+                    ],
+                    [
+                      0.334728,
+                      -0.522704
+                    ],
+                    [
+                      0.338912,
+                      -0.589797
+                    ],
+                    [
+                      0.343096,
+                      -0.654689
+                    ],
+                    [
+                      0.34728,
+                      -0.71655
+                    ],
+                    [
+                      0.351464,
+                      -0.774601
+                    ],
+                    [
+                      0.355649,
+                      -0.828121
+                    ],
+                    [
+                      0.359833,
+                      -0.876458
+                    ],
+                    [
+                      0.364017,
+                      -0.919034
+                    ],
+                    [
+                      0.368201,
+                      -0.955352
+                    ],
+                    [
+                      0.372385,
+                      -0.985001
+                    ],
+                    [
+                      0.376569,
+                      -1.007663
+                    ],
+                    [
+                      0.380753,
+                      -1.02311
+                    ],
+                    [
+                      0.384937,
+                      -1.031212
+                    ],
+                    [
+                      0.389121,
+                      -1.031936
+                    ],
+                    [
+                      0.393305,
+                      -1.025343
+                    ],
+                    [
+                      0.39749,
+                      -1.01159
+                    ],
+                    [
+                      0.401674,
+                      -0.990923
+                    ],
+                    [
+                      0.405858,
+                      -0.96368
+                    ],
+                    [
+                      0.410042,
+                      -0.930276
+                    ],
+                    [
+                      0.414226,
+                      -0.891209
+                    ],
+                    [
+                      0.41841,
+                      -0.847042
+                    ],
+                    [
+                      0.422594,
+                      -0.798402
+                    ],
+                    [
+                      0.426778,
+                      -0.745973
+                    ],
+                    [
+                      0.430962,
+                      -0.690479
+                    ],
+                    [
+                      0.435146,
+                      -0.632683
+                    ],
+                    [
+                      0.439331,
+                      -0.573373
+                    ],
+                    [
+                      0.443515,
+                      -0.513353
+                    ],
+                    [
+                      0.447699,
+                      -0.453431
+                    ],
+                    [
+                      0.451883,
+                      -0.394412
+                    ],
+                    [
+                      0.456067,
+                      -0.337083
+                    ],
+                    [
+                      0.460251,
+                      -0.282209
+                    ],
+                    [
+                      0.464435,
+                      -0.230517
+                    ],
+                    [
+                      0.468619,
+                      -0.182694
+                    ],
+                    [
+                      0.472803,
+                      -0.13937
+                    ],
+                    [
+                      0.476987,
+                      -0.101117
+                    ],
+                    [
+                      0.481172,
+                      -0.06844
+                    ],
+                    [
+                      0.485356,
+                      -0.041768
+                    ],
+                    [
+                      0.48954,
+                      -0.021451
+                    ],
+                    [
+                      0.493724,
+                      -0.007756
+                    ],
+                    [
+                      0.497908,
+                      -0.000864
+                    ],
+                    [
+                      0.502092,
+                      -0.000864
+                    ],
+                    [
+                      0.506276,
+                      -0.007756
+                    ],
+                    [
+                      0.51046,
+                      -0.021451
+                    ],
+                    [
+                      0.514644,
+                      -0.041768
+                    ],
+                    [
+                      0.518828,
+                      -0.06844
+                    ],
+                    [
+                      0.523013,
+                      -0.101117
+                    ],
+                    [
+                      0.527197,
+                      -0.13937
+                    ],
+                    [
+                      0.531381,
+                      -0.182694
+                    ],
+                    [
+                      0.535565,
+                      -0.230517
+                    ],
+                    [
+                      0.539749,
+                      -0.282209
+                    ],
+                    [
+                      0.543933,
+                      -0.337083
+                    ],
+                    [
+                      0.548117,
+                      -0.394412
+                    ],
+                    [
+                      0.552301,
+                      -0.453431
+                    ],
+                    [
+                      0.556485,
+                      -0.513353
+                    ],
+                    [
+                      0.560669,
+                      -0.573373
+                    ],
+                    [
+                      0.564854,
+                      -0.632683
+                    ],
+                    [
+                      0.569038,
+                      -0.690479
+                    ],
+                    [
+                      0.573222,
+                      -0.745973
+                    ],
+                    [
+                      0.577406,
+                      -0.798402
+                    ],
+                    [
+                      0.58159,
+                      -0.847042
+                    ],
+                    [
+                      0.585774,
+                      -0.891209
+                    ],
+                    [
+                      0.589958,
+                      -0.930276
+                    ],
+                    [
+                      0.594142,
+                      -0.96368
+                    ],
+                    [
+                      0.598326,
+                      -0.990923
+                    ],
+                    [
+                      0.60251,
+                      -1.01159
+                    ],
+                    [
+                      0.606695,
+                      -1.025343
+                    ],
+                    [
+                      0.610879,
+                      -1.031936
+                    ],
+                    [
+                      0.615063,
+                      -1.031212
+                    ],
+                    [
+                      0.619247,
+                      -1.02311
+                    ],
+                    [
+                      0.623431,
+                      -1.007663
+                    ],
+                    [
+                      0.627615,
+                      -0.985001
+                    ],
+                    [
+                      0.631799,
+                      -0.955352
+                    ],
+                    [
+                      0.635983,
+                      -0.919034
+                    ],
+                    [
+                      0.640167,
+                      -0.876458
+                    ],
+                    [
+                      0.644351,
+                      -0.828121
+                    ],
+                    [
+                      0.648536,
+                      -0.774601
+                    ],
+                    [
+                      0.65272,
+                      -0.71655
+                    ],
+                    [
+                      0.656904,
+                      -0.654689
+                    ],
+                    [
+                      0.661088,
+                      -0.589797
+                    ],
+                    [
+                      0.665272,
+                      -0.522704
+                    ],
+                    [
+                      0.669456,
+                      -0.454279
+                    ],
+                    [
+                      0.67364,
+                      -0.385423
+                    ],
+                    [
+                      0.677824,
+                      -0.317053
+                    ],
+                    [
+                      0.682008,
+                      -0.250098
+                    ],
+                    [
+                      0.686192,
+                      -0.18548
+                    ],
+                    [
+                      0.690377,
+                      -0.124108
+                    ],
+                    [
+                      0.694561,
+                      -0.066864
+                    ],
+                    [
+                      0.698745,
+                      -0.014592
+                    ],
+                    [
+                      0.702929,
+                      0.031914
+                    ],
+                    [
+                      0.707113,
+                      0.071917
+                    ],
+                    [
+                      0.711297,
+                      0.104753
+                    ],
+                    [
+                      0.715481,
+                      0.129834
+                    ],
+                    [
+                      0.719665,
+                      0.146661
+                    ],
+                    [
+                      0.723849,
+                      0.15483
+                    ],
+                    [
+                      0.728033,
+                      0.154041
+                    ],
+                    [
+                      0.732218,
+                      0.144097
+                    ],
+                    [
+                      0.736402,
+                      0.124918
+                    ],
+                    [
+                      0.740586,
+                      0.096536
+                    ],
+                    [
+                      0.74477,
+                      0.059102
+                    ],
+                    [
+                      0.748954,
+                      0.012884
+                    ],
+                    [
+                      0.753138,
+                      -0.041732
+                    ],
+                    [
+                      0.757322,
+                      -0.104247
+                    ],
+                    [
+                      0.761506,
+                      -0.174047
+                    ],
+                    [
+                      0.76569,
+                      -0.250413
+                    ],
+                    [
+                      0.769874,
+                      -0.332525
+                    ],
+                    [
+                      0.774059,
+                      -0.419468
+                    ],
+                    [
+                      0.778243,
+                      -0.510242
+                    ],
+                    [
+                      0.782427,
+                      -0.603771
+                    ],
+                    [
+                      0.786611,
+                      -0.698912
+                    ],
+                    [
+                      0.790795,
+                      -0.794468
+                    ],
+                    [
+                      0.794979,
+                      -0.889199
+                    ],
+                    [
+                      0.799163,
+                      -0.981837
+                    ],
+                    [
+                      0.803347,
+                      -1.071094
+                    ],
+                    [
+                      0.807531,
+                      -1.155682
+                    ],
+                    [
+                      0.811715,
+                      -1.234322
+                    ],
+                    [
+                      0.8159,
+                      -1.30576
+                    ],
+                    [
+                      0.820084,
+                      -1.368779
+                    ],
+                    [
+                      0.824268,
+                      -1.422217
+                    ],
+                    [
+                      0.828452,
+                      -1.464973
+                    ],
+                    [
+                      0.832636,
+                      -1.496029
+                    ],
+                    [
+                      0.83682,
+                      -1.514452
+                    ],
+                    [
+                      0.841004,
+                      -1.519414
+                    ],
+                    [
+                      0.845188,
+                      -1.510198
+                    ],
+                    [
+                      0.849372,
+                      -1.486209
+                    ],
+                    [
+                      0.853556,
+                      -1.446978
+                    ],
+                    [
+                      0.857741,
+                      -1.392178
+                    ],
+                    [
+                      0.861925,
+                      -1.321621
+                    ],
+                    [
+                      0.866109,
+                      -1.235266
+                    ],
+                    [
+                      0.870293,
+                      -1.133222
+                    ],
+                    [
+                      0.874477,
+                      -1.01575
+                    ],
+                    [
+                      0.878661,
+                      -0.88326
+                    ],
+                    [
+                      0.882845,
+                      -0.736314
+                    ],
+                    [
+                      0.887029,
+                      -0.575617
+                    ],
+                    [
+                      0.891213,
+                      -0.402019
+                    ],
+                    [
+                      0.895397,
+                      -0.216503
+                    ],
+                    [
+                      0.899582,
+                      -0.02018
+                    ],
+                    [
+                      0.903766,
+                      0.185718
+                    ],
+                    [
+                      0.90795,
+                      0.399851
+                    ],
+                    [
+                      0.912134,
+                      0.620781
+                    ],
+                    [
+                      0.916318,
+                      0.846986
+                    ],
+                    [
+                      0.920502,
+                      1.076871
+                    ],
+                    [
+                      0.924686,
+                      1.308781
+                    ],
+                    [
+                      0.92887,
+                      1.541022
+                    ],
+                    [
+                      0.933054,
+                      1.771867
+                    ],
+                    [
+                      0.937238,
+                      1.999581
+                    ],
+                    [
+                      0.941423,
+                      2.222431
+                    ],
+                    [
+                      0.945607,
+                      2.438704
+                    ],
+                    [
+                      0.949791,
+                      2.646721
+                    ],
+                    [
+                      0.953975,
+                      2.844856
+                    ],
+                    [
+                      0.958159,
+                      3.03155
+                    ],
+                    [
+                      0.962343,
+                      3.205321
+                    ],
+                    [
+                      0.966527,
+                      3.364787
+                    ],
+                    [
+                      0.970711,
+                      3.50867
+                    ],
+                    [
+                      0.974895,
+                      3.635813
+                    ],
+                    [
+                      0.979079,
+                      3.745192
+                    ],
+                    [
+                      0.983264,
+                      3.835922
+                    ],
+                    [
+                      0.987448,
+                      3.907266
+                    ],
+                    [
+                      0.991632,
+                      3.958644
+                    ],
+                    [
+                      0.995816,
+                      3.98964
+                    ],
+                    [
+                      1.0,
+                      4.0
+                    ]
+                  ]
+                },
+                {
+                  "dashed": true,
+                  "label": "the f₀ subcarrier alone",
+                  "points": [
+                    [
+                      0.0,
+                      1.0
+                    ],
+                    [
+                      0.004184,
+                      0.999654
+                    ],
+                    [
+                      0.008368,
+                      0.998618
+                    ],
+                    [
+                      0.012552,
+                      0.996891
+                    ],
+                    [
+                      0.016736,
+                      0.994476
+                    ],
+                    [
+                      0.020921,
+                      0.991373
+                    ],
+                    [
+                      0.025105,
+                      0.987585
+                    ],
+                    [
+                      0.029289,
+                      0.983115
+                    ],
+                    [
+                      0.033473,
+                      0.977965
+                    ],
+                    [
+                      0.037657,
+                      0.972139
+                    ],
+                    [
+                      0.041841,
+                      0.965642
+                    ],
+                    [
+                      0.046025,
+                      0.958477
+                    ],
+                    [
+                      0.050209,
+                      0.950649
+                    ],
+                    [
+                      0.054393,
+                      0.942165
+                    ],
+                    [
+                      0.058577,
+                      0.93303
+                    ],
+                    [
+                      0.062762,
+                      0.92325
+                    ],
+                    [
+                      0.066946,
+                      0.912831
+                    ],
+                    [
+                      0.07113,
+                      0.901782
+                    ],
+                    [
+                      0.075314,
+                      0.89011
+                    ],
+                    [
+                      0.079498,
+                      0.877822
+                    ],
+                    [
+                      0.083682,
+                      0.864928
+                    ],
+                    [
+                      0.087866,
+                      0.851436
+                    ],
+                    [
+                      0.09205,
+                      0.837356
+                    ],
+                    [
+                      0.096234,
+                      0.822697
+                    ],
+                    [
+                      0.100418,
+                      0.807469
+                    ],
+                    [
+                      0.104603,
+                      0.791683
+                    ],
+                    [
+                      0.108787,
+                      0.77535
+                    ],
+                    [
+                      0.112971,
+                      0.758482
+                    ],
+                    [
+                      0.117155,
+                      0.741089
+                    ],
+                    [
+                      0.121339,
+                      0.723184
+                    ],
+                    [
+                      0.125523,
+                      0.704779
+                    ],
+                    [
+                      0.129707,
+                      0.685887
+                    ],
+                    [
+                      0.133891,
+                      0.666522
+                    ],
+                    [
+                      0.138075,
+                      0.646695
+                    ],
+                    [
+                      0.142259,
+                      0.626422
+                    ],
+                    [
+                      0.146444,
+                      0.605715
+                    ],
+                    [
+                      0.150628,
+                      0.58459
+                    ],
+                    [
+                      0.154812,
+                      0.563061
+                    ],
+                    [
+                      0.158996,
+                      0.541143
+                    ],
+                    [
+                      0.16318,
+                      0.518851
+                    ],
+                    [
+                      0.167364,
+                      0.496201
+                    ],
+                    [
+                      0.171548,
+                      0.473207
+                    ],
+                    [
+                      0.175732,
+                      0.449886
+                    ],
+                    [
+                      0.179916,
+                      0.426255
+                    ],
+                    [
+                      0.1841,
+                      0.402329
+                    ],
+                    [
+                      0.188285,
+                      0.378125
+                    ],
+                    [
+                      0.192469,
+                      0.353659
+                    ],
+                    [
+                      0.196653,
+                      0.328949
+                    ],
+                    [
+                      0.200837,
+                      0.304012
+                    ],
+                    [
+                      0.205021,
+                      0.278865
+                    ],
+                    [
+                      0.209205,
+                      0.253525
+                    ],
+                    [
+                      0.213389,
+                      0.22801
+                    ],
+                    [
+                      0.217573,
+                      0.202337
+                    ],
+                    [
+                      0.221757,
+                      0.176524
+                    ],
+                    [
+                      0.225941,
+                      0.150589
+                    ],
+                    [
+                      0.230126,
+                      0.124551
+                    ],
+                    [
+                      0.23431,
+                      0.098426
+                    ],
+                    [
+                      0.238494,
+                      0.072233
+                    ],
+                    [
+                      0.242678,
+                      0.04599
+                    ],
+                    [
+                      0.246862,
+                      0.019716
+                    ],
+                    [
+                      0.251046,
+                      -0.006572
+                    ],
+                    [
+                      0.25523,
+                      -0.032856
+                    ],
+                    [
+                      0.259414,
+                      -0.059117
+                    ],
+                    [
+                      0.263598,
+                      -0.085337
+                    ],
+                    [
+                      0.267782,
+                      -0.111498
+                    ],
+                    [
+                      0.271967,
+                      -0.137582
+                    ],
+                    [
+                      0.276151,
+                      -0.163571
+                    ],
+                    [
+                      0.280335,
+                      -0.189447
+                    ],
+                    [
+                      0.284519,
+                      -0.215192
+                    ],
+                    [
+                      0.288703,
+                      -0.240788
+                    ],
+                    [
+                      0.292887,
+                      -0.266218
+                    ],
+                    [
+                      0.297071,
+                      -0.291464
+                    ],
+                    [
+                      0.301255,
+                      -0.316508
+                    ],
+                    [
+                      0.305439,
+                      -0.341334
+                    ],
+                    [
+                      0.309623,
+                      -0.365924
+                    ],
+                    [
+                      0.313808,
+                      -0.390261
+                    ],
+                    [
+                      0.317992,
+                      -0.414328
+                    ],
+                    [
+                      0.322176,
+                      -0.438109
+                    ],
+                    [
+                      0.32636,
+                      -0.461587
+                    ],
+                    [
+                      0.330544,
+                      -0.484746
+                    ],
+                    [
+                      0.334728,
+                      -0.50757
+                    ],
+                    [
+                      0.338912,
+                      -0.530043
+                    ],
+                    [
+                      0.343096,
+                      -0.55215
+                    ],
+                    [
+                      0.34728,
+                      -0.573875
+                    ],
+                    [
+                      0.351464,
+                      -0.595204
+                    ],
+                    [
+                      0.355649,
+                      -0.616122
+                    ],
+                    [
+                      0.359833,
+                      -0.636613
+                    ],
+                    [
+                      0.364017,
+                      -0.656665
+                    ],
+                    [
+                      0.368201,
+                      -0.676263
+                    ],
+                    [
+                      0.372385,
+                      -0.695393
+                    ],
+                    [
+                      0.376569,
+                      -0.714043
+                    ],
+                    [
+                      0.380753,
+                      -0.7322
+                    ],
+                    [
+                      0.384937,
+                      -0.74985
+                    ],
+                    [
+                      0.389121,
+                      -0.766982
+                    ],
+                    [
+                      0.393305,
+                      -0.783585
+                    ],
+                    [
+                      0.39749,
+                      -0.799645
+                    ],
+                    [
+                      0.401674,
+                      -0.815153
+                    ],
+                    [
+                      0.405858,
+                      -0.830098
+                    ],
+                    [
+                      0.410042,
+                      -0.844469
+                    ],
+                    [
+                      0.414226,
+                      -0.858256
+                    ],
+                    [
+                      0.41841,
+                      -0.87145
+                    ],
+                    [
+                      0.422594,
+                      -0.884042
+                    ],
+                    [
+                      0.426778,
+                      -0.896023
+                    ],
+                    [
+                      0.430962,
+                      -0.907385
+                    ],
+                    [
+                      0.435146,
+                      -0.91812
+                    ],
+                    [
+                      0.439331,
+                      -0.92822
+                    ],
+                    [
+                      0.443515,
+                      -0.937678
+                    ],
+                    [
+                      0.447699,
+                      -0.946489
+                    ],
+                    [
+                      0.451883,
+                      -0.954646
+                    ],
+                    [
+                      0.456067,
+                      -0.962142
+                    ],
+                    [
+                      0.460251,
+                      -0.968974
+                    ],
+                    [
+                      0.464435,
+                      -0.975136
+                    ],
+                    [
+                      0.468619,
+                      -0.980625
+                    ],
+                    [
+                      0.472803,
+                      -0.985435
+                    ],
+                    [
+                      0.476987,
+                      -0.989565
+                    ],
+                    [
+                      0.481172,
+                      -0.99301
+                    ],
+                    [
+                      0.485356,
+                      -0.99577
+                    ],
+                    [
+                      0.48954,
+                      -0.997841
+                    ],
+                    [
+                      0.493724,
+                      -0.999223
+                    ],
+                    [
+                      0.497908,
+                      -0.999914
+                    ],
+                    [
+                      0.502092,
+                      -0.999914
+                    ],
+                    [
+                      0.506276,
+                      -0.999223
+                    ],
+                    [
+                      0.51046,
+                      -0.997841
+                    ],
+                    [
+                      0.514644,
+                      -0.99577
+                    ],
+                    [
+                      0.518828,
+                      -0.99301
+                    ],
+                    [
+                      0.523013,
+                      -0.989565
+                    ],
+                    [
+                      0.527197,
+                      -0.985435
+                    ],
+                    [
+                      0.531381,
+                      -0.980625
+                    ],
+                    [
+                      0.535565,
+                      -0.975136
+                    ],
+                    [
+                      0.539749,
+                      -0.968974
+                    ],
+                    [
+                      0.543933,
+                      -0.962142
+                    ],
+                    [
+                      0.548117,
+                      -0.954646
+                    ],
+                    [
+                      0.552301,
+                      -0.946489
+                    ],
+                    [
+                      0.556485,
+                      -0.937678
+                    ],
+                    [
+                      0.560669,
+                      -0.92822
+                    ],
+                    [
+                      0.564854,
+                      -0.91812
+                    ],
+                    [
+                      0.569038,
+                      -0.907385
+                    ],
+                    [
+                      0.573222,
+                      -0.896023
+                    ],
+                    [
+                      0.577406,
+                      -0.884042
+                    ],
+                    [
+                      0.58159,
+                      -0.87145
+                    ],
+                    [
+                      0.585774,
+                      -0.858256
+                    ],
+                    [
+                      0.589958,
+                      -0.844469
+                    ],
+                    [
+                      0.594142,
+                      -0.830098
+                    ],
+                    [
+                      0.598326,
+                      -0.815153
+                    ],
+                    [
+                      0.60251,
+                      -0.799645
+                    ],
+                    [
+                      0.606695,
+                      -0.783585
+                    ],
+                    [
+                      0.610879,
+                      -0.766982
+                    ],
+                    [
+                      0.615063,
+                      -0.74985
+                    ],
+                    [
+                      0.619247,
+                      -0.7322
+                    ],
+                    [
+                      0.623431,
+                      -0.714043
+                    ],
+                    [
+                      0.627615,
+                      -0.695393
+                    ],
+                    [
+                      0.631799,
+                      -0.676263
+                    ],
+                    [
+                      0.635983,
+                      -0.656665
+                    ],
+                    [
+                      0.640167,
+                      -0.636613
+                    ],
+                    [
+                      0.644351,
+                      -0.616122
+                    ],
+                    [
+                      0.648536,
+                      -0.595204
+                    ],
+                    [
+                      0.65272,
+                      -0.573875
+                    ],
+                    [
+                      0.656904,
+                      -0.55215
+                    ],
+                    [
+                      0.661088,
+                      -0.530043
+                    ],
+                    [
+                      0.665272,
+                      -0.50757
+                    ],
+                    [
+                      0.669456,
+                      -0.484746
+                    ],
+                    [
+                      0.67364,
+                      -0.461587
+                    ],
+                    [
+                      0.677824,
+                      -0.438109
+                    ],
+                    [
+                      0.682008,
+                      -0.414328
+                    ],
+                    [
+                      0.686192,
+                      -0.390261
+                    ],
+                    [
+                      0.690377,
+                      -0.365924
+                    ],
+                    [
+                      0.694561,
+                      -0.341334
+                    ],
+                    [
+                      0.698745,
+                      -0.316508
+                    ],
+                    [
+                      0.702929,
+                      -0.291464
+                    ],
+                    [
+                      0.707113,
+                      -0.266218
+                    ],
+                    [
+                      0.711297,
+                      -0.240788
+                    ],
+                    [
+                      0.715481,
+                      -0.215192
+                    ],
+                    [
+                      0.719665,
+                      -0.189447
+                    ],
+                    [
+                      0.723849,
+                      -0.163571
+                    ],
+                    [
+                      0.728033,
+                      -0.137582
+                    ],
+                    [
+                      0.732218,
+                      -0.111498
+                    ],
+                    [
+                      0.736402,
+                      -0.085337
+                    ],
+                    [
+                      0.740586,
+                      -0.059117
+                    ],
+                    [
+                      0.74477,
+                      -0.032856
+                    ],
+                    [
+                      0.748954,
+                      -0.006572
+                    ],
+                    [
+                      0.753138,
+                      0.019716
+                    ],
+                    [
+                      0.757322,
+                      0.04599
+                    ],
+                    [
+                      0.761506,
+                      0.072233
+                    ],
+                    [
+                      0.76569,
+                      0.098426
+                    ],
+                    [
+                      0.769874,
+                      0.124551
+                    ],
+                    [
+                      0.774059,
+                      0.150589
+                    ],
+                    [
+                      0.778243,
+                      0.176524
+                    ],
+                    [
+                      0.782427,
+                      0.202337
+                    ],
+                    [
+                      0.786611,
+                      0.22801
+                    ],
+                    [
+                      0.790795,
+                      0.253525
+                    ],
+                    [
+                      0.794979,
+                      0.278865
+                    ],
+                    [
+                      0.799163,
+                      0.304012
+                    ],
+                    [
+                      0.803347,
+                      0.328949
+                    ],
+                    [
+                      0.807531,
+                      0.353659
+                    ],
+                    [
+                      0.811715,
+                      0.378125
+                    ],
+                    [
+                      0.8159,
+                      0.402329
+                    ],
+                    [
+                      0.820084,
+                      0.426255
+                    ],
+                    [
+                      0.824268,
+                      0.449886
+                    ],
+                    [
+                      0.828452,
+                      0.473207
+                    ],
+                    [
+                      0.832636,
+                      0.496201
+                    ],
+                    [
+                      0.83682,
+                      0.518851
+                    ],
+                    [
+                      0.841004,
+                      0.541143
+                    ],
+                    [
+                      0.845188,
+                      0.563061
+                    ],
+                    [
+                      0.849372,
+                      0.58459
+                    ],
+                    [
+                      0.853556,
+                      0.605715
+                    ],
+                    [
+                      0.857741,
+                      0.626422
+                    ],
+                    [
+                      0.861925,
+                      0.646695
+                    ],
+                    [
+                      0.866109,
+                      0.666522
+                    ],
+                    [
+                      0.870293,
+                      0.685887
+                    ],
+                    [
+                      0.874477,
+                      0.704779
+                    ],
+                    [
+                      0.878661,
+                      0.723184
+                    ],
+                    [
+                      0.882845,
+                      0.741089
+                    ],
+                    [
+                      0.887029,
+                      0.758482
+                    ],
+                    [
+                      0.891213,
+                      0.77535
+                    ],
+                    [
+                      0.895397,
+                      0.791683
+                    ],
+                    [
+                      0.899582,
+                      0.807469
+                    ],
+                    [
+                      0.903766,
+                      0.822697
+                    ],
+                    [
+                      0.90795,
+                      0.837356
+                    ],
+                    [
+                      0.912134,
+                      0.851436
+                    ],
+                    [
+                      0.916318,
+                      0.864928
+                    ],
+                    [
+                      0.920502,
+                      0.877822
+                    ],
+                    [
+                      0.924686,
+                      0.89011
+                    ],
+                    [
+                      0.92887,
+                      0.901782
+                    ],
+                    [
+                      0.933054,
+                      0.912831
+                    ],
+                    [
+                      0.937238,
+                      0.92325
+                    ],
+                    [
+                      0.941423,
+                      0.93303
+                    ],
+                    [
+                      0.945607,
+                      0.942165
+                    ],
+                    [
+                      0.949791,
+                      0.950649
+                    ],
+                    [
+                      0.953975,
+                      0.958477
+                    ],
+                    [
+                      0.958159,
+                      0.965642
+                    ],
+                    [
+                      0.962343,
+                      0.972139
+                    ],
+                    [
+                      0.966527,
+                      0.977965
+                    ],
+                    [
+                      0.970711,
+                      0.983115
+                    ],
+                    [
+                      0.974895,
+                      0.987585
+                    ],
+                    [
+                      0.979079,
+                      0.991373
+                    ],
+                    [
+                      0.983264,
+                      0.994476
+                    ],
+                    [
+                      0.987448,
+                      0.996891
+                    ],
+                    [
+                      0.991632,
+                      0.998618
+                    ],
+                    [
+                      0.995816,
+                      0.999654
+                    ],
+                    [
+                      1.0,
+                      1.0
+                    ]
+                  ]
+                }
+              ],
+              "value": null
+            }
+          ],
+          "kind": "plot",
+          "markers": [
+            {
+              "axis": "y",
+              "label": "all four aligned — the PAPR peak",
+              "value": 4.0
+            }
+          ],
+          "x_label": "time within one symbol period (fraction of T)",
+          "y_label": "amplitude"
+        }
+      ],
+      "id": "ws501-ofdm-0004",
+      "kind": "formula",
+      "latex": "s(t) = \\mathrm{Re}\\left\\{ \\sum_{k=1}^{N} x_{k} A_{k} e^{j 2 \\pi k f_{0} t} \\right\\}",
+      "question": "Write the signal an OFDM transmitter puts on the air during one symbol, and\nname what each term is doing.\n",
+      "reading": "The transmitted waveform is the real part of a sum of N complex phasors, one\nper subcarrier, each turning at an integer multiple of the base frequency.\n",
+      "see_also": [
+        "ws501-ofdm-0003",
+        "ws501-ofdm-0010"
+      ],
+      "sources": [
+        "bensky2019_6c00"
+      ],
+      "tags": [],
+      "title": "What is actually transmitted",
+      "track": "WS501"
+    },
+    {
+      "anchors": [],
+      "back": "After the IFFT, the transmitter copies the **last** slice of the symbol and\npastes it in **front**. The receiver discards that slice before the FFT.\n\nEffect one — no ISI. Bensky (p. 125): \"echoes of the previous symbol, which\nare the result of multipath delays, fall in the cyclic prefix and\nintersymbol interference is avoided.\" Everything the previous symbol\ncontaminated was in the part that was thrown away. This holds while the echo\ndelay is shorter than the prefix, and fails abruptly once it is not.\n\nEffect two, the surprising one — echoes of the CURRENT symbol are kept, and\nthey **help**. Because the prefix is a copy of the symbol's own tail, a\ndelayed copy still presents a whole symbol inside the FFT window. Bensky:\nthey \"will actually improve the signal-to-noise ratio\". The resulting\ndistortion \"is removed by equalization in the same manner as the flat\nfading.\"\n\nSo a reflection stops being damage and becomes signal.\n",
+      "deck": "ws501-ofdm-from-zero",
+      "defense": false,
+      "difficulty": "basics",
+      "example": "802.11a sizes the prefix against the room and then stops.\n\nPrefix 0.8 µs, symbol body 3.2 µs, so 4.0 µs goes on air (p. 292). Indoor\nechoes are 100–250 ns (p. 291). The margin is roughly **3× to 8×**, and it is\ndeliberate: \"the length of the cyclic prefix is chosen to be long enough to\nabsorb all multipath reflections that would be expected in the environments\nwhere the communication system is deployed.\"\n\n802.11n and 802.11ac may optionally shorten it to **400 ns** (p. 295). That\nis still above the 250 ns worst case, which is why it is safe indoors — and\nit recovers 10% of the airtime that the 800 ns prefix was spending.\n",
+      "figures": [
+        {
+          "aspect": 2.6,
+          "caption": "The prefix is a copy of the symbol's own tail. The FFT window starts after it, so the previous symbol's echo never reaches the samples that are read.",
+          "edges": [
+            {
+              "arrow": "end",
+              "dashed": true,
+              "label": "copy of tail",
+              "source": "body",
+              "target": "cp"
+            },
+            {
+              "arrow": "end",
+              "dashed": true,
+              "label": "lands here",
+              "source": "prev",
+              "target": "echo"
+            },
+            {
+              "arrow": "end",
+              "dashed": false,
+              "label": "absorbed",
+              "source": "echo",
+              "target": "cp"
+            },
+            {
+              "arrow": "none",
+              "dashed": true,
+              "source": "body",
+              "target": "win"
+            },
+            {
+              "arrow": "none",
+              "dashed": true,
+              "source": "tail",
+              "target": "cp"
+            }
+          ],
+          "kind": "diagram",
+          "nodes": [
+            {
+              "emphasis": false,
+              "h": 0.18,
+              "id": "prev",
+              "label": "previous symbol",
+              "shape": "rounded",
+              "w": 0.2,
+              "x": 0.12,
+              "y": 0.2
+            },
+            {
+              "emphasis": true,
+              "h": 0.18,
+              "id": "cp",
+              "label": "CP\n0.8 µs",
+              "shape": "rounded",
+              "w": 0.11,
+              "x": 0.34,
+              "y": 0.2
+            },
+            {
+              "emphasis": false,
+              "h": 0.18,
+              "id": "body",
+              "label": "symbol body · 3.2 µs",
+              "shape": "rounded",
+              "w": 0.36,
+              "x": 0.68,
+              "y": 0.2
+            },
+            {
+              "emphasis": false,
+              "h": 0.18,
+              "id": "echo",
+              "label": "echo, +100…250 ns",
+              "shape": "note",
+              "w": 0.24,
+              "x": 0.36,
+              "y": 0.5
+            },
+            {
+              "emphasis": true,
+              "h": 0.2,
+              "id": "win",
+              "label": "FFT window — what the receiver reads",
+              "shape": "rounded",
+              "w": 0.4,
+              "x": 0.68,
+              "y": 0.78
+            },
+            {
+              "emphasis": false,
+              "h": 0.2,
+              "id": "tail",
+              "label": "tail copied forward",
+              "shape": "note",
+              "w": 0.24,
+              "x": 0.12,
+              "y": 0.78
+            }
+          ]
+        }
+      ],
+      "front": "Long symbols make the echo small. The cyclic prefix makes it zero. How, and\nwhat is the second, less obvious thing it does?\n",
+      "id": "ws501-ofdm-0005",
+      "kind": "flash",
+      "see_also": [
+        "ws501-ofdm-0001",
+        "ws501-ofdm-0006"
+      ],
+      "sources": [
+        "bensky2019_6c00"
+      ],
+      "tags": [],
+      "title": "The cyclic prefix",
+      "track": "WS501",
+      "why": "Most people can recite that the prefix prevents ISI. The second effect is\nwhat separates recitation from understanding, and it is the one that matters\nfor sensing: the receiver is not fighting multipath, it is measuring it.\n"
+    },
+    {
+      "anchors": [],
+      "choices": [
+        "The previous symbol's echo now reaches past the prefix into the FFT window, so inter-symbol interference returns.",
+        "Nothing changes — the cyclic prefix is a copy of the symbol, so any delay is absorbed.",
+        "The subcarriers stop being orthogonal, because orthogonality depends on the echo delay.",
+        "The receiver loses the pilots, because pilots are transmitted inside the cyclic prefix."
+      ],
+      "correct": 0,
+      "deck": "ws501-ofdm-from-zero",
+      "defense": false,
+      "difficulty": "basics",
+      "example": "This is the practical reason indoor and outdoor OFDM differ. 802.11a sized\nits prefix for rooms with 100–250 ns spreads. Terrestrial digital video\nbroadcasting — also OFDM, in Bensky's own list on p. 120 — faces echoes from\nhills and distant transmitters, and uses guard intervals measured in tens of\nmicroseconds for exactly the reason this question describes.\n",
+      "explanation": "The prefix absorbs echoes only up to its own length. At 1.2 µs the previous\nsymbol's tail arrives 0.4 µs after the prefix has ended, so it overlaps the\nsamples the FFT actually reads.\n\nWhy the others are wrong, and each is a real near-miss:\n\n**\"any delay is absorbed\"** — the prefix is finite. Bensky is explicit that\nits length is chosen against the *expected* deployment environment, which\nmeans it can be exceeded by an unexpected one.\n\n**\"subcarriers stop being orthogonal\"** — orthogonality is set by T = 1/f₀\nalone. It is a property of the waveform, not of the room. Echo delay does not\nenter that condition. What multipath does is change the channel each\nsubcarrier sees, which the equaliser corrects.\n\n**\"pilots are in the prefix\"** — the four pilots are subcarriers, at bins\n−21, −7, +7 and +21. They occupy frequency, not the prefix interval, and they\nare discarded with nothing when the prefix is stripped.\n",
+      "figures": [],
+      "id": "ws501-ofdm-0006",
+      "kind": "mcq",
+      "question": "An 802.11a link with its 0.8 µs cyclic prefix is moved into a large atrium\nwhere the longest reflection arrives 1.2 µs after the direct path. What\nactually goes wrong?\n",
+      "see_also": [
+        "ws501-ofdm-0005",
+        "ws501-ofdm-0007"
+      ],
+      "sources": [
+        "bensky2019_6c00"
+      ],
+      "tags": [],
+      "title": "Prefix length, tested",
+      "track": "WS501"
+    },
+    {
+      "anchors": [],
+      "back": "**48** carry data. **4** are pilots, at bins −21, −7, +7 and +21. **12** are\nnulled: the DC bin at the centre, plus the outer bins that keep energy inside\nthe 20 MHz channel. That leaves 26 used bins each side of centre, and an\noccupied width of 53 × 312.5 kHz = **16.5625 MHz** (p. 292).\n\nData rate is one division and nothing more: **data bits per symbol ÷ 4 µs**.\nTwo knobs set the numerator — how many bits each subcarrier carries\n(1, 2, 4 or 6 for BPSK, QPSK, 16-QAM, 64-QAM) and what fraction of those are\nforward-error-correction code rather than payload (1/2, 2/3 or 3/4).\n\nThe pilots are what makes the receiver's correction possible. Bensky\n(p. 126): \"The receiver knows what symbols are transmitted by these pilots,\nso it can apply the proper correction to restore them. Through\ninterpellation between the pilots, it can also restore symbols on all of the\nother subchannels.\"\n",
+      "deck": "ws501-ofdm-from-zero",
+      "defense": false,
+      "difficulty": "basics",
+      "example": "The top rate, checked by arithmetic. 64-QAM puts 6 coded bits on each of 48\nsubcarriers = **288 coded bits** per symbol. At code rate 3/4 that is\n288 × 3/4 = **216 data bits**. Divide by the 4 µs symbol: 216 / 4 µs =\n**54 Mbit/s**.\n\nThe 72 bits of difference are the error-correcting code, and they are spread\nacross subcarriers by an interleaver. That is what lets a symbol survive a\nsubcarrier sitting in a fade (pp. 292–293): FEC \"permits reconstruction of\nthe correct message in the receiver, even when one or more of the 48 data\nchannels have selective interference that would otherwise result in a lost\nsymbol.\"\n",
+      "figures": [
+        {
+          "caption": "Bensky Table 11.3, p. 293. Every row is the same division by 4 µs; only the modulation and code rate move. Coded bits per symbol is always 48 subcarriers × coded bits per subcarrier.",
+          "columns": [
+            "Rate (Mbit/s)",
+            "Modulation",
+            "Code rate",
+            "Coded bits/symbol",
+            "Data bits/symbol"
+          ],
+          "emphasis": [
+            5
+          ],
+          "kind": "table",
+          "rows": [
+            [
+              "6",
+              "BPSK",
+              "1/2",
+              "48",
+              "24"
+            ],
+            [
+              "12",
+              "QPSK",
+              "1/2",
+              "96",
+              "48"
+            ],
+            [
+              "24",
+              "16-QAM",
+              "1/2",
+              "192",
+              "96"
+            ],
+            [
+              "36",
+              "16-QAM",
+              "3/4",
+              "192",
+              "144"
+            ],
+            [
+              "48",
+              "64-QAM",
+              "2/3",
+              "288",
+              "192"
+            ],
+            [
+              "54",
+              "64-QAM",
+              "3/4",
+              "288",
+              "216"
+            ]
+          ]
+        }
+      ],
+      "front": "802.11a runs a 64-point transform but only 52 subcarriers are used. Account\nfor all 64, and say where the data rate comes from.\n",
+      "id": "ws501-ofdm-0007",
+      "kind": "flash",
+      "see_also": [
+        "ws501-ofdm-0006",
+        "ws501-ofdm-0008",
+        "ws501-ofdm-0009"
+      ],
+      "sources": [
+        "bensky2019_6c00"
+      ],
+      "tags": [],
+      "title": "The 802.11a channel, in numbers",
+      "track": "WS501",
+      "why": "Being able to derive 54 Mbit/s rather than recall it is the difference\nbetween knowing the standard and knowing the system.\n"
+    },
+    {
+      "anchors": [],
+      "choices": [
+        "Because a subcarrier at zero baseband frequency sits on the receiver's own DC offset and local-oscillator leakage, where it cannot be recovered reliably.",
+        "Because the DC bin is reserved for the cyclic prefix, which needs a subcarrier of its own.",
+        "Because an odd number of subcarriers is required for the FFT to be orthogonal.",
+        "Because the DC bin carries the pilot signal that the receiver uses to phase-lock."
+      ],
+      "correct": 0,
+      "deck": "ws501-ofdm-from-zero",
+      "defense": false,
+      "difficulty": "basics",
+      "example": "Count the twelve unused bins to check the story holds: 1 DC bin at the\ncentre, plus 11 guard bins at the edges (indices beyond ±26 in a −32…+31\nrange). 64 − 12 = 52 used, of which 4 are pilots, leaving the 48 data\nsubcarriers every rate in the table is built from.\n",
+      "explanation": "The DC bin sits at baseband zero, exactly where a direct-conversion\nreceiver's own DC offset and local-oscillator leakage live. Anything\ntransmitted there is buried under the receiver's own artefacts, so the\nstandard spends the bin rather than the effort. Bensky records the outcome\n(p. 292): the carriers at the edges of the occupied bandwidth \"and the DC\nterm (m = 0 …) are null\".\n\nThe distractors each borrow a true fact and attach it to the wrong thing:\n\n**\"reserved for the cyclic prefix\"** — the prefix is an interval of TIME\nprepended to the symbol. It occupies no subcarrier at all.\n\n**\"an odd number is required\"** — orthogonality follows from T = 1/f₀ and\nholds for any number of subcarriers. 64 is a power of two because that is\nwhat makes the FFT fast, not because of parity.\n\n**\"the DC bin carries the pilot\"** — there are four pilots and none is at DC.\nThey are at bins −21, −7, +7 and +21, placed symmetrically so the receiver\ncan interpolate the channel across the band between them.\n",
+      "figures": [],
+      "id": "ws501-ofdm-0008",
+      "kind": "mcq",
+      "question": "Why does 802.11a leave the centre (DC) bin of its 64-point transform empty?\n",
+      "see_also": [
+        "ws501-ofdm-0007",
+        "ws501-ofdm-0009"
+      ],
+      "sources": [
+        "bensky2019_6c00"
+      ],
+      "tags": [],
+      "title": "Why the bins are not all used",
+      "track": "WS501"
+    },
+    {
+      "anchors": [
+        "csi-sensing.wifi-channel-state"
+      ],
+      "back": "A wide single carrier sees the whole reflective transfer function at once:\nsome frequencies reinforced, others cancelled. That is **frequency-selective\nfading**, and correcting it is hard.\n\nNarrow the lane enough and the fading across one lane is constant. That is\n**flat fading**, and flat fading on one subcarrier is a single complex\nnumber. Bensky (p. 120): OFDM \"avoids frequency selective fading by\nconverting a high rate data stream to multiple low rate signals, which are\nsubjected to flat fading which can more easily be equalized and corrected by\ncoding and interleaving.\"\n\nThe fading is not removed. It is **re-indexed** into one correction per\nsubcarrier.\n\nThe consequence for sensing is the whole argument. To apply those\ncorrections the equaliser must first ESTIMATE them, once per symbol, on\nevery subcarrier. That vector of estimates is CSI. A sensing system adds no\nsensor and no traffic — it keeps a number the receiver was already obliged\nto compute and would otherwise discard.\n",
+      "deck": "ws501-ofdm-from-zero",
+      "defense": false,
+      "difficulty": "basics",
+      "example": "Our own capture path, seen through this card. A 20 MHz HE frame on the\nfleet's AX210 nodes yields a tone grid of 242 subcarriers, each a complex\nnumber, per receive-transmit chain pair.\n\nNothing in that path was added for sensing. `csid` reads the channel estimate\nthe driver already produces from the frame preamble. That is why an\nilluminated capture costs airtime and disk rather than hardware, and why the\nsame 802.11 receiver that decodes a frame can count the people who perturbed\nit.\n",
+      "figures": [],
+      "front": "Bensky says OFDM \"avoids frequency selective fading\". It does not remove the\nfading. What does it actually do — and what does that hand to a sensing\nsystem?\n",
+      "id": "ws501-ofdm-0009",
+      "kind": "flash",
+      "see_also": [
+        "ws501-ch-0001",
+        "ws501-ch-0004",
+        "ws501-ofdm-0007",
+        "ws501-ofdm-0008",
+        "ws501-ofdm-0010"
+      ],
+      "sources": [
+        "bensky2019_6c00",
+        "halperin2010_94f8"
+      ],
+      "tags": [],
+      "title": "Flat fading, and why CSI is free",
+      "track": "WS501",
+      "why": "This is the card that connects the modulation to the thesis. If the\nmeasurement were an extra cost, the deployment argument would collapse.\n"
+    },
+    {
+      "anchors": [
+        "csi-sensing.raw-csi-measurements"
+      ],
+      "back": "Bensky lists them on p. 126.\n\n1. **Sensitivity to phase noise and Doppler.** Orthogonality assumes exact\n   frequency alignment between transmitter and receiver. Any carrier offset\n   leaks each subcarrier into its neighbours.\n2. **High peak-to-average power ratio.** Summing many subcarriers\n   occasionally aligns them all, so the amplifier must be sized for a peak it\n   rarely reaches and runs inefficiently at the average.\n3. **Prefix and pilots are overhead.** 0.8 µs of every 4 µs repeats\n   something already sent, and 4 of 52 subcarriers carry no payload.\n\nThe first is the one that bites a sensing deployment. Transmitter and\nreceiver are separate unsynchronised devices, so the measured CSI carries\ncarrier frequency offset, sampling frequency offset and packet-detection\ntiming error on top of the physical channel. Communication tolerates this,\nbecause the equaliser only needs the channel up to a common rotation.\nSensing does not, because the rotation is indistinguishable from a change in\nthe room until it is removed.\n\nAgainst all three, Bensky calls out one advantage as the decisive one:\n**scalability**. The same design widens to 40, 80 and 160 MHz with no new\nmodulation theory.\n",
+      "deck": "ws501-ofdm-from-zero",
+      "defense": false,
+      "difficulty": "basics",
+      "example": "The overhead, priced exactly. The cyclic prefix is 0.8 µs of every 4.0 µs =\n**20% of airtime**. The pilots are 4 of 52 occupied subcarriers = **7.7% of\nthe used spectrum**. Neither is recoverable, and both are the reason the\n54 Mbit/s in the table is a PHY rate rather than a throughput.\n\nThe 802.11n and 802.11ac option to shorten the prefix to 400 ns cuts the\nfirst figure from 20% to **11%**, and the fact that this is safe indoors is a\ndirect restatement of card 5: the room's echoes are 100–250 ns, so 400 ns\nstill clears them.\n",
+      "figures": [],
+      "front": "Name the three prices OFDM pays, and say which one bites hardest in a\nsensing deployment.\n",
+      "id": "ws501-ofdm-0010",
+      "kind": "flash",
+      "see_also": [
+        "ws501-ofdm-0004",
+        "ws501-ofdm-0009"
+      ],
+      "sources": [
+        "bensky2019_6c00"
+      ],
+      "tags": [],
+      "title": "What OFDM costs",
+      "track": "WS501",
+      "why": "A defense question that starts \"what are the limitations of…\" is looking for\nwhether you know which limitation applies to YOUR system rather than which\nones are in the textbook.\n"
     }
   ],
   "decks": [
@@ -130540,6 +133712,23 @@
       "track": "WS501"
     },
     {
+      "card_count": 10,
+      "deck_version": 1,
+      "defense": false,
+      "difficulty": "basics",
+      "intro": "Every number in this deck comes from one book: Bensky, *Short-range Wireless\nCommunication*, 3rd ed. (Elsevier 2019), §4.4.8 \"OFDM\" (pp. 120–126) and\n§11.4.3 \"802.11a and OFDM\" (pp. 291–295).",
+      "slug": "ws501-ofdm-from-zero",
+      "tags": [
+        "edu-deck",
+        "ofdm",
+        "wifi",
+        "wireless-channel",
+        "csi"
+      ],
+      "title": "WS501 · OFDM from zero",
+      "track": "WS501"
+    },
+    {
       "card_count": 16,
       "deck_version": 1,
       "defense": false,
@@ -130556,6 +133745,6 @@
       "track": "WS501"
     }
   ],
-  "generated_at": "2026-08-26T15:17:31+00:00",
+  "generated_at": "2026-08-31T07:00:13+00:00",
   "schema_version": 1
 }
