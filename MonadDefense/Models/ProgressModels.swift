@@ -149,6 +149,70 @@ final class CardNote {
     var verdict: CurationVerdict { CurationVerdict(rawValue: verdictRaw) ?? .fix }
 }
 
+// MARK: - IP-151 triage decisions
+//
+// One row per (scope, card). The swipe stacks write here first and export
+// later, the same discipline as the curation notes. Scopes other than
+// `curation` live here; the curation pass keeps `CardNote`, because the
+// `monad-defense/curation/1` export it produces is what `edu feedback ingest`
+// already reads.
+
+enum TriageScope: String, CaseIterable, Identifiable, Codable {
+    /// Does this card's dwell block belong on a participant's phone?
+    case dwell
+    /// Is this card's instance an easter egg (`wtf` tag)?
+    case egg
+
+    var id: String { rawValue }
+
+    var displayName: String {
+        switch self {
+        case .dwell: "Dwell review"
+        case .egg: "Eggs"
+        }
+    }
+
+    var symbol: String {
+        switch self {
+        case .dwell: "iphone.radiowaves.left.and.right"
+        case .egg: "sparkles"
+        }
+    }
+}
+
+/// The three gestures, fixed across every stack so the hand learns them once.
+enum TriageSwipe: String, CaseIterable, Identifiable, Codable {
+    case right, left, up
+
+    var id: String { rawValue }
+}
+
+@Model
+final class TriageDecision {
+    /// `"<scope>|<cardID>"` — SwiftData wants one unique attribute.
+    @Attribute(.unique) var key: String
+    var scopeRaw: String
+    var cardID: String
+    var decisionRaw: String
+    var note: String
+    /// The card's `dwellDigest` at the moment of the swipe, for `dwell` scope.
+    var digest: String?
+    var date: Date
+
+    init(scope: TriageScope, cardID: String, decision: TriageSwipe, note: String = "", digest: String? = nil, date: Date = .now) {
+        self.key = "\(scope.rawValue)|\(cardID)"
+        self.scopeRaw = scope.rawValue
+        self.cardID = cardID
+        self.decisionRaw = decision.rawValue
+        self.note = note
+        self.digest = digest
+        self.date = date
+    }
+
+    var scope: TriageScope { TriageScope(rawValue: scopeRaw) ?? .dwell }
+    var decision: TriageSwipe { TriageSwipe(rawValue: decisionRaw) ?? .up }
+}
+
 @Model
 final class SessionResult {
     var date: Date

@@ -9,7 +9,8 @@ struct MonadDefenseApp: App {
     init() {
         do {
             container = try ModelContainer(
-                for: CardProgress.self, ReviewLog.self, SessionResult.self, CardNote.self)
+                for: CardProgress.self, ReviewLog.self, SessionResult.self, CardNote.self,
+                TriageDecision.self)
         } catch {
             fatalError("SwiftData container failed: \(error)")
         }

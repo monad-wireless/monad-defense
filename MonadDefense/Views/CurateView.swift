@@ -10,8 +10,19 @@ struct CurateView: View {
     @State private var scope: Track?
     @State private var onlyUncurated = true
     @State private var pass: CurationPass?
+    @State private var triage: TriageRun?
+    @State private var includeDecided = false
     @State private var editing: Card?
     @State private var confirmClear = false
+    @State private var confirmClearTriage = false
+
+    /// IP-151 — a swipe stack presented with a frozen queue.
+    struct TriageRun: Identifiable {
+        let id = UUID()
+        let scope: TriageScope
+        let cards: [Card]
+        let title: String
+    }
 
     /// Identifiable wrapper so the pass is presented with a frozen queue.
     struct CurationPass: Identifiable {
@@ -24,8 +35,9 @@ struct CurateView: View {
         NavigationStack {
             List {
                 Section { header } footer: {
-                    Text("A curation pass shows each card with its answer open — nothing is graded, no review schedule moves. Export when you are done and run `edu deck curation <file>` in the vault.")
+                    Text("A curation pass shows each card with its answer open — nothing is graded, no review schedule moves. Swipe right to keep, left to cut, up to fix with a note, hold for more. Export when you are done and run `edu deck curation <file>` in the vault.")
                 }
+                phoneSection
                 notesSections
             }
             .navigationTitle("Curate")
@@ -34,6 +46,20 @@ struct CurateView: View {
             }
             .fullScreenCover(item: $pass) { pass in
                 CurationPassView(cards: pass.cards, title: pass.title)
+            }
+            .fullScreenCover(item: $triage) { run in
+                switch run.scope {
+                case .dwell: DwellReviewView(cards: run.cards, title: run.title)
+                case .egg: EggTriageView(cards: run.cards, title: run.title)
+                }
+            }
+            .confirmationDialog(
+                "Delete every triage decision?", isPresented: $confirmClearTriage, titleVisibility: .visible
+            ) {
+                Button("Delete all decisions", role: .destructive) { store.clearAllTriage() }
+                Button("Cancel", role: .cancel) {}
+            } message: {
+                Text("Export first — this cannot be undone. The vault keeps what was already ingested.")
             }
             .sheet(item: $editing) { card in
                 CardNoteEditor(card: card)
@@ -116,6 +142,70 @@ struct CurateView: View {
             .disabled(store.curationQueue(track: scope, onlyUncurated: onlyUncurated).isEmpty)
         }
         .padding(.vertical, 6)
+    }
+
+    // MARK: Phone (IP-151)
+
+    private var phoneSection: some View {
+        let dwellQueue = store.dwellReviewQueue(track: scope, includeDecided: includeDecided)
+        let eggQueue = store.eggQueue(track: scope)
+        let sel = store.dwellSelection
+        let onPhone = store.bank.cards.filter { sel.status(of: $0) == .included }.count
+        let stale = store.bank.cards.filter { sel.status(of: $0) == .stale }.count
+        return Section {
+            VStack(alignment: .leading, spacing: 10) {
+                HStack(spacing: 6) {
+                    Label("\(onPhone) on the phone", systemImage: "iphone")
+                    if stale > 0 {
+                        Label("\(stale) changed", systemImage: "exclamationmark.arrow.trianglehead.2.clockwise.rotate.90")
+                            .foregroundStyle(.orange)
+                    }
+                    Spacer()
+                    Text("\(store.triageCount) swiped")
+                        .foregroundStyle(.secondary)
+                }
+                .font(.caption.weight(.semibold))
+
+                Toggle("Revisit cards the vault already decided", isOn: $includeDecided)
+                    .font(.subheadline)
+
+                HStack(spacing: 10) {
+                    Button {
+                        triage = TriageRun(scope: .dwell, cards: dwellQueue, title: "Dwell review")
+                    } label: {
+                        Label("Dwell review · \(dwellQueue.count)", systemImage: TriageScope.dwell.symbol)
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .tint(Theme.accent)
+                    .disabled(dwellQueue.isEmpty)
+
+                    Button {
+                        triage = TriageRun(scope: .egg, cards: eggQueue, title: "Eggs")
+                    } label: {
+                        Label("Eggs · \(eggQueue.count)", systemImage: TriageScope.egg.symbol)
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.bordered)
+                    .tint(.orange)
+                    .disabled(eggQueue.isEmpty)
+                }
+                .controlSize(.regular)
+
+                if store.triageCount > 0 {
+                    Button(role: .destructive) { confirmClearTriage = true } label: {
+                        Label("Delete all swipe decisions", systemImage: "trash")
+                            .font(.footnote)
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+            .padding(.vertical, 4)
+        } header: {
+            Text("Phone")
+        } footer: {
+            Text("What a participant reads during a probe dwell. Right includes, left excludes, up sends the text back with a note. Export and run `edu deck select <file>` in the vault.")
+        }
     }
 
     // MARK: Notes
@@ -208,10 +298,25 @@ struct CurateView: View {
             Button("Copy JSON", systemImage: "doc.on.clipboard") {
                 UIPasteboard.general.string = store.curationExportJSON
             }
+            Divider()
+            ShareLink(
+                item: CurationJSONFile(text: store.triageExportJSON, filename: "\(store.triageExportFilenameStem).json"),
+                preview: SharePreview("Swipe decisions (JSON)", image: Image(systemName: "hand.draw"))
+            ) {
+                Label("Share swipes JSON — for `edu deck select`", systemImage: "hand.draw")
+            }
+            .disabled(store.triageCount == 0)
+            ShareLink(
+                item: CurationMarkdownFile(text: store.triageExportMarkdown, filename: "\(store.triageExportFilenameStem).md"),
+                preview: SharePreview("Swipe decisions (Markdown)", image: Image(systemName: "doc.text"))
+            ) {
+                Label("Share swipes Markdown", systemImage: "doc.text")
+            }
+            .disabled(store.triageCount == 0)
         } label: {
             Label("Export", systemImage: "square.and.arrow.up")
         }
-        .disabled(store.curatedCount == 0)
+        .disabled(store.curatedCount == 0 && store.triageCount == 0)
     }
 }
 

@@ -115,3 +115,33 @@ offline, and independent of the parent repo and its Python environment.
 The cost is that a stale bank is invisible. So the app states its content's age:
 `StalenessNotice` prints one quiet line on the Today screen once the bank passes
 fourteen days old. It is never a modal — a stale bank is still a usable bank.
+
+## The swipe stacks (IP-151)
+
+Every triage in the app is one `TriageSpec` over `TriageDeckView`: the cards,
+what the card *shows* (not always the whole card), and one action per gesture.
+Right is always yes, left always no, up always "send back with a note", and a
+long press is the rare fourth verb when a spec declares one. Decisions write
+SwiftData first (`TriageDecision`, unique per scope and card) and export later,
+the same discipline as the curation notes.
+
+**Dwell review** decides what a participant reads on monad-app during a probe
+dwell. The card renders as the monad-app panel — the `dwell:` block's
+`definition`, then `fact` and `quip`, each on an 11 s timer — and the budget
+rows under it show how close each text sits to its cap (200 / 200 / 90). Tap
+flips to the full card. Right includes, left excludes, up writes a `fix` note.
+
+**Eggs** shows included cards with a `fact` and asks whether the instance is
+the absurd kind. Right sets the card's `wtf` tag, left leaves it plain.
+
+Export from the Curate tab's menu ("Share swipes JSON") and in the vault run:
+
+```bash
+uv run monad-knowledge edu deck select <export.json>   # selection note + wtf tags + fix notes
+uv run monad-knowledge edu deck facts                  # monad-app's bundle, from Included cards only
+```
+
+`edu deck select` records a six-hex digest of the text you accepted. If a
+session later rewrites that block, the card comes back to the stack first and
+does not ship until you swipe it again.
+

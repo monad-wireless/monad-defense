@@ -130,6 +130,22 @@ The **Curate** tab closes the loop the other way: sweep the bank with the
 answers open, one verdict per card (`keep` / `more` / `fix` / `cut`) plus a note,
 export as JSON, and map the verdicts back onto the deck notes that own each card.
 
+Since IP-151 every pass here is a **swipe stack** (`Views/Triage/TriageDeckView`),
+one gesture grammar for every use: right = yes, left = no, up = rework with a
+note, hold = the rare fourth verb, tap = flip. Three stacks ship:
+
+| Stack | Decides | Right / left / up land as |
+|---|---|---|
+| Curation pass | card quality | `CardNote` → `monad-defense/curation/1` → `edu deck curation` |
+| **Dwell review** | does this card's `dwell:` text belong on a participant's phone (monad-app) | `TriageDecision` → `monad-defense/triage/1` → `edu deck select` → `edu/decks/dwell-selection.md` |
+| **Eggs** | is the instance an easter egg | same export → the card's `wtf` tag |
+
+The Dwell review card is a mock of the monad-app panel at phone width with the
+11 s bar running, because the judgement is about the phone. A card the vault
+already accepted comes back **stale-first** when its text was edited after the
+swipe — the digest in the selection note no longer matches — and it is off the
+phone until swiped again.
+
 Both loops: [docs/CONTENT.md](docs/CONTENT.md).
 
 ### Provenance

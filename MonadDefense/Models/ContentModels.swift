@@ -9,6 +9,10 @@ struct DeckBank: Decodable {
     let generatedAt: String
     let decks: [Deck]
     let cards: [Card]
+    /// IP-151 — the vault's dwell selection, projected so the Dwell review
+    /// stack can hide decided cards offline. Absent on a bank compiled before
+    /// the note existed.
+    let dwellSelection: DwellSelection?
 
     static let supportedSchemaVersion = 1
 
@@ -44,6 +48,40 @@ struct DeckBank: Decodable {
         guard let generatedDate else { return nil }
         return Calendar.current.dateComponents([.day], from: generatedDate, to: .now).day
     }
+}
+
+/// What the vault has decided about cards for the phone (IP-151).
+/// `included` maps a card id to the digest of the block that was accepted;
+/// a card whose compiled `dwellDigest` differs is *stale* and returns to the
+/// review stack first.
+struct DwellSelection: Decodable, Hashable {
+    let included: [String: String]
+    let excluded: [String]
+
+    static let empty = DwellSelection(included: [:], excluded: [])
+
+    enum Status: Hashable {
+        case included, stale, excluded, undecided
+    }
+
+    func status(of card: Card) -> Status {
+        if let accepted = included[card.id] {
+            return accepted == card.dwellDigest ? .included : .stale
+        }
+        return excluded.contains(card.id) ? .excluded : .undecided
+    }
+}
+
+/// The phone-facing compression of a card (IP-151): what a participant reads
+/// on the 11 s dwell panels. Written from a Claude Code session, shipped only
+/// after a right-swipe here.
+struct DwellBlock: Decodable, Hashable {
+    /// The term in plain words — the `foundation` panel.
+    let definition: String
+    /// A concrete instance with a number the card carries — the `wild` panel.
+    let fact: String?
+    /// One dry line after the fact.
+    let quip: String?
 }
 
 struct Deck: Decodable, Identifiable, Hashable {
@@ -454,6 +492,11 @@ struct Card: Decodable, Identifiable, Hashable {
     /// Cards this one leads to. Symmetric by construction — the compiler
     /// makes every declared link two-way, so there are no one-way streets.
     let seeAlso: [String]?
+
+    /// IP-151 — the dwell block and the compiler's digest of it. The digest is
+    /// compared, never computed, on this side.
+    let dwell: DwellBlock?
+    let dwellDigest: String?
 
     static func == (lhs: Card, rhs: Card) -> Bool { lhs.id == rhs.id }
     func hash(into hasher: inout Hasher) { hasher.combine(id) }

@@ -1,186 +1,46 @@
 import SwiftUI
 
 // MARK: - Curation pass — sweep every card, answers open, verdict per card
+//
+// Not a study session: nothing is graded and no FSRS state moves. The whole
+// card (prompt *and* answer *and* explanation) is on screen so the judgement
+// is about the content, not about recall.
+//
+// IP-151 moved the pass onto the triage component. The verdicts are the same
+// four (`CardNote` is still the store, `monad-defense/curation/1` is still the
+// export), only the hand motion changed: right = keep, left = cut, up = fix
+// with a note, hold = more.
 
-/// Not a study session: nothing is graded and no FSRS state moves. The whole
-/// card (prompt *and* answer *and* explanation) is on screen so the judgement
-/// is about the content, not about recall.
 struct CurationPassView: View {
     @Environment(StudyStore.self) private var store
-    @Environment(\.dismiss) private var dismiss
 
     let cards: [Card]
     let title: String
 
-    @State private var index = 0
-    @State private var text = ""
-    @State private var saved: CurationVerdict?
-    @FocusState private var noteFocused: Bool
-
-    private var card: Card? { index < cards.count ? cards[index] : nil }
-
     var body: some View {
-        NavigationStack {
-            Group {
-                if cards.isEmpty {
-                    ContentUnavailableView(
-                        "Nothing to curate", systemImage: "checkmark.seal",
-                        description: Text("Every card in this scope already has a note."))
-                } else if let card {
-                    content(card)
-                } else {
-                    finished
-                }
-            }
-            .navigationTitle(title)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button("Close", systemImage: "xmark") { dismiss() }
-                }
-                if card != nil {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Text("\(index + 1)/\(cards.count)")
-                            .font(.subheadline.monospacedDigit())
-                            .foregroundStyle(.secondary)
-                    }
-                }
-            }
-            .safeAreaInset(edge: .top, spacing: 0) {
-                if !cards.isEmpty, card != nil {
-                    ProgressView(value: Double(index), total: Double(cards.count))
-                        .tint(Theme.accent)
-                        .padding(.horizontal)
-                }
-            }
-        }
-        .onAppear { load() }
+        TriageDeckView(spec: spec)
     }
 
-    // MARK: Card stage
-
-    @ViewBuilder
-    private func content(_ card: Card) -> some View {
-        ScrollView {
-            CurationCardBody(card: card, deckTitle: store.decksBySlug[card.deck]?.title)
-                .padding()
-                .id(card.id)
-        }
-        .scrollDismissesKeyboard(.interactively)
-        .safeAreaInset(edge: .bottom) {
-            verdictBar(card)
-        }
-    }
-
-    private func verdictBar(_ card: Card) -> some View {
-        VStack(spacing: 10) {
-            HStack(spacing: 8) {
-                TextField("Note (optional)", text: $text, axis: .vertical)
-                    .lineLimit(1...4)
-                    .textFieldStyle(.roundedBorder)
-                    .focused($noteFocused)
-                if noteFocused {
-                    Button("Done") { noteFocused = false }
-                        .font(.subheadline.weight(.semibold))
-                }
+    private var spec: TriageSpec {
+        let store = store
+        func act(_ verdict: CurationVerdict) -> TriageAction {
+            TriageAction(label: verdict.displayName, symbol: verdict.symbol, tint: verdict.tint) { card, note in
+                store.setNote(note, verdict: verdict, for: card.id)
             }
-            if noteFocused {
-                QuickNoteChips { phrase in append(phrase) }
-            }
-            HStack(spacing: 8) {
-                ForEach(CurationVerdict.allCases) { option in
-                    Button {
-                        commit(option, for: card)
-                    } label: {
-                        VStack(spacing: 3) {
-                            Image(systemName: option.symbol)
-                                .font(.subheadline)
-                            Text(option.displayName)
-                                .font(.caption2.weight(.semibold))
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 9)
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .tint(saved == option ? option.tint : option.tint.opacity(0.55))
-                }
-            }
-            HStack {
-                Button("Back", systemImage: "chevron.left") { step(-1) }
-                    .disabled(index == 0)
-                Spacer()
-                if saved != nil {
-                    Text("noted — \(saved!.intent.lowercased())")
-                        .font(.caption2)
-                        .foregroundStyle(saved!.tint)
-                }
-                Spacer()
-                Button("Skip", systemImage: "chevron.right") { step(1) }
-                    .labelStyle(.titleOnly)
-            }
-            .font(.footnote)
-            .buttonStyle(.plain)
-            .foregroundStyle(.tint)
         }
-        .padding()
-        .background(.bar)
-    }
-
-    private var finished: some View {
-        VStack(spacing: 18) {
-            Image(systemName: "checkmark.seal.fill")
-                .font(.system(size: 54))
-                .foregroundStyle(.green)
-            Text("Pass complete")
-                .font(.title2.weight(.semibold))
-            Text("\(cards.count) card(s) reviewed. Export from Curate and run `edu deck curation` in the vault.")
-                .font(.callout)
-                .multilineTextAlignment(.center)
-                .foregroundStyle(.secondary)
-                .padding(.horizontal)
-            Button("Done") { dismiss() }
-                .buttonStyle(.borderedProminent)
-                .controlSize(.large)
-                .tint(Theme.accent)
-        }
-        .padding()
-    }
-
-    // MARK: Flow
-
-    private func append(_ phrase: String) {
-        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
-        text = trimmed.isEmpty ? phrase : "\(trimmed). \(phrase)"
-    }
-
-    /// Save the note under `option` and move on — one tap per card.
-    private func commit(_ option: CurationVerdict, for card: Card) {
-        store.setNote(text, verdict: option, for: card.id)
-        noteFocused = false
-        step(1)
-    }
-
-    private func step(_ delta: Int) {
-        // Keep edits typed without picking a verdict on a card already noted.
-        if let card, let existing = store.note(for: card.id),
-            text.trimmingCharacters(in: .whitespacesAndNewlines) != existing.note
-        {
-            store.setNote(text, verdict: existing.verdict, for: card.id)
-        }
-        index = min(max(index + delta, 0), cards.count)
-        load()
-    }
-
-    private func load() {
-        noteFocused = false
-        guard let card else {
-            text = ""
-            saved = nil
-            return
-        }
-        let existing = store.note(for: card.id)
-        text = existing?.note ?? ""
-        saved = existing?.verdict
+        return TriageSpec(
+            title: title,
+            cards: cards,
+            render: { card, _ in
+                AnyView(CurationCardBody(card: card, deckTitle: store.decksBySlug[card.deck]?.title))
+            },
+            right: act(.keep),
+            left: act(.cut),
+            up: act(.fix),
+            longPress: act(.more),
+            quickNotes: StudyStore.quickNotes,
+            finishedHint: "Export from Curate and run `edu deck curation <file>` in the vault."
+        )
     }
 }
 

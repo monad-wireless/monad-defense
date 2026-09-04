@@ -390,6 +390,151 @@ final class StudyStore {
         return out
     }
 
+    // MARK: IP-151 triage — dwell review and eggs
+
+    var dwellSelection: DwellSelection { bank.dwellSelection ?? .empty }
+
+    func triageDecisions(_ scope: TriageScope) -> [TriageDecision] {
+        let raw = scope.rawValue
+        let predicate = #Predicate<TriageDecision> { $0.scopeRaw == raw }
+        return (try? context.fetch(
+            FetchDescriptor(predicate: predicate, sortBy: [SortDescriptor(\.date, order: .reverse)])))
+            ?? []
+    }
+
+    var triageDecisions: [TriageDecision] {
+        (try? context.fetch(FetchDescriptor<TriageDecision>(sortBy: [SortDescriptor(\.date, order: .reverse)])))
+            ?? []
+    }
+
+    func triageDecision(_ scope: TriageScope, for cardID: String) -> TriageDecision? {
+        let key = "\(scope.rawValue)|\(cardID)"
+        let predicate = #Predicate<TriageDecision> { $0.key == key }
+        return try? context.fetch(FetchDescriptor(predicate: predicate)).first
+    }
+
+    /// Upsert — one row per (scope, card). Re-swiping replaces the decision.
+    func setTriage(_ scope: TriageScope, _ decision: TriageSwipe, for card: Card, note: String = "") {
+        let trimmed = note.trimmingCharacters(in: .whitespacesAndNewlines)
+        let digest = scope == .dwell ? card.dwellDigest : nil
+        if let existing = triageDecision(scope, for: card.id) {
+            existing.decisionRaw = decision.rawValue
+            existing.note = trimmed
+            existing.digest = digest
+            existing.date = .now
+        } else {
+            context.insert(TriageDecision(scope: scope, cardID: card.id, decision: decision, note: trimmed, digest: digest))
+        }
+        try? context.save()
+    }
+
+    func clearTriage(_ scope: TriageScope, for cardID: String) {
+        guard let existing = triageDecision(scope, for: cardID) else { return }
+        context.delete(existing)
+        try? context.save()
+    }
+
+    func clearAllTriage() {
+        for row in triageDecisions { context.delete(row) }
+        try? context.save()
+    }
+
+    var triageCount: Int {
+        (try? context.fetchCount(FetchDescriptor<TriageDecision>())) ?? 0
+    }
+
+    func triageCount(_ scope: TriageScope, _ decision: TriageSwipe) -> Int {
+        let s = scope.rawValue
+        let d = decision.rawValue
+        let predicate = #Predicate<TriageDecision> { $0.scopeRaw == s && $0.decisionRaw == d }
+        return (try? context.fetchCount(FetchDescriptor(predicate: predicate))) ?? 0
+    }
+
+    /// Cards for the Dwell review stack: every card with a block that the
+    /// vault has not decided (or has decided on different words), minus the
+    /// ones already swiped here since the last export. Stale first — those
+    /// were once on the phone and are silently off it now.
+    func dwellReviewQueue(track: Track?, includeDecided: Bool) -> [Card] {
+        let swiped = Set(triageDecisions(.dwell).map(\.cardID))
+        let selection = dwellSelection
+        let pool = bank.cards.filter { card in
+            guard card.dwell != nil else { return false }
+            if let track, card.track != track { return false }
+            if swiped.contains(card.id) { return false }
+            let status = selection.status(of: card)
+            if includeDecided { return true }
+            return status == .undecided || status == .stale
+        }
+        return pool.sorted { a, b in
+            let sa = selection.status(of: a) == .stale
+            let sb = selection.status(of: b) == .stale
+            if sa != sb { return sa }
+            return (a.deck, a.id) < (b.deck, b.id)
+        }
+    }
+
+    /// Cards for the Egg stack: on the phone (or swiped right here) with an
+    /// instance to judge, not already tagged, and not yet decided here.
+    func eggQueue(track: Track?) -> [Card] {
+        let swipedEgg = Set(triageDecisions(.egg).map(\.cardID))
+        let includedHere = Set(triageDecisions(.dwell).filter { $0.decision == .right }.map(\.cardID))
+        let selection = dwellSelection
+        return bank.cards
+            .filter { card in
+                guard let dwell = card.dwell, dwell.fact != nil else { return false }
+                if let track, card.track != track { return false }
+                if card.tags.contains("wtf") || swipedEgg.contains(card.id) { return false }
+                return selection.status(of: card) == .included || includedHere.contains(card.id)
+            }
+            .sorted { ($0.deck, $0.id) < ($1.deck, $1.id) }
+    }
+
+    var triageExportFilenameStem: String {
+        let day = Date.now.formatted(.iso8601.year().month().day().dateSeparator(.dash))
+        return "defense-triage-\(day)"
+    }
+
+    /// JSON consumed by `monad-knowledge edu deck select <file>` (IP-151).
+    var triageExportJSON: String {
+        let formatter = Self.exportFormatter
+        let rows: [[String: Any]] = triageDecisions.map { row in
+            [
+                "scope": row.scopeRaw,
+                "target": row.cardID,
+                "decision": row.decisionRaw,
+                "digest": row.digest as Any? ?? NSNull(),
+                "note": row.note.isEmpty ? NSNull() : row.note,
+                "date": row.date.formatted(.iso8601.year().month().day().dateSeparator(.dash)),
+            ]
+        }
+        let payload: [String: Any] = [
+            "schema": "monad-defense/triage/1",
+            "bank_version": bank.bankVersion,
+            "exported_at": formatter.string(from: .now),
+            "decisions": rows,
+        ]
+        let data = (try? JSONSerialization.data(
+            withJSONObject: payload, options: [.prettyPrinted, .sortedKeys])) ?? Data()
+        return String(decoding: data, as: UTF8.self)
+    }
+
+    var triageExportMarkdown: String {
+        var out = "# Defense triage\n\n"
+        out += "bank \(bank.bankVersion) · \(triageCount) decision(s) · "
+        out += "exported \(Date.now.formatted(date: .abbreviated, time: .shortened))\n"
+        for scope in TriageScope.allCases {
+            let rows = triageDecisions(scope)
+            guard !rows.isEmpty else { continue }
+            out += "\n## \(scope.displayName) (\(rows.count))\n\n"
+            for row in rows.sorted(by: { $0.cardID < $1.cardID }) {
+                let title = cardsByID[row.cardID]?.title ?? cardsByID[row.cardID]?.prompt ?? "(card gone from bank)"
+                out += "- `\(row.cardID)` \(row.decisionRaw) — \(title.replacingOccurrences(of: "\n", with: " "))\n"
+                if !row.note.isEmpty { out += "  - note: \(row.note)\n" }
+            }
+        }
+        return out
+    }
+
     // MARK: Stats feeds
 
     struct DayActivity: Identifiable {
