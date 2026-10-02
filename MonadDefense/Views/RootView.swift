@@ -1,22 +1,34 @@
 import SwiftUI
 
 struct RootView: View {
+    @State private var selection = RootView.initialTab
+
     var body: some View {
-        TabView {
-            Tab("Today", systemImage: "sun.max") {
+        TabView(selection: $selection) {
+            Tab("Today", systemImage: "sun.max", value: "today") {
                 TodayView()
             }
-            Tab("Tracks", systemImage: "books.vertical") {
+            Tab("Tracks", systemImage: "books.vertical", value: "tracks") {
                 TracksView()
             }
-            Tab("Curate", systemImage: "square.and.pencil") {
+            Tab("Thesis", systemImage: "function", value: "thesis") {
+                GuideView()
+            }
+            Tab("Curate", systemImage: "square.and.pencil", value: "curate") {
                 CurateView()
             }
-            Tab("Stats", systemImage: "chart.xyaxis.line") {
+            Tab("Stats", systemImage: "chart.xyaxis.line", value: "stats") {
                 StatsView()
             }
         }
         .tint(Theme.accent)
+    }
+
+    private static var initialTab: String {
+        #if DEBUG
+        if DebugRouter.demoGuideStepID != nil { return "thesis" }
+        #endif
+        return "today"
     }
 }
 

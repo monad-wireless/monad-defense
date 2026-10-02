@@ -1,0 +1,3025 @@
+{
+  "generated_at": "2026-10-01T09:42:35+00:00",
+  "guide": "thesis-math",
+  "guide_version": "0af92f748a8b",
+  "modules": [
+    {
+      "id": "m0",
+      "intro": "Each lesson below ends at a tool the later modules use. The order is the order of need: slopes before sensitivity, logarithms before octaves, arrows before CSI, distributions before likelihoods, rank before identification.",
+      "lessons": [
+        {
+          "id": "m0-functions",
+          "steps": [
+            {
+              "anchors": [],
+              "body": "A function $f$ takes an input $x$ and returns one output $y=f(x)$. You can draw it as a curve: the horizontal axis is the input, the vertical axis is the output.\n\nIn this thesis the input is almost always the number of people $N$, and the output is something a radio receiver measures, for example a variability level $L$. The thesis writes this as $L(N)$: \"the level that $N$ people produce\".\n\nThe receiver sees $L$ and wants $N$. So the thesis asks a reverse question: given the output, what was the input? That reverse question is only easy where the curve is steep.",
+              "id": "m0-function",
+              "implies": [
+                "Every model in the thesis has this shape: an input you want, an output you measure.",
+                "Going backwards, from output to input, is the whole problem of counting."
+              ],
+              "kind": "equation",
+              "latex": "y=f(x)",
+              "symbols": [
+                {
+                  "meaning": "the input (later: the count of people $N$)",
+                  "symbol": "x"
+                },
+                {
+                  "meaning": "the rule that turns the input into the output",
+                  "symbol": "f"
+                },
+                {
+                  "meaning": "the output (later: the measured level $L$)",
+                  "symbol": "y"
+                }
+              ],
+              "title": "A function is a rule from input to output"
+            },
+            {
+              "anchors": [],
+              "body": "The slope at a point says how much $y$ changes when $x$ changes a little. For a curve, the slope at $x$ is the derivative $f'(x)$: take a small step $h$, measure the rise, divide by the step, and let the step shrink.\n\nTurn this around. If the measurement of $y$ has an error of size $\\sigma$, the error it causes in the recovered $x$ is about $\\sigma/|f'(x)|$. A steep curve turns a small output error into a small input error. A flat curve turns the same output error into a large input error.\n\nThis one idea returns in Chapter 6 as Eq. (6.6): the count interval width has $|L_N|$, the slope of the level against the count, in its denominator.",
+              "check": {
+                "answer": "About $0.1/0.5=0.2$ at $x=1$ and $0.1/0.05=2$ at $x=6$. The same measurement is ten times less informative where the curve is ten times flatter.",
+                "question": "A curve has slope 0.5 at $x=1$ and slope 0.05 at $x=6$. The output error is 0.1 at both points. What input error do you get at each point?"
+              },
+              "id": "m0-slope",
+              "implies": [
+                "Where the response is flat, no amount of careful measurement of the output pins down the input.",
+                "Count resolution is a property of the curve at the current count, not one number for the whole system."
+              ],
+              "kind": "equation",
+              "latex": "f'(x)=\\lim_{h\\to 0}\\frac{f(x+h)-f(x)}{h},\\qquad \\Delta x\\approx\\frac{\\Delta y}{|f'(x)|}",
+              "symbols": [
+                {
+                  "meaning": "a small step in the input",
+                  "symbol": "h"
+                },
+                {
+                  "meaning": "the slope (derivative) of $f$ at $x$",
+                  "symbol": "f'(x)"
+                },
+                {
+                  "meaning": "an error or uncertainty in the measured output",
+                  "symbol": "\\Delta y"
+                },
+                {
+                  "meaning": "the error it causes in the recovered input",
+                  "symbol": "\\Delta x"
+                }
+              ],
+              "title": "The slope is the exchange rate between input and output"
+            },
+            {
+              "anchors": [],
+              "body": "The number $e\\approx 2.718$ is the base of the natural exponential. The function $e^{-x/K}$ starts at 1 and decays: at $x=K$ it has fallen to $e^{-1}\\approx 0.37$, at $x=2K$ to about 0.14.\n\nSubtract it from 1 and you get a saturation curve $1-e^{-x/K}$. It starts at 0, rises steeply, and flattens towards 1. At $x=K$ it has reached about 63 % of its final height. $K$ is therefore the \"knee\": the scale on which the curve stops growing.\n\nIts slope is $e^{-x/K}/K$. At the start the slope is $1/K$; every further $K$ divides it by $e$. The thesis uses exactly this curve for the response of CSI variability to the count (§3.4), with $K$ measured in people.",
+              "id": "m0-exponential",
+              "implies": [
+                "A saturating response is informative at small counts and nearly blind at counts well above $K$.",
+                "Changing $K$ stretches the curve sideways. That stretch is the root of the scale symmetry in Module 3."
+              ],
+              "kind": "equation",
+              "latex": "1-e^{-x/K},\\qquad \\frac{d}{dx}\\left(1-e^{-x/K}\\right)=\\frac{e^{-x/K}}{K}",
+              "symbols": [
+                {
+                  "meaning": "Euler's number, about 2.718",
+                  "symbol": "e"
+                },
+                {
+                  "meaning": "the input (later: people $N$)",
+                  "symbol": "x"
+                },
+                {
+                  "meaning": "the knee: the input scale at which the curve has risen 63 % of the way",
+                  "symbol": "K"
+                }
+              ],
+              "title": "Exponential decay and saturation",
+              "widget": {
+                "id": "saturation",
+                "params": {}
+              }
+            }
+          ],
+          "summary": "A function maps an input to an output. Its slope says how much the output moves per unit of input, and that one number decides how well an output can tell you the input.",
+          "thesis": "Used in §3.4 (response curve), §3.9 (anchors), §6.8 (resolution)",
+          "title": "Functions, slopes and saturation"
+        },
+        {
+          "id": "m0-logs",
+          "steps": [
+            {
+              "anchors": [],
+              "body": "$\\log_2 x$ is the power you must raise 2 to in order to get $x$. So $\\log_2 2=1$, $\\log_2 4=2$, $\\log_2 8=3$, and $\\log_2 1=0$. Each doubling of $x$ adds exactly 1.\n\nA change of 1 in $\\log_2$ is called an octave, as in music, where one octave doubles the frequency. The thesis reports its CSI level $L$ in octaves: $L=1$ means \"twice the reference\", $L=0.5$ means \"$\\sqrt2\\approx1.41$ times the reference\".\n\nWhy a half in Eq. (3.1)? The term inside the logarithm there behaves like a power or variance. Taking $\\tfrac12\\log_2$ of a variance ratio gives $\\log_2$ of the corresponding standard-deviation ratio, because $\\tfrac12\\log_2 v=\\log_2\\sqrt v$.",
+              "id": "m0-log2",
+              "implies": [
+                "Ratios become differences: comparing two levels in octaves is a subtraction.",
+                "The fleet level of §5.6 is $\\log_2(e/f)$: an envelope over a daily floor, in octaves."
+              ],
+              "kind": "equation",
+              "latex": "\\log_2 x=y\\iff 2^{y}=x,\\qquad \\tfrac12\\log_2 v=\\log_2\\sqrt{v}",
+              "symbols": [
+                {
+                  "meaning": "a ratio, for example measured variability over a reference",
+                  "symbol": "x"
+                },
+                {
+                  "meaning": "the same ratio in octaves",
+                  "symbol": "y"
+                },
+                {
+                  "meaning": "a ratio of variances (powers)",
+                  "symbol": "v"
+                }
+              ],
+              "title": "The base-2 logarithm counts doublings",
+              "widget": {
+                "id": "octaves",
+                "params": {}
+              }
+            },
+            {
+              "anchors": [],
+              "body": "Radio engineers write power ratios in decibels: $10\\log_{10}(P/P_0)$. A factor of 10 in power is 10 dB, a factor of 2 is about 3 dB. Amplitude is the square root of power, so an amplitude ratio $a/a_0$ is $20\\log_{10}(a/a_0)$ dB, and one octave of amplitude is about 6.02 dB.\n\nFig. 3.1 colours the CSI amplitude $|H|$ in dB, and its panel (c) plots the amplitude standard deviation in dB. The path-loss model of §4.9 is written in dB as well.",
+              "id": "m0-db",
+              "implies": [
+                "Octaves and decibels are the same idea with different bases: both turn ratios into steps."
+              ],
+              "kind": "equation",
+              "latex": "10\\log_{10}\\frac{P}{P_0}\\ \\mathrm{dB},\\qquad 20\\log_{10}\\frac{a}{a_0}\\ \\mathrm{dB},\\qquad 1\\ \\text{octave of amplitude}\\approx 6.02\\ \\mathrm{dB}",
+              "symbols": [
+                {
+                  "meaning": "a power and a reference power",
+                  "symbol": "P,\\ P_0"
+                },
+                {
+                  "meaning": "an amplitude and a reference amplitude",
+                  "symbol": "a,\\ a_0"
+                }
+              ],
+              "title": "Decibels are the engineer's logarithm"
+            }
+          ],
+          "summary": "A logarithm turns multiplication into addition. The thesis measures variability in octaves (doublings) and amplitude in decibels.",
+          "thesis": "Used in Eq. (3.1), §5.6 (fleet level in octaves), Fig. 3.1 (dB)",
+          "title": "Logarithms, octaves and decibels"
+        },
+        {
+          "id": "m0-waves",
+          "steps": [
+            {
+              "anchors": [],
+              "body": "A pure wave is $a\\cos(2\\pi f t+\\varphi)$. The amplitude $a$ is its height, the frequency $f$ is how many cycles it makes per second, and the phase $\\varphi$ is where in its cycle it starts.\n\nWi-Fi in the thesis fleet runs on channel 48 at 5,240 MHz (Fig. 3.1). That is 5.24 billion cycles per second. The wavelength is the distance the wave travels in one cycle, $\\lambda=c/f\\approx 3\\times10^8/5.24\\times10^9\\approx 5.7$ cm.",
+              "id": "m0-sine",
+              "implies": [
+                "At 5 GHz a body that moves a few centimetres changes a path by a large fraction of a wavelength."
+              ],
+              "kind": "equation",
+              "latex": "x(t)=a\\cos(2\\pi f t+\\varphi),\\qquad \\lambda=\\frac{c}{f}",
+              "symbols": [
+                {
+                  "meaning": "amplitude",
+                  "symbol": "a"
+                },
+                {
+                  "meaning": "frequency in hertz (cycles per second)",
+                  "symbol": "f"
+                },
+                {
+                  "meaning": "time in seconds",
+                  "symbol": "t"
+                },
+                {
+                  "meaning": "phase, an angle in radians ($2\\pi$ = one full cycle)",
+                  "symbol": "\\varphi"
+                },
+                {
+                  "meaning": "wavelength in metres",
+                  "symbol": "\\lambda"
+                },
+                {
+                  "meaning": "speed of light, about $3\\times10^8$ m/s",
+                  "symbol": "c"
+                }
+              ],
+              "title": "A wave has an amplitude, a frequency and a phase"
+            },
+            {
+              "anchors": [],
+              "body": "If a copy of the wave arrives $\\tau$ seconds later, it is $a\\cos(2\\pi f(t-\\tau))$. The delay looks like a phase shift of $-2\\pi f\\tau$.\n\nTwo consequences carry the whole of §3.2. First, a longer path (larger $\\tau$) rotates the phase further. Second, the same delay rotates the phase by a different angle at each frequency. OFDM Wi-Fi sends many frequencies at once (subcarriers), so one path delay shows up as a phase that changes steadily across the subcarriers.",
+              "id": "m0-delay",
+              "implies": [
+                "A path length change of one wavelength (5.7 cm at 5.24 GHz) turns the phase once.",
+                "Across subcarriers $f_k$, one delay produces a phase slope, which an instrument timing error imitates (§3.3)."
+              ],
+              "kind": "equation",
+              "latex": "a\\cos\\big(2\\pi f(t-\\tau)\\big)=a\\cos(2\\pi f t-2\\pi f\\tau)",
+              "symbols": [
+                {
+                  "meaning": "delay of the copy, in seconds (path length over the speed of light)",
+                  "symbol": "\\tau"
+                },
+                {
+                  "meaning": "the phase shift the delay causes, in radians",
+                  "symbol": "2\\pi f\\tau"
+                }
+              ],
+              "title": "A delay is a phase shift that grows with frequency",
+              "widget": {
+                "id": "wave-phase",
+                "params": {}
+              }
+            }
+          ],
+          "summary": "A radio signal is a wave. A delay shifts its phase by an angle proportional to the frequency, which is why one path looks different on each subcarrier.",
+          "thesis": "Used in §3.2 (multipath sum), §3.3 (phase impairments)",
+          "title": "Waves, frequency, phase and delay"
+        },
+        {
+          "id": "m0-complex",
+          "steps": [
+            {
+              "anchors": [],
+              "body": "A wave of amplitude $a$ and phase $\\varphi$ can be stored as one complex number $z=ae^{j\\varphi}$. Draw it as an arrow of length $a$ at angle $\\varphi$. Engineers write $j$ for the imaginary unit, $j^2=-1$.\n\nEuler's formula $e^{j\\varphi}=\\cos\\varphi+j\\sin\\varphi$ connects the arrow to its two coordinates. The length is $|z|=a$, the angle is $\\arg z=\\varphi$.\n\nCSI is a table of such arrows: one per subcarrier and antenna pair, refreshed with every received frame. Its amplitude is the length, its phase is the angle.",
+              "id": "m0-complex-arrow",
+              "implies": [
+                "Amplitude features (§3.4) keep the length and throw away the angle. Phase features (§3.5) keep the angle."
+              ],
+              "kind": "equation",
+              "latex": "z=a\\,e^{j\\varphi}=a\\cos\\varphi+j\\,a\\sin\\varphi,\\qquad |z|=a,\\quad \\arg z=\\varphi",
+              "symbols": [
+                {
+                  "meaning": "the imaginary unit, $j^2=-1$",
+                  "symbol": "j"
+                },
+                {
+                  "meaning": "the length of the arrow (amplitude)",
+                  "symbol": "a=|z|"
+                },
+                {
+                  "meaning": "the angle of the arrow (phase)",
+                  "symbol": "\\varphi=\\arg z"
+                }
+              ],
+              "title": "A complex number is a length and an angle",
+              "widget": {
+                "id": "phasor",
+                "params": {
+                  "mode": "sum"
+                }
+              }
+            },
+            {
+              "anchors": [],
+              "body": "Multiplying two arrows multiplies their lengths and adds their angles. Dividing divides the lengths and subtracts the angles.\n\nThat is why a receiver error that multiplies every value by the same unknown factor $g e^{j\\phi}$ can be removed: divide two values that both carry it, and the factor cancels. §3.3 uses exactly this to justify the ratio of two receive chains, $R_k=\\widetilde H_{1,k}/\\widetilde H_{2,k}$.",
+              "id": "m0-complex-multiply",
+              "implies": [
+                "A shared multiplicative disturbance cancels in a ratio, and only a shared one does.",
+                "A denominator near zero makes the ratio explode, which is why §3.3 fixes a denominator-quality rule before evaluation."
+              ],
+              "kind": "equation",
+              "latex": "z_1z_2=a_1a_2\\,e^{j(\\varphi_1+\\varphi_2)},\\qquad \\frac{z_1}{z_2}=\\frac{a_1}{a_2}\\,e^{j(\\varphi_1-\\varphi_2)}",
+              "symbols": [
+                {
+                  "meaning": "two complex numbers (arrows)",
+                  "symbol": "z_1,\\ z_2"
+                },
+                {
+                  "meaning": "their lengths",
+                  "symbol": "a_1,\\ a_2"
+                },
+                {
+                  "meaning": "their angles",
+                  "symbol": "\\varphi_1,\\ \\varphi_2"
+                }
+              ],
+              "title": "Multiplying turns and stretches, dividing cancels",
+              "widget": {
+                "id": "phasor",
+                "params": {
+                  "mode": "ratio"
+                }
+              }
+            },
+            {
+              "anchors": [],
+              "body": "Two copies of a wave that arrive together add as arrows, head to tail. If they point the same way, the result is long (constructive interference). If they point opposite ways, they cancel (destructive interference).\n\nThe squared length of the sum has a cross term $2a_1a_2\\cos(\\varphi_1-\\varphi_2)$ that depends on the angle between them. If the angles are random and independent, the cross term averages to zero, and the expected power is just the sum of the individual powers. Module 2 uses this fact to show what a sum of scatterers does and does not predict.",
+              "id": "m0-complex-sum",
+              "implies": [
+                "Small movements change the angles and therefore the cross terms: that is why moving people make CSI fluctuate."
+              ],
+              "kind": "equation",
+              "latex": "|z_1+z_2|^2=a_1^2+a_2^2+2a_1a_2\\cos(\\varphi_1-\\varphi_2)",
+              "symbols": [
+                {
+                  "meaning": "power of the sum",
+                  "symbol": "|z_1+z_2|^2"
+                },
+                {
+                  "meaning": "the interference (cross) term",
+                  "symbol": "2a_1a_2\\cos(\\varphi_1-\\varphi_2)"
+                }
+              ],
+              "title": "Adding arrows is interference",
+              "widget": {
+                "id": "phasor",
+                "params": {
+                  "mode": "sum"
+                }
+              }
+            }
+          ],
+          "summary": "A complex number is an arrow with a length and an angle. Multiplying turns and stretches it, dividing undoes that, adding arrows head to tail gives interference.",
+          "thesis": "Used in §3.2–3.4: every CSI value is a complex number",
+          "title": "Complex numbers as arrows"
+        },
+        {
+          "id": "m0-stats",
+          "steps": [
+            {
+              "anchors": [],
+              "body": "Take $m$ amplitude samples $A_1,\\dots,A_m$ from one window. Their mean $\\bar A$ is the sum divided by $m$. The sample standard deviation $s_A$ measures the typical distance from the mean. It divides by $m-1$, not $m$, because the mean was estimated from the same samples.\n\nThe coefficient of variation $\\mathrm{CV}=s_A/\\bar A$ is the spread relative to the level. If the receiver gain doubles every sample, $\\bar A$ and $s_A$ both double and CV stays the same. That makes CV robust to a pure gain change, and to nothing else.",
+              "id": "m0-mean-sd",
+              "implies": [
+                "CV removes a gain factor. It does not remove movement, transmitter identity or which samples were retained (§3.4)."
+              ],
+              "kind": "equation",
+              "latex": "\\bar A=\\frac1m\\sum_{i=1}^{m}A_i,\\qquad s_A=\\sqrt{\\frac{1}{m-1}\\sum_{i=1}^{m}(A_i-\\bar A)^2},\\qquad \\mathrm{CV}=\\frac{s_A}{\\bar A}",
+              "symbols": [
+                {
+                  "meaning": "the $i$-th amplitude sample in the window",
+                  "symbol": "A_i"
+                },
+                {
+                  "meaning": "number of samples in the window",
+                  "symbol": "m"
+                },
+                {
+                  "meaning": "the window mean",
+                  "symbol": "\\bar A"
+                },
+                {
+                  "meaning": "the window standard deviation",
+                  "symbol": "s_A"
+                },
+                {
+                  "meaning": "coefficient of variation (dimensionless)",
+                  "symbol": "\\mathrm{CV}"
+                }
+              ],
+              "title": "Mean, standard deviation and coefficient of variation",
+              "widget": {
+                "id": "spread",
+                "params": {}
+              }
+            }
+          ],
+          "summary": "The mean says where values sit, the standard deviation says how much they wander, and the coefficient of variation divides one by the other.",
+          "thesis": "Used in §3.4 (the $s_A$ and CV features), Fig. 3.1c",
+          "title": "Mean, spread and relative spread"
+        },
+        {
+          "id": "m0-probability",
+          "steps": [
+            {
+              "anchors": [],
+              "body": "The Gaussian (normal) distribution $\\mathcal N(\\mu,\\sigma^2)$ is the bell curve: centre $\\mu$, spread $\\sigma$. About 68 % of its mass lies within $\\pm\\sigma$, about 90 % within $\\pm1.645\\sigma$, about 95 % within $\\pm1.96\\sigma$.\n\nThe number $z_{1-\\alpha/2}$ is the point that leaves $\\alpha/2$ in each tail. For a 90 % interval, $\\alpha=0.10$ and $z_{0.95}\\approx1.645$. The full width of the interval is $2z_{1-\\alpha/2}\\sigma$, about $3.29\\sigma$ at 90 %. Eq. (6.6) is this width, written for the count.",
+              "id": "m0-gaussian",
+              "implies": [
+                "Halving $\\sigma$ halves the interval. Changing the coverage from 90 % to 95 % widens it by a factor $1.96/1.645\\approx1.19$."
+              ],
+              "kind": "equation",
+              "latex": "p(x)=\\frac{1}{\\sigma\\sqrt{2\\pi}}\\,e^{-\\frac{(x-\\mu)^2}{2\\sigma^2}},\\qquad P\\big(|X-\\mu|\\le z_{1-\\alpha/2}\\,\\sigma\\big)=1-\\alpha",
+              "symbols": [
+                {
+                  "meaning": "centre (mean)",
+                  "symbol": "\\mu"
+                },
+                {
+                  "meaning": "standard deviation",
+                  "symbol": "\\sigma"
+                },
+                {
+                  "meaning": "the probability left outside the interval (0.10 for 90 %)",
+                  "symbol": "\\alpha"
+                },
+                {
+                  "meaning": "the standard normal quantile for that interval (1.645 for 90 %)",
+                  "symbol": "z_{1-\\alpha/2}"
+                }
+              ],
+              "title": "The Gaussian and the width of an interval",
+              "widget": {
+                "id": "gaussian",
+                "params": {}
+              }
+            },
+            {
+              "anchors": [],
+              "body": "A count of detected devices is a whole number: 0, 1, 2, and so on. The Poisson distribution with mean $\\lambda$ is the simplest model for such counts. Its variance equals its mean.\n\nReal device counts often vary more than that. The negative binomial adds a dispersion parameter $\\phi$: in its common form the variance is $\\mu+\\mu^2/\\phi$. A large $\\phi$ brings it back to the Poisson.\n\nThe thesis writes the device count as $\\operatorname{NegBin}(d_0+rN,\\phi)$ with the mean first (§3.9). For the identification argument the Poisson special case suffices.",
+              "id": "m0-counts",
+              "implies": [
+                "Which variance law fits is a residual check, not an assumption (§3.9 names quasi-Poisson, negative binomial and COM-Poisson)."
+              ],
+              "kind": "equation",
+              "latex": "P(D=d)=\\frac{\\lambda^{d}e^{-\\lambda}}{d!},\\qquad \\mathrm{Var}_{\\mathrm{Poisson}}=\\lambda,\\qquad \\mathrm{Var}_{\\mathrm{NegBin}}=\\mu+\\frac{\\mu^2}{\\phi}",
+              "symbols": [
+                {
+                  "meaning": "a count, for example detected device addresses",
+                  "symbol": "D"
+                },
+                {
+                  "meaning": "one possible value of that count",
+                  "symbol": "d"
+                },
+                {
+                  "meaning": "the mean of the count",
+                  "symbol": "\\lambda,\\ \\mu"
+                },
+                {
+                  "meaning": "dispersion of the negative binomial (large $\\phi$: close to Poisson)",
+                  "symbol": "\\phi"
+                },
+                {
+                  "meaning": "factorial, $1\\cdot2\\cdots d$",
+                  "symbol": "d!"
+                }
+              ],
+              "title": "Distributions for counts: Poisson and negative binomial",
+              "widget": {
+                "id": "count-dist",
+                "params": {}
+              }
+            },
+            {
+              "anchors": [],
+              "body": "A conditional probability $P(A\\mid B)$ is the probability of $A$ once $B$ is known. A likelihood $p(L\\mid N)$ says how probable the observed level $L$ is if the count were $N$.\n\nBayes' rule reverses the direction: the probability of each count after the observation is proportional to the likelihood times the prior probability of that count. The prior includes the list of counts that are allowed at all, the support $\\{0,\\dots,K_{\\max}\\}$.\n\nWhen the likelihood is nearly flat over many counts, the prior and the support decide the answer. §6.1.1 shows that this happens in the thesis's own pilot configuration.",
+              "id": "m0-bayes",
+              "implies": [
+                "A posterior can look precise only because the prior is strong. That is not identification from observations (§3.9)."
+              ],
+              "kind": "equation",
+              "latex": "p(N=k\\mid L)=\\frac{p(L\\mid N=k)\\,p(N=k)}{\\sum_{k'=0}^{K_{\\max}}p(L\\mid N=k')\\,p(N=k')}",
+              "symbols": [
+                {
+                  "meaning": "likelihood: how probable the observation is if the count were $k$",
+                  "symbol": "p(L\\mid N=k)"
+                },
+                {
+                  "meaning": "prior: the probability of count $k$ before the observation",
+                  "symbol": "p(N=k)"
+                },
+                {
+                  "meaning": "the largest count the model allows (the support)",
+                  "symbol": "K_{\\max}"
+                },
+                {
+                  "meaning": "posterior: the probability of count $k$ after the observation",
+                  "symbol": "p(N=k\\mid L)"
+                }
+              ],
+              "title": "Bayes' rule turns a likelihood into a distribution over the count",
+              "widget": {
+                "id": "bayes-grid",
+                "params": {}
+              }
+            }
+          ],
+          "summary": "A distribution assigns probability to outcomes. The Gaussian describes measurement noise, the Poisson and negative binomial describe counts, and Bayes' rule turns a likelihood into a distribution over the unknown.",
+          "thesis": "Used in §3.9 (device counts), §6.1 (output distribution), §6.8 (intervals)",
+          "title": "Probability distributions and Bayes' rule"
+        },
+        {
+          "id": "m0-linear",
+          "steps": [
+            {
+              "anchors": [],
+              "body": "One measurement that depends on two unknowns, $a_1x+b_1y=c_1$, does not fix both. Every point on a line satisfies it. A second measurement with a different direction cuts the line at one point.\n\nIf the second line is almost parallel to the first, the crossing point exists but moves a lot when either measurement wobbles. The problem is identifiable in principle and poorly conditioned in practice. The thesis makes exactly this distinction between \"local rank\" and \"conditioning\" for its anchor designs (Fig. 3.5).",
+              "id": "m0-equations",
+              "implies": [
+                "More copies of the same measurement narrow the band around the line but never pick a point on it.",
+                "Near-parallel measurements are the geometric picture of near-coincident anchor counts."
+              ],
+              "kind": "equation",
+              "latex": "a_1x+b_1y=c_1,\\qquad a_2x+b_2y=c_2",
+              "symbols": [
+                {
+                  "meaning": "two unknowns",
+                  "symbol": "x,\\ y"
+                },
+                {
+                  "meaning": "how strongly measurement $i$ reacts to each unknown",
+                  "symbol": "a_i,\\ b_i"
+                },
+                {
+                  "meaning": "the value measurement $i$ returned",
+                  "symbol": "c_i"
+                }
+              ],
+              "title": "One equation, two unknowns: a line of answers",
+              "widget": {
+                "id": "rank-2d",
+                "params": {}
+              }
+            },
+            {
+              "anchors": [],
+              "body": "For a nonlinear model, look at small changes. The Jacobian $J$ lists how much each predicted measurement $y_i$ moves when each parameter $\\theta_j$ moves: $J_{ij}=\\partial y_i/\\partial\\theta_j$.\n\nThe rank of $J$ is the number of independent parameter directions the measurements can see. If the rank is smaller than the number of parameters, some combination of parameters is invisible: it changes nothing you measure. That combination is not identified.\n\nThe singular values of $J$ are the strengths of those directions, from strongest to weakest. A zero singular value means \"invisible\". A small one means \"visible, but noise will swamp it\". Fig. 3.5 plots the smallest singular value of each anchor design.",
+              "id": "m0-jacobian",
+              "implies": [
+                "Rank answers \"can it be identified at all?\" Conditioning answers \"how precisely, with noisy labels?\""
+              ],
+              "kind": "equation",
+              "latex": "J_{ij}=\\frac{\\partial y_i}{\\partial\\theta_j},\\qquad \\operatorname{rank}J<\\dim\\theta\\ \\Rightarrow\\ \\exists\\,v\\neq0:\\ Jv=0",
+              "symbols": [
+                {
+                  "meaning": "the $i$-th predicted measurement (one anchor)",
+                  "symbol": "y_i"
+                },
+                {
+                  "meaning": "the $j$-th model parameter",
+                  "symbol": "\\theta_j"
+                },
+                {
+                  "meaning": "the Jacobian matrix of sensitivities",
+                  "symbol": "J"
+                },
+                {
+                  "meaning": "a parameter direction that changes no measurement (a null direction)",
+                  "symbol": "v"
+                }
+              ],
+              "title": "The Jacobian, its rank and its singular values"
+            }
+          ],
+          "summary": "Each independent measurement removes one direction of uncertainty. Rank counts the independent directions, and singular values say how firmly each one is pinned.",
+          "thesis": "Used in §3.9.1 (local rank of anchor designs), Fig. 3.5, §4.8 (null space)",
+          "title": "Unknowns, equations and rank"
+        },
+        {
+          "id": "m0-inference",
+          "steps": [
+            {
+              "anchors": [],
+              "body": "A 90 % confidence interval is a recipe. If you repeated the whole experiment many times, about 90 % of the intervals it produces would contain the true value. That fraction is the coverage.\n\nA Bayesian credible interval says something different: under the model and the prior, the unknown lies inside with 90 % probability. A prediction interval is about the next observation, not a parameter. The thesis keeps these apart (§6.8.2): a credible interval is not a coverage guarantee.\n\nCoverage alone is cheap. An interval from 0 to the maximum count always covers. So coverage is always reported with width, and here also with the fraction of time an answer is given at all.",
+              "id": "m0-coverage",
+              "implies": [
+                "A result names the unit over which coverage holds: the environment, the day, the seed (§4.16)."
+              ],
+              "kind": "equation",
+              "latex": "\\text{coverage}=P(\\text{truth}\\in\\text{interval}),\\qquad \\text{width}=\\text{upper}-\\text{lower}",
+              "symbols": [
+                {
+                  "meaning": "how often the interval contains the truth over repetitions",
+                  "symbol": "\\text{coverage}"
+                },
+                {
+                  "meaning": "how wide the interval is, in the unit of the quantity",
+                  "symbol": "\\text{width}"
+                }
+              ],
+              "title": "Confidence, credible and prediction intervals"
+            },
+            {
+              "anchors": [],
+              "body": "\"Not significantly different\" is not \"the same\". A small study can fail to find a difference that exists.\n\nTo claim practical equivalence, declare a margin $\\pm\\Delta$ in advance: differences smaller than $\\Delta$ do not matter. Then show that the whole confidence interval of the difference lies inside $(-\\Delta,+\\Delta)$.\n\nThe thesis uses this twice in §6.9. The drift trigger needed its MAE difference inside $\\pm0.05$ persons; the interval $[+0.002,+0.066]$ crossed the upper margin, so equivalence was not shown. The continuity prior's RMSE difference lay inside $\\pm0.10$ persons/m², so no practical advantage was detectable.",
+              "id": "m0-equivalence",
+              "implies": [
+                "An interval can exclude zero and still lie inside the margin: \"distinguishable from zero but practically negligible\" (Table 6.2)."
+              ],
+              "kind": "equation",
+              "latex": "-\\Delta<\\text{lower}\\quad\\text{and}\\quad\\text{upper}<+\\Delta\\ \\Rightarrow\\ \\text{practically equivalent}",
+              "symbols": [
+                {
+                  "meaning": "the practical margin, declared before the test",
+                  "symbol": "\\Delta"
+                },
+                {
+                  "meaning": "the bounds of the confidence interval of the difference",
+                  "symbol": "\\text{lower},\\ \\text{upper}"
+                }
+              ],
+              "title": "Equivalence needs an interval inside a margin",
+              "widget": {
+                "id": "equivalence",
+                "params": {
+                  "preset": "trigger"
+                }
+              }
+            }
+          ],
+          "summary": "An interval is a procedure that should contain the truth a stated fraction of the time. Showing that two methods are practically equal needs an interval inside a margin, not a failure to find a difference.",
+          "thesis": "Used in §4.17 (metrics), §5.5 (paired interval), §6.8.2 (conformal), §6.9 (equivalence margins)",
+          "title": "Intervals, coverage and equivalence"
+        },
+        {
+          "id": "m0-totals",
+          "steps": [
+            {
+              "anchors": [],
+              "body": "If $\\rho(x)$ is the density of people, in persons per square metre, then the number of people in a region $\\Omega$ is the integral $\\int_\\Omega\\rho(x)\\,dx$: add up density times area over every small patch of the region. A sum $\\sum$ does the same for separate items.\n\nThe derivative $dN/dt$ is the rate at which that total changes, in persons per second. For people in a room, the total can change only when people cross the door. Chapter 6 writes this as Eq. (6.4): the change of the count equals the flow through the boundary.",
+              "id": "m0-integral",
+              "implies": [
+                "A total is a much smaller target than the whole density map, and it can be identifiable when the map is not (§4.8)."
+              ],
+              "kind": "equation",
+              "latex": "N_\\Omega=\\int_\\Omega\\rho(x)\\,dx,\\qquad \\frac{dN_\\Omega}{dt}=\\text{inflow}-\\text{outflow}",
+              "symbols": [
+                {
+                  "meaning": "density at position $x$, persons per m²",
+                  "symbol": "\\rho(x)"
+                },
+                {
+                  "meaning": "the declared region (a room)",
+                  "symbol": "\\Omega"
+                },
+                {
+                  "meaning": "the number of people in the region",
+                  "symbol": "N_\\Omega"
+                },
+                {
+                  "meaning": "how fast that number changes",
+                  "symbol": "dN_\\Omega/dt"
+                }
+              ],
+              "title": "A total is the integral of a density"
+            }
+          ],
+          "summary": "An integral adds up a density over a region. A rate of change says how fast a total grows. Conservation says a total changes only through what crosses its boundary.",
+          "thesis": "Used in §3.5 (spectral energy), §6.4 (conservation), §4.10.1 (zone counts)",
+          "title": "Sums, integrals and rates of change"
+        }
+      ],
+      "order": 0,
+      "slug": "m0-foundations",
+      "subtitle": "The mathematics the thesis assumes, from school level",
+      "title": "Foundations"
+    },
+    {
+      "id": "m1",
+      "intro": "The module covers Chapter 1 (the question), the two figures of Chapter 2 that frame the comparison, and §3.2–3.3 (the physical layer and the instrument). After it, you can read every symbol of $\\widetilde H_{r,k}(t)$.",
+      "lessons": [
+        {
+          "id": "m1-question",
+          "steps": [
+            {
+              "anchors": [
+                "introduction.accurate-real-time"
+              ],
+              "body": "The principal estimand is \"the number of people in a declared region, reported with its predictive uncertainty and with the acquisition quality under which it was obtained\" (§1.1). Presence, occupancy bands, total count and density are different targets. Each asks more of the sensor than the previous one.\n\nThe thesis separates two statements that are easy to confuse. \"Something changed in the radio channel\" is an observation. \"Seven people caused that change\" is an identified count. A receiver can follow a busy room without being able to say how many people made it busy.\n\nThe three research questions (§1.2):\n\n- **RQ1.** Within a stated joint model of CSI response and device observations, which occupancy parameters are identifiable without independent references, and which reference information identifies the count scale?\n- **RQ2.** When do local references improve a count model, and how do acquisition quality, operating conditions and elapsed time change that benefit?\n- **RQ3.** Which count resolution does the remaining calibration uncertainty support, and which reporting and reference decisions does it justify?",
+              "id": "m1-estimand",
+              "implies": [
+                "The output is a distribution, not a single integer. A point estimate is derived from it and must name its loss.",
+                "Missing acquisition is \"no answer\", never \"zero people\"."
+              ],
+              "kind": "equation",
+              "latex": "p_t(k)=P(N_t=k\\mid\\text{observations},\\ \\text{references},\\ \\text{quality})",
+              "symbols": [
+                {
+                  "meaning": "the number of people in the declared region during interval $t$",
+                  "symbol": "N_t"
+                },
+                {
+                  "meaning": "one possible value of that number",
+                  "symbol": "k"
+                },
+                {
+                  "meaning": "the probability the instrument assigns to \"$k$ people\" (Module 5 makes this exact)",
+                  "symbol": "p_t(k)"
+                }
+              ],
+              "title": "The estimand is a count with its uncertainty"
+            },
+            {
+              "anchors": [
+                "introduction.self-calibrating-wifi"
+              ],
+              "body": "Read the figure from left to right.\n\n1. **Two inputs.** Radio observations (the CSI response $L_t$ and the device census $D_t$) and independent references (a headcount $N_a$, an empty reference).\n2. **Three blue boxes, one per contribution.** C1 asks what fixes the scale of $(N,K,r)$ and lives in Chapter 3. C2 asks how local anchors behave across conditions and days, Chapter 5. C3 turns the remaining uncertainty into $P(N_t=k)$ and a resolution horizon, Chapter 6.\n3. **Four reporting actions.** Report, coarsen, withhold, request a reference.\n4. **The dashed loop.** When the requested resolution is lost, the instrument asks for a new reference, which enters on the left again.\n\nThe references feed both identification and calibration, because a reference is the only input that observes people directly. The caption's last sentence is part of the claim: the arrows are proposed flow, not a validated field system.",
+              "figure": {
+                "asset": "fig-thesis-argument.png",
+                "caption": "Independent references connect wireless observations to people. Identification, calibration and uncertainty-limited reporting answer RQ1–RQ3 and end in one of four reporting actions; a requested reference closes the loop (dashed). Arrows show proposed information flow, not completed field validation.",
+                "label": "Fig. 1.1"
+              },
+              "id": "m1-fig-argument",
+              "implies": [],
+              "kind": "figure",
+              "symbols": [],
+              "title": "The thesis at a glance"
+            },
+            {
+              "anchors": [
+                "state-of-art.body-csi-based"
+              ],
+              "body": "Column 1 asks how a person enters the measurement. Either the body modifies a radio link (device-free: CSI, RSSI, radar, UWB) or a carried device transmits an identity (BLE, Wi-Fi management frames), which reaches a count only through a carriage model.\n\nColumn 2 lists targets in increasing difficulty: presence, activity, total count (the thesis target, highlighted), density field, boundary flow.\n\nColumn 3 lists the evaluation shift: a new capture, a new day, a new room, new hardware. The note under it, \"tested range limits the claim\", is the reason the thesis states the replication unit of every result.",
+              "figure": {
+                "asset": "fig-sensing-taxonomy.png",
+                "caption": "Comparison begins with the observation mechanism, then the target and deployment shift. This analytical taxonomy separates device emissions from body-sensitive propagation and is synthesised from the cited modality and CSI literature.",
+                "label": "Fig. 2.1"
+              },
+              "id": "m1-fig-taxonomy",
+              "implies": [],
+              "kind": "figure",
+              "symbols": [],
+              "title": "Comparison begins with the observation mechanism"
+            },
+            {
+              "anchors": [
+                "state-of-art.prior-csi-crowd"
+              ],
+              "body": "Each dot is the largest count a study reported testing: 34 in a hall with moving people (Zhou et al.), 20 in a semi-static passenger study, 13 seated readers (Torun et al.), 10 and 5 in two Wi-CaL rooms, and 3 in this thesis's selected pilot.\n\nThe figure is not a ranking. A broad range is not evidence of transfer across that range, and a small-count experiment can test a harder shift (§2.4). The thesis pilot is the smallest range on the chart, and the thesis says so.",
+              "figure": {
+                "asset": "fig-count-scope.png",
+                "caption": "Tested count ranges differ across studies and activity conditions. Dots mark reported experimental upper counts, not guaranteed accuracy or every intermediate count. Grey segments provide a common zero baseline; they do not imply matched protocols.",
+                "label": "Fig. 2.2"
+              },
+              "id": "m1-fig-count-scope",
+              "implies": [],
+              "kind": "figure",
+              "symbols": [],
+              "title": "Tested count ranges differ across studies"
+            }
+          ],
+          "summary": "The thesis estimates the number of people in a declared region, with its uncertainty and the acquisition quality under which it was obtained. Three research questions split that aim into identification, calibration and reporting.",
+          "thesis": "Ch. 1, Fig. 1.1, Ch. 2, Figs. 2.1 and 2.2",
+          "title": "The question and the map"
+        },
+        {
+          "id": "m1-csi",
+          "steps": [
+            {
+              "anchors": [
+                "identification.wifi-channel-state"
+              ],
+              "body": "OFDM splits one Wi-Fi channel into many narrow subcarriers. On subcarrier $k$ the transmitter sends a known training symbol $X_k$. What arrives is $Y_k$: the symbol multiplied by the channel $H_k$, plus noise.\n\nBecause $X_k$ is known, the receiver can estimate $H_k\\approx Y_k/X_k$. That estimate, a complex number per subcarrier and antenna pair, refreshed with every frame, is the Channel State Information.\n\nIn the thesis fleet the receiver is an Intel AX210 on channel 48 (5,240 MHz, 20 MHz wide), and one record holds 52 tones per receive chain (Fig. 3.1). Tone sets, antenna paths and timing differ between Intel 5300, Nexmon and AX210 captures, so hardware and protocol are part of the measurement definition.",
+              "id": "m1-observation",
+              "implies": [
+                "CSI is a measurement of a propagation channel, not a direct count measurement (§3.2).",
+                "Every CSI value is a complex number, so Module 0's arrows apply to each subcarrier."
+              ],
+              "kind": "equation",
+              "latex": "Y_k(t)=H_k(t)\\,X_k(t)+\\eta_k(t)",
+              "symbols": [
+                {
+                  "meaning": "subcarrier index (one narrow frequency inside the Wi-Fi channel)",
+                  "symbol": "k"
+                },
+                {
+                  "meaning": "time of the received frame",
+                  "symbol": "t"
+                },
+                {
+                  "meaning": "the known training symbol sent on subcarrier $k$",
+                  "symbol": "X_k(t)"
+                },
+                {
+                  "meaning": "what the receiver observed on subcarrier $k$",
+                  "symbol": "Y_k(t)"
+                },
+                {
+                  "meaning": "the complex channel coefficient: how the room changed the symbol",
+                  "symbol": "H_k(t)"
+                },
+                {
+                  "meaning": "receiver noise",
+                  "symbol": "\\eta_k(t)"
+                }
+              ],
+              "title": "The receiver estimates the channel from known symbols"
+            },
+            {
+              "anchors": [
+                "identification.wifi-channel-state"
+              ],
+              "body": "The signal reaches the receiver along several paths: straight across, off a wall, off a shelf, off a person. Path $p$ has a complex coefficient $a_p$ (how much of the signal it carries, and its phase) and a delay $\\tau_p$ (how long it takes).\n\nAt subcarrier frequency $f_k$, the delay rotates path $p$ by the angle $2\\pi f_k\\tau_p$ (Module 0, delay as phase). The channel is the sum of these rotated arrows. Because each subcarrier rotates each path by a different angle, the sum has a different length on each subcarrier: the channel is frequency-selective.\n\nA moving body changes its own path's $a_p$ and $\\tau_p$, and it can block or add others. Static walls and furniture contribute paths too. That is why an empty room has a fixed CSI pattern and a busy room has a fluctuating one.",
+              "id": "m1-multipath",
+              "implies": [
+                "Finite bandwidth and antenna aperture do not resolve every path individually (§2.1); the receiver sees only the sum.",
+                "A change of the pattern says that some path changed. It does not say how many bodies changed it."
+              ],
+              "kind": "equation",
+              "label": "§3.2",
+              "latex": "H_k(t)=\\sum_{p=1}^{P}a_p(t)\\exp\\{-j2\\pi f_k\\tau_p(t)\\}",
+              "symbols": [
+                {
+                  "meaning": "number of propagation paths",
+                  "symbol": "P"
+                },
+                {
+                  "meaning": "path index",
+                  "symbol": "p"
+                },
+                {
+                  "meaning": "complex coefficient of path $p$: its strength and phase",
+                  "symbol": "a_p(t)"
+                },
+                {
+                  "meaning": "delay of path $p$, in seconds",
+                  "symbol": "\\tau_p(t)"
+                },
+                {
+                  "meaning": "frequency of subcarrier $k$",
+                  "symbol": "f_k"
+                },
+                {
+                  "meaning": "imaginary unit",
+                  "symbol": "j"
+                }
+              ],
+              "title": "The channel is a sum of paths",
+              "widget": {
+                "id": "multipath",
+                "params": {}
+              }
+            },
+            {
+              "anchors": [
+                "identification.csi-vs-rssi-granularity"
+              ],
+              "body": "The left box is the room: static paths off walls and furniture, and one body-sensitive path whose position, movement and occlusion change. The middle box is the path sum you just met, per subcarrier $k$ and antenna pair.\n\nThe right box is the instrument. Before CSI is stored, receiver effects act on it: a gain $g_r$, phase terms $\\phi,\\psi,\\delta_r$, timing and frame selection. The stored value is $\\widetilde H_{r,k}(t)$, with a tilde, because it is not the true channel. The next lesson writes that box as an equation.",
+              "figure": {
+                "asset": "fig-radio-mechanism.png",
+                "caption": "CSI is a superposition of propagation paths observed through an imperfect instrument. The schematic separates body-sensitive propagation from hardware and acquisition effects; it is not a surveyed ray trace.",
+                "label": "Fig. 3.2"
+              },
+              "id": "m1-fig-radio",
+              "implies": [],
+              "kind": "figure",
+              "symbols": [],
+              "title": "Propagation, then instrument"
+            },
+            {
+              "anchors": [
+                "identification.wifi-channel-state"
+              ],
+              "body": "Panels (a) and (b) are heat maps. The horizontal axis is time (30 s), the vertical axis is subcarrier offset from the channel centre (about $\\pm8$ MHz), and colour is the amplitude $|H|$ in dB. The thin gap at 0 MHz is the unused DC tone.\n\nIn (a), at 21:25, Bluetooth showed no device activity and the stripes stay still: the static paths make a fixed frequency pattern. In (b), at 18:25, three view-counts gave 7, 13 and 15 visible people, and the pattern flickers as paths change.\n\nPanel (c) reduces each 2-s window to one number, the amplitude standard deviation in dB (the $s_A$ of Module 0), on a log axis. Each dot is a window; the bar is the median, the line the interquartile range. The busy windows sit far above the quiet ones.\n\nRead the claim boundary as part of the figure: one link, one evening, and the busy interval also differs in time of day. No headcount label exists for the quiet interval.",
+              "figure": {
+                "asset": "fig-csi-example.png",
+                "caption": "Receiver monad04, injector monad01, channel 48 (5,240 MHz, HT20), 52 tones, chain rx0, 28 September 2026. (a), (b): 30 s of AGC-relative |H| per subcarrier on a shared colour scale. (c): amplitude standard deviation per 2-s window over 10 min around each interval. The figure illustrates the observable. It is not a count result.",
+                "label": "Fig. 3.1"
+              },
+              "id": "m1-fig-csi",
+              "implies": [],
+              "kind": "figure",
+              "symbols": [],
+              "title": "Real CSI on one fleet link, quiet and busy"
+            },
+            {
+              "anchors": [
+                "identification.csi-vs-rssi-granularity"
+              ],
+              "body": "RSSI summarises the received power of a frame in one scalar. CSI keeps the amplitude and phase of every subcarrier. The extra dimensions can separate propagation changes that a scalar merges.\n\nThe same extra dimensions also give a learner more ways to memorise a room, a transmitter or an acquisition artefact. And detecting presence does not establish count resolution: a person crossing a sensitive link may be detectable while two and three people elsewhere stay indistinguishable (§3.2).",
+              "id": "m1-rssi-csi",
+              "implies": [
+                "More information per frame is not more people resolved per frame."
+              ],
+              "kind": "equation",
+              "latex": "\\mathrm{RSSI}\\sim 10\\log_{10}\\sum_k|H_k|^2\\qquad\\text{versus}\\qquad (H_1,\\dots,H_K)\\in\\mathbb{C}^{K}",
+              "symbols": [
+                {
+                  "meaning": "received signal strength, one number per frame (background: proportional to total power)",
+                  "symbol": "\\mathrm{RSSI}"
+                },
+                {
+                  "meaning": "the CSI vector: one complex value per subcarrier",
+                  "symbol": "(H_1,\\dots,H_K)"
+                },
+                {
+                  "meaning": "the space of $K$ complex numbers",
+                  "symbol": "\\mathbb{C}^{K}"
+                }
+              ],
+              "title": "RSSI is one number, CSI is a vector"
+            }
+          ],
+          "summary": "OFDM Wi-Fi sends known symbols on many subcarriers. The receiver divides what arrived by what was sent and gets one complex channel coefficient per subcarrier, which is a sum of propagation paths.",
+          "thesis": "§3.2, Figs. 3.1 and 3.2",
+          "title": "What CSI measures"
+        },
+        {
+          "id": "m1-instrument",
+          "steps": [
+            {
+              "anchors": [
+                "identification.raw-csi-measurements"
+              ],
+              "body": "The receiver does not store $H_{r,k}$. It stores $\\widetilde H_{r,k}$: the true channel multiplied by an amplitude scale and a phase rotation, plus noise.\n\nThe phase rotation has three parts. $\\phi(t)$ is common to every subcarrier (oscillator and carrier-frequency offset). $k\\psi(t)$ grows linearly with the subcarrier index (sampling and packet-detection timing, which act like a delay). $\\delta_r$ is a fixed offset of receive path $r$.\n\nThe thesis states the equation as an organiser of possible impairments, \"not that every device obeys this factorisation\" (§3.3). It explains why raw CSI phase looks random from frame to frame, and why its amplitude can jump when the automatic gain control steps.",
+              "id": "m1-impairments",
+              "implies": [
+                "Sanitisation removes designated nuisance terms and must preserve a declared signal. Removing a phase trend can also remove propagation information.",
+                "Per-window normalisation can remove a count-dependent scale, so preprocessing is part of the estimator and is fitted on training data only.",
+                "Missing or zero-filled records remain unavailable, not low-amplitude evidence."
+              ],
+              "kind": "equation",
+              "latex": "\\widetilde H_{r,k}(t)=g_r(t)\\,H_{r,k}(t)\\,\\exp\\{j[\\phi(t)+k\\psi(t)+\\delta_r]\\}+\\eta_{r,k}(t)",
+              "symbols": [
+                {
+                  "meaning": "receive path (antenna chain)",
+                  "symbol": "r"
+                },
+                {
+                  "meaning": "the stored, measured CSI value",
+                  "symbol": "\\widetilde H_{r,k}(t)"
+                },
+                {
+                  "meaning": "the true propagation channel",
+                  "symbol": "H_{r,k}(t)"
+                },
+                {
+                  "meaning": "amplitude scale of path $r$ (gain, AGC)",
+                  "symbol": "g_r(t)"
+                },
+                {
+                  "meaning": "common phase, the same on every subcarrier",
+                  "symbol": "\\phi(t)"
+                },
+                {
+                  "meaning": "phase slope per subcarrier index (timing offset)",
+                  "symbol": "\\psi(t)"
+                },
+                {
+                  "meaning": "fixed phase offset of path $r$",
+                  "symbol": "\\delta_r"
+                },
+                {
+                  "meaning": "noise",
+                  "symbol": "\\eta_{r,k}(t)"
+                }
+              ],
+              "title": "What the receiver actually stores",
+              "widget": {
+                "id": "impairments",
+                "params": {
+                  "view": "raw"
+                }
+              }
+            },
+            {
+              "anchors": [
+                "identification.csi-ratio-calibration"
+              ],
+              "body": "Take two receive chains at the same subcarrier and the same instant and divide. Every factor they share cancels, as in Module 0 ($z_1/z_2$ subtracts angles and divides lengths). If both chains carry the same $\\phi(t)$, the same $k\\psi(t)$ and the same time variation of the gain, the ratio is free of them:\n\n$R_k(t)=\\dfrac{g_1}{g_2}\\,\\dfrac{H_{1,k}}{H_{2,k}}\\,e^{j(\\delta_1-\\delta_2)}$ plus noise terms. What survives is the differential propagation response and a fixed offset.\n\nThree cautions from §3.3. The cancellation is conditional on the shared-impairment model. A small denominator amplifies noise, so a denominator-quality rule is fixed before evaluation. And a ratio of correlated paths has its own null distribution, so thresholds and drift alarms need empty-reference data from the actual pipeline.\n\nChapter 4 adds a fourth: the lake's schema 4 divided neighbouring tones of one chain, not two chains at one tone. Constants fitted on schema-4 ratios do not transfer to the corrected schema-5 chain ratios (§4.3).",
+              "id": "m1-ratio",
+              "implies": [
+                "A ratio helps only against disturbances both chains share. A disturbance on one chain passes straight through."
+              ],
+              "kind": "equation",
+              "latex": "R_k(t)=\\frac{\\widetilde H_{1,k}(t)}{\\widetilde H_{2,k}(t)}",
+              "symbols": [
+                {
+                  "meaning": "the chain ratio at subcarrier $k$",
+                  "symbol": "R_k(t)"
+                },
+                {
+                  "meaning": "stored CSI of receive chains 1 and 2 at the same tone and frame",
+                  "symbol": "\\widetilde H_{1,k},\\ \\widetilde H_{2,k}"
+                }
+              ],
+              "title": "Dividing two chains cancels what they share",
+              "widget": {
+                "id": "impairments",
+                "params": {
+                  "view": "ratio"
+                }
+              }
+            }
+          ],
+          "summary": "The stored CSI carries gain changes, oscillator phase, timing slopes and per-path offsets. Some of them cancel in a ratio of two receive chains, and only if they are shared.",
+          "thesis": "§3.3",
+          "title": "The instrument distorts the channel"
+        }
+      ],
+      "order": 1,
+      "slug": "m1-radio-to-csi",
+      "subtitle": "What the thesis asks, and what a Wi-Fi receiver actually measures",
+      "title": "From radio to CSI"
+    },
+    {
+      "id": "m2",
+      "intro": "The module builds Eq. (3.1), the forward response the rest of the thesis reasons about. It starts from the window statistics, shows what a sum of random scatterers does and does not predict, adds the saturation hypothesis, and ends with the inverse count models of §3.6–3.7.",
+      "lessons": [
+        {
+          "id": "m2-features",
+          "steps": [
+            {
+              "anchors": [
+                "identification.csi-amplitude-variations"
+              ],
+              "body": "The thesis summarises a window of $m$ amplitude samples by their standard deviation $s_A$ and coefficient of variation $\\mathrm{CV}=s_A/\\bar A$ (Module 0). They \"can carry occupancy information when people generate distinguishable propagation changes\" (§3.4).\n\nTheir response also depends on movement, mean channel strength, transmitter identity and the retained observations, and dividing by the mean does not remove those dependences.\n\nOn the public reductions, a concave response is preferred by AIC over a line in five of seven counting-band environments; two environments prefer a line, and the fitted knees have no confidence intervals. The thesis calls these descriptive model-selection results, not a universal scattering law.",
+              "id": "m2-sd-cv",
+              "implies": [
+                "A concave fit in five of seven environments is a description, not a mechanism.",
+                "The fleet uses a related but different feature, the injector-scoped envelope over a daily floor (Module 4)."
+              ],
+              "kind": "equation",
+              "latex": "s_A=\\sqrt{\\frac{1}{m-1}\\sum_{i=1}^{m}(A_i-\\bar A)^2},\\qquad \\mathrm{CV}=\\frac{s_A}{\\bar A}",
+              "symbols": [
+                {
+                  "meaning": "amplitude of sample $i$ in the window",
+                  "symbol": "A_i"
+                },
+                {
+                  "meaning": "samples in the window",
+                  "symbol": "m"
+                },
+                {
+                  "meaning": "mean amplitude of the window",
+                  "symbol": "\\bar A"
+                },
+                {
+                  "meaning": "temporal standard deviation of the amplitude",
+                  "symbol": "s_A"
+                },
+                {
+                  "meaning": "coefficient of variation",
+                  "symbol": "\\mathrm{CV}"
+                }
+              ],
+              "title": "The window statistics of §3.4",
+              "widget": {
+                "id": "spread",
+                "params": {
+                  "preset": "windows"
+                }
+              }
+            }
+          ],
+          "summary": "A window of amplitude samples is reduced to its standard deviation or its coefficient of variation. Both respond to people, and to several things that are not people.",
+          "thesis": "§3.4",
+          "title": "Summarising fluctuation"
+        },
+        {
+          "id": "m2-scatterers",
+          "steps": [
+            {
+              "anchors": [
+                "identification.los-blockage-mean-attenuation"
+              ],
+              "body": "Model each person as a scatterer that adds an arrow $a_ie^{j\\varphi_i}$ to the channel, with a phase that is random and independent of the others. Expand the squared length of the sum: it is the sum of all products $a_ia_le^{j(\\varphi_i-\\varphi_l)}$. The terms with $i=l$ are $|a_i|^2$. The terms with $i\\neq l$ have a random angle and average to zero.\n\nSo the expected power is $\\sum|a_i|^2$. With equal power per scatterer, it grows linearly with $N$.\n\nThe thesis draws two limits from this (§3.4). It does not derive a saturation law. And it is not automatically the variance of the amplitude ratio that the fleet measures. Mean attenuation and fluctuation power are distinct observations: a body can shadow a strong path while movement changes the interference among paths.",
+              "id": "m2-phasor-power",
+              "implies": [
+                "Under this model, ten people add ten times the fluctuation power of one. Any flattening needs another mechanism."
+              ],
+              "kind": "equation",
+              "latex": "\\mathbb{E}\\left|\\sum_{i=1}^{N}a_ie^{j\\varphi_i}\\right|^2=\\sum_{i=1}^{N}|a_i|^2",
+              "symbols": [
+                {
+                  "meaning": "number of scatterers (people)",
+                  "symbol": "N"
+                },
+                {
+                  "meaning": "amplitude contributed by scatterer $i$",
+                  "symbol": "a_i"
+                },
+                {
+                  "meaning": "its phase, random, independent, uniform",
+                  "symbol": "\\varphi_i"
+                },
+                {
+                  "meaning": "expected value: the average over many independent draws",
+                  "symbol": "\\mathbb{E}"
+                }
+              ],
+              "title": "Independent random phasors add in power",
+              "widget": {
+                "id": "phasor-power",
+                "params": {}
+              }
+            },
+            {
+              "anchors": [
+                "identification.los-blockage-mean-attenuation",
+                "scattering-saturation-link"
+              ],
+              "body": "The thesis adds one hypothesis: the variability rises from a baseline $V_0$ towards a ceiling $V_0+A$, with a count scale $K$. The marginal response $V'(N)=Ae^{-N/K}/K$ declines as the room fills.\n\nTwo mechanisms could motivate it: occlusion (later bodies hide earlier ones) or a finite sensitive volume (only people near the link matter). The thesis does not choose between them. Choosing \"requires a designed intervention\" (§3.4).",
+              "id": "m2-bounded",
+              "implies": [
+                "Above a few multiples of $K$, another person changes the feature very little."
+              ],
+              "kind": "equation",
+              "latex": "V(N)=V_0+A\\{1-e^{-N/K}\\},\\qquad V'(N)=\\frac{A\\,e^{-N/K}}{K},\\qquad A>0,\\ K>0",
+              "symbols": [
+                {
+                  "meaning": "expected fluctuation (variability) with $N$ people",
+                  "symbol": "V(N)"
+                },
+                {
+                  "meaning": "variability of the empty room",
+                  "symbol": "V_0"
+                },
+                {
+                  "meaning": "the largest increase people can add",
+                  "symbol": "A"
+                },
+                {
+                  "meaning": "count scale (knee): about 63 % of $A$ is reached at $N=K$",
+                  "symbol": "K"
+                },
+                {
+                  "meaning": "marginal response: extra variability per extra person",
+                  "symbol": "V'(N)"
+                }
+              ],
+              "title": "A bounded effective-scatterer hypothesis",
+              "widget": {
+                "id": "response",
+                "params": {
+                  "view": "variability"
+                }
+              }
+            }
+          ],
+          "summary": "For independent random phases the expected power of a sum is the sum of the powers, which is linear in the number of equal scatterers. Saturation needs an extra assumption.",
+          "thesis": "§3.4",
+          "title": "What a sum of scatterers predicts"
+        },
+        {
+          "id": "m2-emission",
+          "steps": [
+            {
+              "anchors": [
+                "identification.los-blockage-mean-attenuation"
+              ],
+              "body": "For the log-ratio level used in the September analysis, the thesis proposes this forward likelihood for link $\\ell$. Read it from the inside out.\n\n$1-e^{-s_\\ell(M)N/K_\\ell}$ is the saturation curve of Module 0, with the count $N$ scaled by the movement sensitivity $s_\\ell(M)$ and the knee $K_\\ell$. Multiplying by $A_\\ell$ sets how far above the baseline it can go. Adding 1 makes the empty room a ratio of 1. $\\tfrac12\\log_2$ turns that ratio into octaves of amplitude (Module 0, logarithms). $b_\\ell$ shifts the whole curve to the link's reference level.\n\nOne reading that connects it to $V(N)$: if the bracket is a variance ratio $V(N)/V_0$, then $A_\\ell$ is $A/V_0$ and $L_\\ell-b_\\ell$ is the log of the standard-deviation ratio. The thesis states the equation, not this reading.\n\n\"Forward\" means the arrow points from count to observation: $N\\to L$. The inverse regression of §3.7 points the other way, and the thesis warns that its coefficients \"cannot be inserted into\" this equation.",
+              "check": {
+                "answer": "Empty: $L(0)=\\tfrac12\\log_2 1=0$ octaves. Limit: $\\tfrac12\\log_2(1+4)=\\tfrac12\\log_2 5\\approx1.16$ octaves. Every count above a few times $K$ sits just under 1.16.",
+                "question": "With $A=4$, $K=3$, $b=0$, $s=1$: what is the level of the empty room, and the level the curve approaches as $N\\to\\infty$?"
+              },
+              "id": "m2-eq31",
+              "implies": [
+                "The equation depends on $N$ only through $s_\\ell(M)N/K_\\ell$. Module 3 shows what that does to identification.",
+                "Under a saturating response, the same observation noise maps to a larger count uncertainty where the slope is small (§3.4).",
+                "This follows from the response family before its parameters are validated, and it predicts where added anchors help."
+              ],
+              "kind": "equation",
+              "label": "Eq. (3.1)",
+              "latex": "L_\\ell(N,M)=b_\\ell+\\frac12\\log_2\\left[1+A_\\ell\\left(1-e^{-s_\\ell(M)N/K_\\ell}\\right)\\right]",
+              "symbols": [
+                {
+                  "meaning": "link (one transmitter–receiver pair)",
+                  "symbol": "\\ell"
+                },
+                {
+                  "meaning": "expected level of link $\\ell$, in octaves",
+                  "symbol": "L_\\ell(N,M)"
+                },
+                {
+                  "meaning": "number of people",
+                  "symbol": "N"
+                },
+                {
+                  "meaning": "movement regime (seated, walking, ...)",
+                  "symbol": "M"
+                },
+                {
+                  "meaning": "reference level of the link, in octaves",
+                  "symbol": "b_\\ell"
+                },
+                {
+                  "meaning": "dimensionless response amplitude",
+                  "symbol": "A_\\ell"
+                },
+                {
+                  "meaning": "count scale (knee), in people",
+                  "symbol": "K_\\ell"
+                },
+                {
+                  "meaning": "movement-dependent sensitivity",
+                  "symbol": "s_\\ell(M)"
+                }
+              ],
+              "title": "The proposed emission",
+              "widget": {
+                "id": "response",
+                "params": {
+                  "view": "level"
+                }
+              }
+            }
+          ],
+          "summary": "The level a link reports, in octaves, rises with the count through a saturating curve that has a reference level, an amplitude, a count scale and a movement-dependent sensitivity.",
+          "thesis": "§3.4, Eq. (3.1)",
+          "title": "The forward response, Eq. (3.1)"
+        },
+        {
+          "id": "m2-spectral",
+          "steps": [
+            {
+              "anchors": [
+                "identification.csi-phase-information",
+                "count-signal-in-temporal-doppler"
+              ],
+              "body": "Take one link's feature over a window and compute its temporal spectrum $S_\\ell(f)$: how much of its variation happens at each frequency $f$. A still room puts nearly all energy at $f=0$ (the DC level). Movement spreads energy to higher frequencies, and seated people who fidget spread a little (§3.5 cites a count model built on fidget bandwidth).\n\nTwo summaries over a band $\\mathcal B$ that excludes DC: the energy $E_{\\ell,\\mathcal B}$, which says how much movement there is, and the normalised second moment $m_{\\ell,2}$, which says how fast it is on average.\n\nThe band, the window duration and the effective sampling are part of the feature definition. By the sampling theorem (background), frames delivered at 25 Hz cannot show variation faster than 12.5 Hz, and interpolation does not restore unobserved motion (§3.5).",
+              "id": "m2-moments",
+              "implies": [
+                "A Doppler or spectral feature measures time variation of paths. Turning it into speed or count needs geometry and behavioural assumptions.",
+                "The thesis does not claim that a completely static scene produces measurable Doppler."
+              ],
+              "kind": "equation",
+              "latex": "E_{\\ell,\\mathcal B}=\\int_{\\mathcal B}S_\\ell(f)\\,df,\\qquad m_{\\ell,2}=\\frac{\\int_{\\mathcal B}f^2S_\\ell(f)\\,df}{\\int_{\\mathcal B}S_\\ell(f)\\,df}",
+              "symbols": [
+                {
+                  "meaning": "temporal spectrum of the feature of link $\\ell$ after a fixed preprocessing rule",
+                  "symbol": "S_\\ell(f)"
+                },
+                {
+                  "meaning": "frequency of the feature's variation, in Hz",
+                  "symbol": "f"
+                },
+                {
+                  "meaning": "the frequency band that is summed (excludes DC)",
+                  "symbol": "\\mathcal B"
+                },
+                {
+                  "meaning": "off-DC energy in the band",
+                  "symbol": "E_{\\ell,\\mathcal B}"
+                },
+                {
+                  "meaning": "normalised second moment: a mean squared frequency",
+                  "symbol": "m_{\\ell,2}"
+                }
+              ],
+              "title": "Band energy and the second spectral moment",
+              "widget": {
+                "id": "spectral",
+                "params": {}
+              }
+            },
+            {
+              "anchors": [
+                "spectral-count-eigenvalue-threshold"
+              ],
+              "body": "Stack $p$ CSI coefficients over $m$ snapshots and compute their covariance. Even pure noise gives eigenvalues that spread out, because $m$ is finite. Random-matrix theory gives the edge of that spread under suitable noise assumptions; for white noise of variance $\\sigma^2$ the Marchenko–Pastur edge is the formula below (background, Johnstone 2001). An eigenvalue above the edge suggests a population signal rather than sampling variation.\n\nThe project tested the literal reading \"one eigenvalue above the edge is one person\". The eigenvalue analysis did not support it. The thesis retains only a narrower association between occupancy and spectral structure, and replaces the theoretical white-noise edge with an empirical threshold from empty-reference data (§3.5).",
+              "id": "m2-rmt",
+              "implies": [
+                "A threshold for \"signal present\" is not a count of people. The hypothesis \"spectral detection thresholds\" survives only in that restricted sense (§3.11)."
+              ],
+              "kind": "equation",
+              "latex": "\\lambda_+=\\sigma^2\\left(1+\\sqrt{p/m}\\right)^2",
+              "symbols": [
+                {
+                  "meaning": "number of CSI coefficients (dimension)",
+                  "symbol": "p"
+                },
+                {
+                  "meaning": "number of snapshots",
+                  "symbol": "m"
+                },
+                {
+                  "meaning": "noise variance per coefficient",
+                  "symbol": "\\sigma^2"
+                },
+                {
+                  "meaning": "the largest eigenvalue pure noise typically produces (background formula, not in the thesis)",
+                  "symbol": "\\lambda_+"
+                }
+              ],
+              "title": "Eigenvalues above the noise edge"
+            }
+          ],
+          "summary": "The temporal spectrum of a feature shows how fast it changes. Its energy in a band and its second moment are candidate count features, with the band, the window and the delivered sampling rate as part of their definition.",
+          "thesis": "§3.5",
+          "title": "Phase and spectral structure"
+        },
+        {
+          "id": "m2-count-models",
+          "steps": [
+            {
+              "anchors": [
+                "identification.compact-feature-representation"
+              ],
+              "body": "Table 3.2 of the thesis lists six model families and what each must survive.\n\n- **Count-prior baseline.** Predicts from training prevalence alone. Diagnostic: is there any gain beyond the occupancy distribution?\n- **Calibrated inverse.** Regresses count on the feature. Diagnostic: target-label budget and extrapolation.\n- **Hierarchical inverse.** Shares information across environments. Diagnostic: group confounding and shrinkage bias.\n- **Forward likelihood.** Infers count through a response model such as Eq. (3.1). Diagnostic: identifiability, prior sensitivity, residuals.\n- **Count-distribution model.** Models discrete dispersion. Diagnostic: mean–variance relation and calibration.\n- **Neural predictor.** Learns features and mapping jointly. Diagnostic: capture-disjoint evaluation and tuning budget.\n\nFeature selection belongs inside the training partition. Every comparison includes a marginal count prior, a constant predictor and a packet-count-only predictor, so that gains from class frequencies or sample availability are exposed (§3.7).",
+              "id": "m2-families",
+              "implies": [],
+              "kind": "idea",
+              "symbols": [],
+              "title": "Count-model families answer different questions"
+            },
+            {
+              "anchors": [
+                "identification.classical-vs-dl-count",
+                "hierarchical-calibration-shrinkage"
+              ],
+              "body": "The public analysis regresses the count $N_{ei}$ of observation $i$ in environment $e$ on a transform $f(x_{ei})$ of its feature (log CV). Each environment has its own intercept $\\alpha_e$ and slope $\\beta_e$.\n\nThe second line says the environments are related: their $(\\alpha_e,\\beta_e)$ pairs are drawn from one group distribution with mean $\\mu_h$ and covariance $\\Sigma_h$, per dataset/platform group $h$. An environment with few rows borrows strength from the others; an environment with many rows keeps its own fit. This is partial pooling.\n\nIts measured behaviour is in Module 4: MAE 1.49 persons with no target labels and 1.13 with two target anchors on the 939-row cache (§5.3).",
+              "id": "m2-hierarchy",
+              "implies": [
+                "This is an inverse model: count given feature. It answers a different conditional question from the forward likelihood of Eq. (3.1).",
+                "Two groups that confound dataset and platform cannot isolate a hardware effect (§3.11)."
+              ],
+              "kind": "equation",
+              "latex": "N_{ei}=\\alpha_e+\\beta_e f(x_{ei})+\\varepsilon_{ei},\\qquad (\\alpha_e,\\beta_e)^{\\top}\\sim\\mathcal{N}(\\mu_h,\\Sigma_h)",
+              "symbols": [
+                {
+                  "meaning": "environment",
+                  "symbol": "e"
+                },
+                {
+                  "meaning": "observation (row) within the environment",
+                  "symbol": "i"
+                },
+                {
+                  "meaning": "count of observation $i$ in environment $e$",
+                  "symbol": "N_{ei}"
+                },
+                {
+                  "meaning": "its feature (coefficient of variation)",
+                  "symbol": "x_{ei}"
+                },
+                {
+                  "meaning": "a fixed transform of the feature (log CV)",
+                  "symbol": "f(x)"
+                },
+                {
+                  "meaning": "intercept and slope of environment $e$",
+                  "symbol": "\\alpha_e,\\ \\beta_e"
+                },
+                {
+                  "meaning": "residual error",
+                  "symbol": "\\varepsilon_{ei}"
+                },
+                {
+                  "meaning": "mean and covariance of the coefficients in group $h$",
+                  "symbol": "\\mu_h,\\ \\Sigma_h"
+                },
+                {
+                  "meaning": "transpose: the pair written as a column",
+                  "symbol": "\\top"
+                }
+              ],
+              "title": "The public-corpus hierarchy",
+              "widget": {
+                "id": "pooling",
+                "params": {}
+              }
+            }
+          ],
+          "summary": "Count models answer different conditional questions. The public-corpus hierarchy regresses count on the feature, environment by environment, and pools the environments partially.",
+          "thesis": "§3.6–3.7, Table 3.2",
+          "title": "From features to a count"
+        }
+      ],
+      "order": 2,
+      "slug": "m2-response-model",
+      "subtitle": "How fluctuation becomes a level, and why the level saturates",
+      "title": "Features and the response model"
+    },
+    {
+      "id": "m3",
+      "intro": "This module is the answer to RQ1. It joins the CSI response of Module 2 with a device-count model, proves that the pair has an exact scale symmetry, and then counts what each kind of reference removes: an empty room, one positive headcount, several distinct headcounts.",
+      "lessons": [
+        {
+          "id": "m3-assumptions",
+          "steps": [
+            {
+              "anchors": [],
+              "body": "§3.1 declares the model family. Every result of this module holds inside it, and only there.\n\n1. **One declared region.** The target is the total count $N_t$ in one region and interval. Zone counts and density fields are not identified by the argument.\n2. **Fixed movement regime.** Movement enters through $s(M)$; the symmetry holds at fixed $M$. Movement that co-varies with count is a separate ambiguity.\n3. **A parametric CSI emission.** Eq. (3.1), with a reference level, an amplitude and a count scale. Affine and monotone-flexible alternatives remain candidates.\n4. **A mean-linear device emission.** Detected devices have mean $d_0+rN$.\n5. **Conditioned acquisition quality.** Delivered rate, gaps, record class and transmitter identity are part of the measurement. Unavailable acquisition is unavailable, not zero.\n6. **No assumed error independence.** CSI and device observations can share disturbances; conditional independence is a hypothesis to test.",
+              "id": "m3-model-family",
+              "implies": [
+                "A different emission family, or one more observable, can change what is identifiable (§7.4, first limitation)."
+              ],
+              "kind": "idea",
+              "symbols": [],
+              "title": "Six assumptions, stated before the result"
+            }
+          ],
+          "summary": "The identification result is conditional. It holds for one declared region, a fixed movement regime, a parametric CSI emission, a mean-linear device emission and conditioned acquisition quality, with no assumed independence of errors.",
+          "thesis": "§3.1",
+          "title": "The model family the argument rests on"
+        },
+        {
+          "id": "m3-devices",
+          "steps": [
+            {
+              "anchors": [
+                "identification.mac-randomisation-inflation"
+              ],
+              "body": "Follow the chain from left to right. $N$ people carry zero, one or several devices. A device advertises according to its operating system, duty cycle and address rotation. A scanner detects some advertisements, depending on its scan window, propagation and loss. Background devices, independent of the occupants, enter the advertising stage on their own.\n\nThe brace over the three middle stages says what the model does with them: it absorbs them into one effective ratio $r$ per person. The output is a count $D$ with mean $d_0+rN$, where $d_0$ is the background.\n\nThis is why the thesis calls BLE addresses \"observations of devices, not a people census\" (§1.3). One device may expose several addresses over time, one person may carry several devices, some people carry none (§3.8.2).",
+              "figure": {
+                "asset": "fig-device-observation.png",
+                "caption": "A person count becomes a detected-device census through several uncertain stages. Background transmitters enter independently of occupants. This schematic explains why an address count needs an observation model.",
+                "label": "Fig. 3.3"
+              },
+              "id": "m3-fig-device",
+              "implies": [],
+              "kind": "figure",
+              "symbols": [],
+              "title": "From people to a device census"
+            },
+            {
+              "anchors": [
+                "identification.device-person-ratio-identified"
+              ],
+              "body": "The working model for the detected-device count is a negative binomial written mean first. Its mean is the background plus the ratio times the count; $\\phi$ sets how much extra spread there is over a Poisson (Module 0).\n\nA Poisson special case is enough for the identification argument. Quasi-Poisson, negative binomial and COM-Poisson forms impose different variance relationships and are chosen by residual checks.\n\nThe ratio $r$ \"absorbs carriage, visibility, deduplication and time-window effects, and a census may identify only their product\" (§3.9). On the fleet, addresses are salted per 30-minute segment, so the same device cannot be followed across segments (§5.7).",
+              "id": "m3-negbin",
+              "implies": [
+                "The device channel sees $rN$, never $N$ alone."
+              ],
+              "kind": "equation",
+              "label": "§3.9",
+              "latex": "D_t\\mid N_t,r_t,d_{0t}\\sim\\operatorname{NegBin}(d_{0t}+r_tN_t,\\ \\phi)",
+              "symbols": [
+                {
+                  "meaning": "number of detected device addresses in interval $t$",
+                  "symbol": "D_t"
+                },
+                {
+                  "meaning": "number of people",
+                  "symbol": "N_t"
+                },
+                {
+                  "meaning": "effective detected devices per person",
+                  "symbol": "r_t"
+                },
+                {
+                  "meaning": "background: devices detected independently of the occupants",
+                  "symbol": "d_{0t}"
+                },
+                {
+                  "meaning": "dispersion (large: close to Poisson)",
+                  "symbol": "\\phi"
+                },
+                {
+                  "meaning": "\"given\": the distribution of $D_t$ when the quantities after the bar are fixed",
+                  "symbol": "\\mid"
+                },
+                {
+                  "meaning": "\"is distributed as\"",
+                  "symbol": "\\sim"
+                }
+              ],
+              "title": "The device-count emission",
+              "widget": {
+                "id": "count-dist",
+                "params": {
+                  "preset": "devices"
+                }
+              }
+            }
+          ],
+          "summary": "A person count becomes a detected-device count through carriage, advertising and detection, with background devices added independently. One effective ratio per person absorbs all of it.",
+          "thesis": "§3.8–3.9, Fig. 3.3",
+          "title": "The device observation model"
+        },
+        {
+          "id": "m3-symmetry",
+          "steps": [
+            {
+              "anchors": [
+                "identification.device-person-ratio-identified"
+              ],
+              "body": "Fix the movement regime and the background, and reduce Eq. (3.1) to its core (§3.9). The CSI level and the device count both depend on the same unknown $N$, through different laws.\n\nLook at where $N$ appears. In the CSI law, only through the ratio $N/K$. In the device law, only through the product $rN$. That is the whole proof of the next step.",
+              "id": "m3-reduced",
+              "implies": [
+                "The observations depend on $N/K$ and $rN$. Any change of $(N,K,r)$ that keeps both fixed is invisible."
+              ],
+              "kind": "equation",
+              "latex": "L(N)=b+\\tfrac12\\log_2\\{1+A(1-e^{-N/K})\\},\\qquad D\\mid N\\sim\\operatorname{Poisson}(d_0+rN)",
+              "symbols": [
+                {
+                  "meaning": "expected CSI level with $N$ people",
+                  "symbol": "L(N)"
+                },
+                {
+                  "meaning": "reference level (known here)",
+                  "symbol": "b"
+                },
+                {
+                  "meaning": "response amplitude",
+                  "symbol": "A"
+                },
+                {
+                  "meaning": "count scale (knee)",
+                  "symbol": "K"
+                },
+                {
+                  "meaning": "device background (known here)",
+                  "symbol": "d_0"
+                },
+                {
+                  "meaning": "devices per person",
+                  "symbol": "r"
+                }
+              ],
+              "title": "The joint model at fixed movement"
+            },
+            {
+              "anchors": [
+                "identification.device-person-ratio-identified",
+                "device-person-joint-identification"
+              ],
+              "body": "Pick any positive number $c$ and move to a second world with $c$ times the people, $c$ times the knee, and $1/c$ times the devices per person. Then $cN/(cK)=N/K$, so the CSI level is identical, and $(r/c)(cN)=rN$, so the device mean is identical. Both observation laws are unchanged for every observation, for every $c>0$.\n\nInteger counts do not save us: with $c=2$, the counts $0,1,2,\\dots$ map to $0,2,4,\\dots$, which are integers too. The September companion verifies the equality numerically for a constructed example (difference 0 to machine precision).\n\nThe thesis calls this conditional non-identifiability. It is removed by a known response scale, a calibrated device ratio, a nonzero headcount, or verified unit transitions (someone seen to enter changes $N$ by exactly 1). A posterior that looks concentrated under a strong prior is not identification from observations.",
+              "check": {
+                "answer": "Any $c>0$ works, for example $c=2$: $N=10$, $K=6$, $r=0.3$. Then $N/K=5/3$ and $rN=3$ in both worlds, so both laws, and therefore both observations, are identical.",
+                "question": "World 1 has $N=5$ people, knee $K=3$ and $r=0.6$ devices per person, with $A$, $b$ and $d_0$ fixed. Give a second world whose CSI level and device count have exactly the same distributions."
+              },
+              "id": "m3-scale-map",
+              "implies": [
+                "Paired CSI and device counts fix $rN$ and $N/K$, not $N$ (§3.12, part 1).",
+                "More data of the same kind narrows noise; it never resolves an exact ambiguity in the observation law (§3.12)."
+              ],
+              "kind": "equation",
+              "label": "Eq. (3.2)",
+              "latex": "(N,K,r)\\longmapsto(cN,\\ cK,\\ r/c),\\qquad c>0",
+              "symbols": [
+                {
+                  "meaning": "any positive scale factor",
+                  "symbol": "c"
+                },
+                {
+                  "meaning": "\"is sent to\": the old parameter triple becomes the new one",
+                  "symbol": "\\longmapsto"
+                }
+              ],
+              "title": "The scale map leaves both laws unchanged",
+              "widget": {
+                "id": "scale-symmetry",
+                "params": {}
+              }
+            },
+            {
+              "anchors": [
+                "identification.device-person-ratio-identified"
+              ],
+              "body": "Panel (a) is the CSI law, panel (b) the device law. The horizontal axis indexes the original count $N$; the dashed world has twice that count. The wide light curve is world 1, the thin dashed curve is world 2 with $c=2$. They lie exactly on top of each other in both panels: that is Eq. (3.2) drawn.\n\nPanel (c) belongs to the next lesson.",
+              "figure": {
+                "asset": "fig-identification-panels.png",
+                "caption": "Paired CSI and device observations do not fix the count scale, and one positive anchor does not fix the response shape. (a, b) After $(N,K,r)\\mapsto(2N,2K,r/2)$ the wide and dashed curves coincide for both observation laws ($A=4$, $K=3$, $r=0.6$, zero baselines, fixed activity). (c) Every curve passes through the empty anchor and the assumed three-person, 1.12-octave anchor; knees span 0.5–20 people. All panels are deterministic model calculations, not fitted measurements or confidence bands.",
+                "label": "Fig. 3.4"
+              },
+              "id": "m3-fig-symmetry",
+              "implies": [],
+              "kind": "figure",
+              "symbols": [],
+              "title": "Fig. 3.4, panels (a) and (b)"
+            }
+          ],
+          "summary": "Multiply the count and the knee by any positive factor and divide the device ratio by it. Both observation laws stay exactly the same, so the observations cannot tell the two worlds apart.",
+          "thesis": "§3.9, Eq. (3.2), Fig. 3.4a–b",
+          "title": "The scale symmetry"
+        },
+        {
+          "id": "m3-anchors",
+          "steps": [
+            {
+              "anchors": [
+                "identification.device-person-ratio-identified"
+              ],
+              "body": "A certified empty interval sets $N=0$. Then $L(0)=b+\\tfrac12\\log_2 1=b$, and the device mean is $d_0$. So an empty reference measures the two baselines $b$ and $d_0$.\n\nIt says nothing about the positive scale. Every curve of the family, with any $A$ and $K$, starts at the same point $(0,b)$. In the language of Module 0, the empty anchor has local rank 1: it pins one parameter direction out of three.\n\nA caution from §1.3: unlabelled quiet periods are not known empty periods. A low-variance radio trace is not evidence of an empty room.",
+              "id": "m3-empty",
+              "implies": [
+                "Zeroing a kitchen scale tells you nothing about how much one kilogram moves the needle (§1.1)."
+              ],
+              "kind": "equation",
+              "latex": "L(0)=b,\\qquad \\mathbb{E}[D\\mid N=0]=d_0",
+              "symbols": [
+                {
+                  "meaning": "expected level of the empty room",
+                  "symbol": "L(0)"
+                },
+                {
+                  "meaning": "expected device count of the empty room",
+                  "symbol": "\\mathbb{E}[D\\mid N=0]"
+                }
+              ],
+              "title": "An empty reference fixes the baselines only"
+            },
+            {
+              "anchors": [
+                "identification.device-person-ratio-identified"
+              ],
+              "body": "Now one independent headcount: at $N_a$ people the level was $L_a$. With $b$ known, solve the reduced law for $A$. Subtract $b$, multiply by 2, raise 2 to that power, subtract 1, and divide by the saturation factor:\n\n$L_a-b=\\tfrac12\\log_2\\{1+A(1-e^{-N_a/K})\\}\\ \\Rightarrow\\ A(K)=\\dfrac{2^{2(L_a-b)}-1}{1-e^{-N_a/K}}$.\n\nFor every knee $K$ there is one amplitude $A(K)$ that puts the curve through the anchor. So one anchor removes the scale symmetry, because the curve must now pass through a real count, but it leaves a one-parameter family of amplitude–knee pairs.\n\nWith the illustrative anchor of §3.9.1 ($N_a=3$, $L_a=1.12$ octaves, $b=0$), knees from 0.5 to 20 people predict levels at $N=8$ from about 1.121 to 1.647 octaves. Same anchor, very different rooms.",
+              "id": "m3-one-anchor",
+              "implies": [
+                "Local rank 2 (Table 3.4): two of three parameter directions pinned.",
+                "Below the anchor the curves nearly agree; above it they fan out. Extrapolation is where one anchor fails."
+              ],
+              "kind": "equation",
+              "latex": "A(K)=\\frac{2^{2(L_a-b)}-1}{1-e^{-N_a/K}}",
+              "symbols": [
+                {
+                  "meaning": "the anchor headcount (people)",
+                  "symbol": "N_a"
+                },
+                {
+                  "meaning": "the level observed at that headcount (octaves)",
+                  "symbol": "L_a"
+                },
+                {
+                  "meaning": "the amplitude that fits the anchor for knee $K$",
+                  "symbol": "A(K)"
+                }
+              ],
+              "title": "One positive anchor leaves a family of curves",
+              "widget": {
+                "id": "anchor-family",
+                "params": {}
+              }
+            },
+            {
+              "anchors": [
+                "identification.device-person-ratio-identified"
+              ],
+              "body": "The two black dots are the empty anchor $(0,0)$ and the positive anchor $(3,1.12)$. Four curves pass through both, with knees $K=0.5$, 2, 5 and 20. A small knee saturates early and is nearly flat after the anchor; a large knee keeps rising.\n\nThe panel is the picture behind the sentence \"one positive anchor breaks the symmetry while leaving a family of response curves\" (§1.2.1).",
+              "figure": {
+                "asset": "fig-identification-panels.png",
+                "caption": "Every curve passes through the empty anchor and the assumed three-person, 1.12-octave anchor; knees span 0.5–20 people. Deterministic model calculation from the September companion.",
+                "label": "Fig. 3.4c"
+              },
+              "id": "m3-fig-family",
+              "implies": [],
+              "kind": "figure",
+              "symbols": [],
+              "title": "Fig. 3.4, panel (c)"
+            },
+            {
+              "anchors": [
+                "identification.device-person-ratio-identified"
+              ],
+              "body": "Which anchor designs pin all three parameters $\\theta=(b,\\log A,\\log K)$? Linearise. Each anchor at count $N$ contributes one row of the Jacobian: how much its level moves per unit change of each parameter. The rows below are those of the September companion notebook.\n\nThe first entry is always 1: raising $b$ raises every level equally. The second is the effect of $\\log A$, which vanishes at $N=0$. The third, the effect of $\\log K$, is also zero at $N=0$ and negative elsewhere: a larger knee means a lower level at fixed $N$.\n\nStack the rows of a design and count the independent directions (Module 0, rank). Table 3.4 gives: empty only, rank 1; empty and one positive count, rank 2; empty and two nearby positive counts, rank 3 but weak; a staircase spanning several counts, rank 3.",
+              "id": "m3-jacobian",
+              "implies": [
+                "Repeating an anchor at the same count adds a copy of the same row: it lowers noise but never raises the rank.",
+                "Full local rank does not guarantee precise estimation with noisy labels or unobserved activity (§3.9.1)."
+              ],
+              "kind": "equation",
+              "latex": "\\frac{\\partial L}{\\partial\\theta}=\\left(1,\\ \\frac{A(1-e^{-N/K})}{2\\ln 2\\,[1+A(1-e^{-N/K})]},\\ -\\frac{A\\,e^{-N/K}\\,N/K}{2\\ln 2\\,[1+A(1-e^{-N/K})]}\\right)",
+              "symbols": [
+                {
+                  "meaning": "the three response parameters, two on a log scale",
+                  "symbol": "\\theta=(b,\\log A,\\log K)"
+                },
+                {
+                  "meaning": "one Jacobian row: the level's sensitivity to each parameter at count $N$",
+                  "symbol": "\\partial L/\\partial\\theta"
+                },
+                {
+                  "meaning": "natural log of 2, from differentiating $\\log_2$",
+                  "symbol": "\\ln 2"
+                }
+              ],
+              "title": "Local rank of an anchor design",
+              "widget": {
+                "id": "anchor-rank",
+                "params": {}
+              }
+            },
+            {
+              "anchors": [
+                "identification.device-person-ratio-identified"
+              ],
+              "body": "Each bar is the smallest singular value of one design's Jacobian ($A=4$, $K=3$): how firmly its weakest parameter direction is pinned.\n\n- Empty only (counts 0, 0, 0): rank 1, value 0.\n- Empty and one positive (0, 3, 3): rank 2, value $4\\times10^{-33}$, zero to machine precision.\n- Nearby positives (0, 2, 3): rank 3, value 0.036.\n- Staircase (0, 2, 4, 6, 8): rank 3, value 0.181, five times the nearby design.\n\nThe nearby design is identifiable in principle and five times weaker. In Module 0's picture, its two measurement lines cross at a shallow angle.",
+              "figure": {
+                "asset": "fig-anchor-conditioning.png",
+                "caption": "Anchor designs differ in conditioning even when both have full local rank. Bars show deterministic smallest singular values from the September companion in its declared parameterisation; rank labels distinguish structural insufficiency from weak local information. Values are not statistical estimates or universal design scores.",
+                "label": "Fig. 3.5"
+              },
+              "id": "m3-fig-conditioning",
+              "implies": [],
+              "kind": "figure",
+              "symbols": [],
+              "title": "Full rank is not good conditioning"
+            },
+            {
+              "anchors": [
+                "identification.device-person-ratio-identified"
+              ],
+              "body": "The full emission depends on $s(M)N/K$. At fixed knee, more movement and more people trade off exactly like count and knee did: doubling the sensitivity and halving the count leaves the level unchanged.\n\nSo \"a rising-count staircase in which participants also move more cannot isolate a count response\" (§3.9). The thesis makes two design rules from this: cross every count with seated and moving conditions, and repeat counts in a different order. The closure study of Module 4 is designed that way.",
+              "id": "m3-movement",
+              "implies": [
+                "An instrument that is never shown a still crowd and a moving crowd at the same count can learn motion instead of count, even under a perfect random split of windows (§6.7)."
+              ],
+              "kind": "equation",
+              "latex": "L\\big(N,M\\big)\\ \\text{depends on}\\ s(M)\\,N/K\\quad\\Rightarrow\\quad (s,N)\\longmapsto(c\\,s,\\ N/c)\\ \\text{is invisible at fixed }K",
+              "symbols": [
+                {
+                  "meaning": "movement sensitivity of the regime $M$",
+                  "symbol": "s(M)"
+                }
+              ],
+              "title": "Movement is a second ambiguity"
+            }
+          ],
+          "summary": "An empty reference fixes the baselines. One positive headcount breaks the symmetry but leaves a family of curves. Distinct positive counts, spread out and crossed with movement, are needed for the shape.",
+          "thesis": "§3.9–3.9.1, Table 3.4, Figs. 3.4c and 3.5",
+          "title": "What a reference identifies"
+        },
+        {
+          "id": "m3-answer",
+          "steps": [
+            {
+              "anchors": [
+                "identification.ble-csi-disjoint-failure"
+              ],
+              "body": "CSI responds to bodies without devices; a device census persists when bodies move little. These mechanisms differ, which motivates combining them. They do not imply disjoint failures: body shadowing, shared interference and occupancy-dependent acquisition affect both (§3.10).\n\nMultiplying the two likelihoods as if they were independent \"counts the same evidence twice\". The factorised form below is an assumption to test, not a default.",
+              "id": "m3-dependence",
+              "implies": [
+                "Agreement between two device-based methods cannot remove a bias they share (§5.2)."
+              ],
+              "kind": "equation",
+              "latex": "p(L,D\\mid N)\\overset{?}{=}p(L\\mid N)\\,p(D\\mid N)",
+              "symbols": [
+                {
+                  "meaning": "the joint likelihood of both observations",
+                  "symbol": "p(L,D\\mid N)"
+                },
+                {
+                  "meaning": "the product, valid only if the errors are conditionally independent",
+                  "symbol": "p(L\\mid N)\\,p(D\\mid N)"
+                }
+              ],
+              "title": "Different mechanisms, shared errors"
+            },
+            {
+              "anchors": [
+                "identification.csi-only-limitations"
+              ],
+              "body": "Within the model family of §3.1, the answer has four parts (§3.12).\n\n1. **Without an independent reference, the count scale is not identified.** Eq. (3.2) leaves both laws unchanged; paired CSI and device counts fix $rN$ and $N/K$, not $N$.\n2. **An empty reference fixes the baselines only** ($b$, $d_0$; local rank 1).\n3. **One positive anchor breaks the symmetry but leaves an amplitude–knee family** (local rank 2).\n4. **Distinct count levels crossed with movement are needed for the shape.** Separated positive levels restore local rank 3 at fixed movement; nearby levels and saturation stay poorly conditioned.\n\nThe fleet evidence is consistent with this answer and cannot test it further. With four labelled episodes on one day, the median addresses-per-person of the BLE people model moves from 2.00 to 2.91 when two labels are dropped. That instability is what an unidentified ratio predicts, but four episodes cannot separate it from label scarcity.",
+              "id": "m3-rq1",
+              "implies": [
+                "The result is specific to the stated model family. A feature with independent count information, a calibrated device ratio or verified unit transitions changes the problem."
+              ],
+              "kind": "idea",
+              "symbols": [],
+              "title": "The answer to RQ1"
+            }
+          ],
+          "summary": "Two channels with different mechanisms are not two independent witnesses, and the fleet's four labels are consistent with the identification result without testing it.",
+          "thesis": "§3.10, §3.12",
+          "title": "Complementarity and the answer to RQ1"
+        }
+      ],
+      "order": 3,
+      "slug": "m3-identification",
+      "subtitle": "What CSI and device counts can fix without outside help, and what a reference adds (RQ1)",
+      "title": "Identification"
+    },
+    {
+      "id": "m4",
+      "intro": "Chapter 4 answers no research question by itself: it defines what counts as an observation, a label and an independent replication. Chapter 5 then reports what local references did on public data, on the fleet and in simulation. This module covers both, in that order.",
+      "lessons": [
+        {
+          "id": "m4-instrument",
+          "steps": [
+            {
+              "anchors": [
+                "instrument.four-tier-architecture"
+              ],
+              "body": "The upper box is the radio path: an illuminator injects paced frames, nine observers record CSI $H_t$ with quality $q_t$, on-node BLE scanners record addresses $D_t$, and everything is sealed with the geometry version. The lower box is the independent reference path: an observer's count $N^{\\mathrm{ref}}$ with its interval, entered into a label register that keeps people separate from devices.\n\nThe two paths meet only in a versioned join on source, time and role, and only then reach evaluation (fit, calibrate, test). The note under it is a methodological rule: archive volume is not labelled sample size.",
+              "figure": {
+                "asset": "fig-lab-evidence.png",
+                "caption": "The laboratory preserves separate paths for radio observations and person labels. Their join requires time, identity and provenance; the resulting archive supports evaluation but does not itself certify prediction accuracy.",
+                "label": "Fig. 4.1"
+              },
+              "id": "m4-fig-lab",
+              "implies": [],
+              "kind": "figure",
+              "symbols": [],
+              "title": "Two paths that meet only in a versioned join"
+            },
+            {
+              "anchors": [
+                "instrument.deployed-monadcount-fleet"
+              ],
+              "body": "The open area (343.9 m²) holds the illuminator monad01 near its centre and seven observers; two more observers (07, 09) sit in the silent room (69.8 m²) behind a wall. Each line is one link $\\ell$ of Eq. (3.1).\n\nTen Raspberry Pi 5 nodes with Intel AX210 adapters make up the fleet (§4.2). The register audit of 1 October 2026 found 27 experiment cards, 5,559 sealed capture sessions and 4,362 simulation runs. The thesis states that these are inventory facts, \"not a sample size and not a count of valid labelled observations\".",
+              "figure": {
+                "asset": "fig-fleet-floorplan.png",
+                "caption": "Fleet layout in the FIIT library, from the surveyed floor plan. In the principal configuration monad01 illuminates (TX) and the nine other nodes observe (RX); some arms assign the illuminator role to another node. Lines mark TX–RX link pairs, not propagation paths. All nodes stand 0.9 m above the floor.",
+                "label": "Fig. 4.2"
+              },
+              "id": "m4-fig-floorplan",
+              "implies": [],
+              "kind": "figure",
+              "symbols": [],
+              "title": "The fleet in the FIIT library"
+            },
+            {
+              "anchors": [
+                "instrument.deployed-monadcount-fleet"
+              ],
+              "body": "Read the grains from left to right: frames, CSI with source and time, a session manifest per node, sealed segments (the archive grain), decoded lake records, and finally versioned feature windows behind quality gates. Labels join only at the last stage.\n\nEach grain answers a different count. Sessions, segments, packets and feature windows must be named in any inventory report (appendix, \"Spatial and Capture Provenance\"), because a segment total and a session total are not comparable.",
+              "figure": {
+                "asset": "fig-capture-lineage.png",
+                "caption": "The deployed fleet's capture path preserves observations before constructing eligible feature windows. One illuminator and up to nine observers are roles within the ten-node fleet. Independent person labels enter through an explicit join; a sealed or decoded record is not thereby a labelled count trial.",
+                "label": "Fig. 4.3"
+              },
+              "id": "m4-fig-lineage",
+              "implies": [],
+              "kind": "figure",
+              "symbols": [],
+              "title": "From frames to eligible feature windows"
+            },
+            {
+              "anchors": [
+                "instrument.chosen-csi-extraction",
+                "instrument.delivery-loss-occupancy-measurands"
+              ],
+              "body": "Three rates describe one stream (§4.3). The **commanded** rate is the transmitter's intended schedule. The **transmitted** rate is measured from the injector's counters. The **delivered** rate is the eligible reference stream one receiver actually decoded.\n\nOnly the delivered rate bounds a temporal feature. An early archive audit applied a lower-confidence-bound gate of 100 Hz to 1,245 blocks from 133 files: none passed, at a source-scoped rate of about 22–25 Hz. A later rate ladder reported a 2.2× margin over the gate at 250 Hz commanded.\n\nTable 4.3 records failure modes: at 250 Hz commanded and 34 Hz ambient fill, delivery was 99.1–99.9 %; at 50 Hz commanded and 759 Hz fill, 68.8–96.8 %. Nine observers delivered 86.3–97.9 % of the source-scoped stream. One receiver fell from about 495 to 64 Hz for 90 s while a neighbour stayed near 500 Hz.",
+              "id": "m4-rates",
+              "implies": [
+                "Commanded rate alone does not predict delivery, and a session-average gate can miss a local collapse.",
+                "Service health is not evidence of sensing: a receiver can report healthy metadata with no CSI records (Table 4.3)."
+              ],
+              "kind": "equation",
+              "latex": "f_{\\mathrm{delivered}}\\le f_{\\mathrm{transmitted}}\\le f_{\\mathrm{commanded}},\\qquad f_{\\max}^{\\mathrm{visible}}=\\tfrac12 f_{\\mathrm{delivered}}",
+              "symbols": [
+                {
+                  "meaning": "the rate the injector was asked to send",
+                  "symbol": "f_{\\mathrm{commanded}}"
+                },
+                {
+                  "meaning": "the rate its counters show it sent",
+                  "symbol": "f_{\\mathrm{transmitted}}"
+                },
+                {
+                  "meaning": "the rate one receiver decoded from that source",
+                  "symbol": "f_{\\mathrm{delivered}}"
+                },
+                {
+                  "meaning": "the fastest variation the stream can show (background: the Nyquist limit)",
+                  "symbol": "f_{\\max}^{\\mathrm{visible}}"
+                }
+              ],
+              "title": "Commanded, transmitted and delivered rate"
+            },
+            {
+              "anchors": [
+                "instrument.chosen-csi-extraction",
+                "instrument.injection-based-illumination"
+              ],
+              "body": "The intended ratio feature divides two receive chains at one tone (Module 1). The ratio columns of the earlier lake schema 4 divided neighbouring tones of one chain. Thresholds and fitted constants from schema-4 ratios therefore do not transfer to the corrected schema-5 chain ratios (§4.3).\n\nA second correction scoped the variability envelope to the injector. The stored envelope had pooled every transmitter. Scoped to the injector, the day-to-night lift fell to 30 % of the pooled excess, and the pooled and scoped receiver rankings were unrelated (§4.4). Every receiver ranking in the thesis uses the injector-scoped column.",
+              "id": "m4-schema",
+              "implies": [
+                "A calibration fitted on a mis-defined observable does not transfer to the corrected one (§5.11, part 2)."
+              ],
+              "kind": "equation",
+              "latex": "\\text{schema 4: }\\ \\frac{\\widetilde H_{1,k}}{\\widetilde H_{1,k+1}}\\qquad\\text{schema 5: }\\ \\frac{\\widetilde H_{1,k}}{\\widetilde H_{2,k}}",
+              "symbols": [
+                {
+                  "meaning": "neighbouring tones of one chain: cancels nothing the chain ratio was meant to cancel",
+                  "symbol": "\\widetilde H_{1,k}/\\widetilde H_{1,k+1}"
+                },
+                {
+                  "meaning": "two chains at one tone: the intended ratio",
+                  "symbol": "\\widetilde H_{1,k}/\\widetilde H_{2,k}"
+                }
+              ],
+              "title": "Chain semantics are part of the record"
+            }
+          ],
+          "summary": "One node illuminates, up to nine observe, and person labels arrive through a separate path. Three different rates describe one stream, and a record's chain semantics are part of its definition.",
+          "thesis": "§4.1–4.6, Figs. 4.1–4.3, Table 4.3",
+          "title": "The instrument"
+        },
+        {
+          "id": "m4-space",
+          "steps": [
+            {
+              "anchors": [
+                "instrument.system-design-indoorgml-aligned-postgis"
+              ],
+              "body": "Suppose the room has zones $z=1,\\dots,Z$ and the links respond to the zone counts through a local sensitivity matrix $H$ (§4.8). If some direction $v$ satisfies $Hv=0$, then two occupancy vectors that differ by $v$ give the same measurement: they are indistinguishable.\n\nMoving one person from zone 1 to zone 2 is the vector $v=(-1,+1,0,\\dots)$. If both zones are seen with the same sensitivity, $Hv=0$: the move is invisible, and zone counts are not identified. The total $n_1+n_2$ does not change under that move, so it can still be identified.",
+              "id": "m4-null-space",
+              "implies": [
+                "Geometry does not determine recoverable spatial resolution; the observation operator does.",
+                "This is one reason the estimand is the total count and density is a conditional extension (§6.6)."
+              ],
+              "kind": "equation",
+              "latex": "y=Hn,\\qquad Hv=0\\ \\Rightarrow\\ H(n+v)=Hn",
+              "symbols": [
+                {
+                  "meaning": "vector of zone counts",
+                  "symbol": "n"
+                },
+                {
+                  "meaning": "local sensitivity matrix: how each link responds to each zone",
+                  "symbol": "H"
+                },
+                {
+                  "meaning": "vector of link measurements",
+                  "symbol": "y"
+                },
+                {
+                  "meaning": "a null-space direction: a change of zone counts no link sees",
+                  "symbol": "v"
+                }
+              ],
+              "title": "Total count can be identified when zones are not",
+              "widget": {
+                "id": "null-space",
+                "params": {}
+              }
+            },
+            {
+              "anchors": [
+                "instrument.system-design-indoorgml-aligned-postgis",
+                "spectral-count-and-submodular-coverage"
+              ],
+              "body": "For a fixed coverage model, score a set $S$ of receivers by $F(S)$: for each zone, take the best coverage any chosen receiver gives it, weight it, and sum (§4.8).\n\nThis $F$ is monotone (adding a receiver never lowers it) and submodular (adding a receiver helps less when the set is already large). For such functions, picking receivers one at a time, always the one with the largest gain, reaches at least $1-1/e\\approx63$ % of the best possible score under a cardinality limit (Nemhauser et al. 1978).\n\nThe guarantee concerns this objective only. It does not apply to prediction accuracy, to mutually interfering receivers, or to a count-information objective.",
+              "id": "m4-placement",
+              "implies": [
+                "Coverage is submodular; counting accuracy is not thereby submodular (§3.11, last hypothesis)."
+              ],
+              "kind": "equation",
+              "latex": "F(S)=\\sum_{z}w_z\\max_{\\ell\\in S}c_{\\ell z},\\qquad w_z\\ge0,\\ c_{\\ell z}\\ge0,\\qquad F(S_{\\mathrm{greedy}})\\ge(1-1/e)\\,F(S^\\star)",
+              "symbols": [
+                {
+                  "meaning": "the selected receiver set",
+                  "symbol": "S"
+                },
+                {
+                  "meaning": "zone index",
+                  "symbol": "z"
+                },
+                {
+                  "meaning": "weight (importance) of zone $z$",
+                  "symbol": "w_z"
+                },
+                {
+                  "meaning": "fixed coverage score of receiver $\\ell$ for zone $z$",
+                  "symbol": "c_{\\ell z}"
+                },
+                {
+                  "meaning": "the best set of the same size",
+                  "symbol": "S^\\star"
+                },
+                {
+                  "meaning": "about 0.632: the greedy guarantee",
+                  "symbol": "1-1/e"
+                }
+              ],
+              "title": "Coverage is submodular, so greedy placement is near-optimal",
+              "widget": {
+                "id": "coverage-greedy",
+                "params": {}
+              }
+            },
+            {
+              "anchors": [
+                "instrument.ble-rssi-pathloss-model"
+              ],
+              "body": "The conventional path-loss model writes received power in dB as a reference power at distance $d_0$, minus $10n$ dB per decade of distance, plus a residual (§4.9). The exponent $n$ is fitted to the environment.\n\nAntenna orientation, body shadowing and multipath all live in the residual $\\epsilon$. Inverting the equation for distance \"without propagating uncertainty gives an unjustifiably precise location\". Localisation is outside the claim set of the thesis; the section states what a position would require so that count results are not read as position results.",
+              "id": "m4-path-loss",
+              "implies": [
+                "A few dB of shadowing becomes a factor in distance, because distance sits inside a logarithm."
+              ],
+              "kind": "equation",
+              "latex": "R(d)=R(d_0)-10\\,n\\log_{10}(d/d_0)+\\epsilon",
+              "symbols": [
+                {
+                  "meaning": "received power at distance $d$, in dBm",
+                  "symbol": "R(d)"
+                },
+                {
+                  "meaning": "reference distance",
+                  "symbol": "d_0"
+                },
+                {
+                  "meaning": "received power at the reference distance",
+                  "symbol": "R(d_0)"
+                },
+                {
+                  "meaning": "environmental path-loss exponent (2 in free space)",
+                  "symbol": "n"
+                },
+                {
+                  "meaning": "residual: shadowing, orientation, multipath, in dB",
+                  "symbol": "\\epsilon"
+                }
+              ],
+              "title": "RSSI path loss and why inverting it misleads",
+              "widget": {
+                "id": "path-loss",
+                "params": {}
+              }
+            },
+            {
+              "anchors": [
+                "instrument.rssi-traces-to-fields"
+              ],
+              "body": "If validated participant positions exist, the expected count in zone $z$ is the sum over participants of each one's probability of being in $z$ (§4.10.1). A participant who is 70 % in zone A and 30 % in zone B adds 0.7 and 0.3.\n\nThe sum concerns the observed participant population. Extending it to all people needs a sampling or carriage model, and velocity estimates amplify position errors through differentiation.",
+              "id": "m4-zone-sum",
+              "implies": [
+                "Expected values add even when individual positions are uncertain; their uncertainty does not vanish by adding."
+              ],
+              "kind": "equation",
+              "latex": "\\mathbb{E}[N_z\\mid\\mathcal D]=\\sum_i P(X_i\\in z\\mid\\mathcal D)",
+              "symbols": [
+                {
+                  "meaning": "number of participants in zone $z$",
+                  "symbol": "N_z"
+                },
+                {
+                  "meaning": "position of participant $i$",
+                  "symbol": "X_i"
+                },
+                {
+                  "meaning": "the observed data",
+                  "symbol": "\\mathcal D"
+                }
+              ],
+              "title": "Zone counts from probabilistic positions"
+            }
+          ],
+          "summary": "A total can be identifiable when zone counts are not. Coverage of zones is submodular, which gives greedy placement a guarantee, and that guarantee says nothing about counting accuracy.",
+          "thesis": "§4.8–4.10",
+          "title": "Geometry, placement and what space can be resolved"
+        },
+        {
+          "id": "m4-protocol",
+          "steps": [
+            {
+              "anchors": [
+                "instrument.evaluation-methodology-thesis"
+              ],
+              "body": "Table 4.5 separates five resources, and every comparison names which it uses.\n\n- **Source labels:** counts from environments other than the target.\n- **Target anchors:** counts from the target used to fit calibration.\n- **Target validation labels:** counts from the target used to choose a configuration.\n- **Chronological references:** references a policy may request as time advances.\n- **Test labels:** counts never used for fitting or selection.\n\nA test set used to choose a configuration becomes validation data. The replication unit is stated per question: the episode for the pilot, the day for a chronological comparison, the environment for transfer, the paired seed within a regime for simulation. Packets, overlapping windows and receivers on one illuminator share errors and are not independent replications (§4.16).",
+              "id": "m4-permitted",
+              "implies": [
+                "A standard deviation over training seeds is not a confidence interval over buildings or people."
+              ],
+              "kind": "idea",
+              "symbols": [],
+              "title": "Permitted information and the replication unit"
+            },
+            {
+              "anchors": [
+                "instrument.ble-calibration-operates"
+              ],
+              "body": "At $t_0$ a frozen predictor logs its predictions $\\hat N_t$. At $t_r$ a reference episode supplies $N^{\\mathrm{ref}}_{t_r}$, and the prediction for that interval is scored first, before the reference is used. Then two arms receive the same reference: reset-only updates the level $b$; refit-map updates level and slope $(b,s)$. Both are scored on later intervals $t>t_r$ for error, coverage, width, availability and reference cost.\n\nThe ordering is the point. A fitted reference is not a successful independent prediction (§6.2).",
+              "figure": {
+                "asset": "fig-reference-protocol.png",
+                "caption": "Reference assimilation follows prediction and precedes held-out scoring. The sequence defines a proposed prospective comparison; reset-only and map-refit arms receive the same reference budget.",
+                "label": "Fig. 4.4"
+              },
+              "id": "m4-fig-protocol",
+              "implies": [],
+              "kind": "figure",
+              "symbols": [],
+              "title": "Predict first, assimilate, then score later"
+            },
+            {
+              "anchors": [
+                "instrument.evaluation-methodology-thesis"
+              ],
+              "body": "**MAE** is the mean absolute difference between predicted and independently observed counts (§4.17). Weighting windows, captures or environments equally answers different questions.\n\n**RPS**, the ranked probability score, scores a whole distribution over ordered counts or bands. It compares the predicted cumulative distribution $F(k)$ with the step that jumps at the true count $y$; lower is better, and mass near the truth is rewarded more than mass far away. The thesis uses band RPS, with bands frozen before comparison.\n\n**ECE**, expected calibration error, is a descriptive, bin-dependent summary, \"not a proof of coverage\". Coverage and width are reported together, and for selective reporting the fraction of attempts that receive an output is a further outcome.\n\nThe formulas are the standard definitions (background); the thesis defines MAE and RPS in words.",
+              "id": "m4-metrics",
+              "implies": [
+                "Practical equivalence needs a declared margin and an interval inside it; failing to reject zero is not equivalence (§4.17)."
+              ],
+              "kind": "equation",
+              "latex": "\\mathrm{MAE}=\\frac1n\\sum_{i=1}^{n}|\\hat N_i-N_i|,\\qquad \\mathrm{RPS}=\\sum_{k}\\big(F(k)-\\mathbb{1}\\{k\\ge y\\}\\big)^2",
+              "symbols": [
+                {
+                  "meaning": "predicted and observed count of case $i$",
+                  "symbol": "\\hat N_i,\\ N_i"
+                },
+                {
+                  "meaning": "predicted probability of a count at most $k$",
+                  "symbol": "F(k)"
+                },
+                {
+                  "meaning": "the true count",
+                  "symbol": "y"
+                },
+                {
+                  "meaning": "indicator: 1 if $k\\ge y$, else 0",
+                  "symbol": "\\mathbb{1}\\{k\\ge y\\}"
+                }
+              ],
+              "title": "MAE, ranked probability score and calibration error",
+              "widget": {
+                "id": "scores",
+                "params": {}
+              }
+            },
+            {
+              "anchors": [
+                "calibration.drift-study-yields"
+              ],
+              "body": "§4.18 states a design, not a result. It fixes the one independently labelled evaluation the frozen thesis leaves open (Table 4.6).\n\n- **Labels:** independently timed headcounts from participant observation steps; windows not selected by a detector.\n- **Count levels:** repeated levels including empty, each seated and moving.\n- **Partitions:** disjoint calibration and test episodes; testing on later days.\n- **Conditions:** unchanged layout on a later day; one controlled activity change at a fixed count; one declared perturbation followed by recovery.\n- **Arms:** frozen calibration; reference-updated calibration (level reset and full refit); simple baselines (clock, traffic, BLE-only, CSI-only).\n- **Outcomes:** count error; interval coverage and width; fraction of time coarsened or withheld; reference cost.\n- **Replication unit:** the day for chronological claims, the episode for count-level claims.\n\nThe staffed sessions it needs are held by the researcher's decision of 26 September 2026. If no data exist at submission, §5.10 becomes a stated limitation.",
+              "id": "m4-closure-design",
+              "implies": [],
+              "kind": "idea",
+              "symbols": [],
+              "title": "The pre-specified closure study"
+            }
+          ],
+          "summary": "A comparison is fair only when every method uses the same kinds of information. Replication is counted at the independent unit, and point error is never reported without the distribution, coverage and availability.",
+          "thesis": "§4.11, §4.15–4.18, Fig. 4.4, Tables 4.5–4.6",
+          "title": "The evaluation protocol"
+        },
+        {
+          "id": "m4-results",
+          "steps": [
+            {
+              "anchors": [
+                "calibration.ble-csi-complementarity"
+              ],
+              "body": "§5.2 makes one distinction that every later fleet result relies on. Resetting an accurate count at $t_0$ leaves a wrong slope unchanged, so the next CSI update restores the bias. A map refit can instead improve later predictions.\n\nWrite any calibrated map in the illustrative form below. A reset moves the line up or down to pass through the reference. A refit changes its tilt too. If drift changed the tilt, only the refit can follow it.",
+              "id": "m4-reset-refit",
+              "implies": [
+                "The fleet comparison is therefore frozen map against same-day map, and level-only reset against both."
+              ],
+              "kind": "equation",
+              "latex": "\\hat y_t=b+s\\,L_t:\\qquad \\text{reset: } b\\leftarrow b' \\qquad \\text{refit: } (b,s)\\leftarrow(b',s')",
+              "symbols": [
+                {
+                  "meaning": "the calibrated prediction (a count, or the BLE teacher on the fleet)",
+                  "symbol": "\\hat y_t"
+                },
+                {
+                  "meaning": "the CSI feature",
+                  "symbol": "L_t"
+                },
+                {
+                  "meaning": "level and slope of the map (illustrative linear form, as in Fig. 4.4)",
+                  "symbol": "b,\\ s"
+                }
+              ],
+              "title": "A count reset is not a map refit"
+            },
+            {
+              "anchors": [
+                "calibration.system-generalises-held"
+              ],
+              "body": "The public reduction pools seven environments from two dataset/platform groups: 939 rows, 300 from each of three WiMANS environments and 10, 9, 10 and 10 from four Meneghello environments (§5.3). The cache keeps dataset, environment, count and the CV feature, but no capture identifiers or timestamps. So the analysis is leave-one-environment-out on this cache, not capture-disjoint and not chronological.\n\nTable 5.2, archived MAE in persons, descriptive (no intervals):\n\n| Condition | MAE |\n|---|---|\n| Log-affine leave-one-environment-out baseline | 1.75 |\n| Nested partial pooling, no target labels | 1.49 |\n| Nested partial pooling, two target anchors | 1.13 |\n| All-local-label comparator (not attainable) | 0.88 |\n\nThe claim boundary: two anchors lowered MAE from 1.49 to 1.13 on average. A separate analysis of the same data with a different protocol reduced the mean error from 1.75 to 1.32 with two anchors, yet two anchors increased the error in four of the seven environments.",
+              "id": "m4-public",
+              "implies": [
+                "\"Consistent with a benefit on average\" is the strongest wording these numbers allow.",
+                "Seven environments in two groups are not seven independent demonstrations of transfer."
+              ],
+              "kind": "idea",
+              "symbols": [],
+              "title": "Public-corpus pooling"
+            },
+            {
+              "anchors": [
+                "calibration.system-generalises-held",
+                "conformal-count-intervals"
+              ],
+              "body": "Table 5.3 compares a point-derived output with a discrete count distribution on an archived three-environment reduction. Band RPS was 0.2147 in-environment and 0.2722 shifted for the point-derived output, against 0.1799 and 0.1798 for the distribution; ECE 0.215 and 0.271 against 0.140 and 0.059. This supports scoring the whole distribution, not MAE alone.\n\nConformal coverage, nominal 0.90 (§5.3): inside the three WiMANS environments 0.899, 0.893 and 0.901, with half-widths of about 1.6–2.0 persons on a 0–5 range. Across environments, PC2a rose from 0.11 without local anchoring to 0.889 after it, 95 % interval $[0.848,0.926]$; anchored coverage was 0.650 in PC4a and 0.830 in the meeting room. A pooled Meneghello result reached about 0.91 coverage with a half-width of 8.4 persons over a 0–10 range, \"which shows why coverage alone is not enough\".",
+              "id": "m4-distribution-coverage",
+              "implies": [
+                "Coverage held inside environments and failed uniformly after anchoring in two of seven (§6.11)."
+              ],
+              "kind": "idea",
+              "symbols": [],
+              "title": "Distributional output and conformal coverage"
+            },
+            {
+              "anchors": [
+                "band-5ghz-occupancy-discriminability"
+              ],
+              "body": "Does the band change delivered sampling at a fixed commanded rate? In the twelve-arm empty-room comparison of EXP-011, the 5 GHz arms delivered 25.03 Hz and the 2.4 GHz arms 23.96 Hz at a commanded 25 Hz (§5.5). The paired difference was 1.06 Hz, 95 % $t$ interval $[0.30,1.83]$, over six pairs. Arrival-time CV was 0.017 against 0.24 on three pairs.\n\nThe interval excludes zero, so 5 GHz delivered more regularly in this comparison. The result is about acquisition quality. It does not show better person-count discrimination at 5 GHz; that paired-band count test has not been run.\n\nThe paired $t$ interval is the standard construction (background): the mean of the pair differences plus or minus a $t$ quantile times their standard error.",
+              "id": "m4-band",
+              "implies": [
+                "An interval that excludes zero supports \"different\". It says nothing about whether the difference matters for counting."
+              ],
+              "kind": "equation",
+              "latex": "\\bar d\\pm t_{0.975,\\,n-1}\\,\\frac{s_d}{\\sqrt n}",
+              "symbols": [
+                {
+                  "meaning": "mean of the paired differences (5 GHz minus 2.4 GHz)",
+                  "symbol": "\\bar d"
+                },
+                {
+                  "meaning": "standard deviation of the differences",
+                  "symbol": "s_d"
+                },
+                {
+                  "meaning": "number of pairs (six)",
+                  "symbol": "n"
+                },
+                {
+                  "meaning": "Student $t$ quantile for a 95 % interval with $n-1$ degrees of freedom",
+                  "symbol": "t_{0.975,n-1}"
+                }
+              ],
+              "title": "Acquisition conditions, EXP-011",
+              "widget": {
+                "id": "equivalence",
+                "params": {
+                  "preset": "band"
+                }
+              }
+            },
+            {
+              "anchors": [
+                "calibration.ble-derived-density"
+              ],
+              "body": "The pilot uses the exported fleet level: the median across available receivers of the log ratio of each receiver's injector-scoped amplitude-ratio variability envelope $e_{\\ell,t}$ over a daily reference floor $f_\\ell$ (§5.6). It is in octaves, like Eq. (3.1).\n\nThe floor uses night minutes where available, otherwise the day's tenth percentile. The thesis calls it \"a retrospective baseline assumption, not an empty-room label\". The level differs from the public cache's log-CV feature.",
+              "id": "m4-level",
+              "implies": [
+                "A median over receivers is robust to one bad receiver and blind to which receivers were available."
+              ],
+              "kind": "equation",
+              "latex": "L_t=\\operatorname{median}_{\\ell}\\ \\log_2\\frac{e_{\\ell,t}}{f_\\ell}",
+              "symbols": [
+                {
+                  "meaning": "injector-scoped variability envelope of receiver $\\ell$ in minute $t$",
+                  "symbol": "e_{\\ell,t}"
+                },
+                {
+                  "meaning": "daily reference floor of receiver $\\ell$",
+                  "symbol": "f_\\ell"
+                },
+                {
+                  "meaning": "median over the receivers available in that minute",
+                  "symbol": "\\operatorname{median}_\\ell"
+                }
+              ],
+              "title": "The fleet level"
+            },
+            {
+              "anchors": [
+                "calibration.ble-derived-density"
+              ],
+              "body": "Panel (a): four episodes on 2 September 2026, two with 2 people (grey) and two with 3 (blue), all moving. Medians in octaves: OL001 1.091, OL002 1.057, OL003 1.021, OL004 1.220 (Table 5.4). The defeating observation occurred: OL003, with three people, lies below both two-person episodes.\n\nPanel (b): the quality screen (no segment-seam duplicates, at least 120 Hz delivered, 240 scored subwindows, 30 minutes since session start) retained 21/36, 16/36, 51/90 and 32/72 receiver-minutes.\n\nFour labels on one day cannot separate count from activity, receiver composition or quality. The pilot supports the label and reduction path, not a fitted count response.",
+              "figure": {
+                "asset": "fig-pilot-panels.png",
+                "caption": "The four labelled episodes do not order by count. (a) Episode medians of the exported minute-level normalised envelope; lines span the 25th–75th percentiles of minutes, not independent episodes. (b) Receiver-minutes retained by the separate quality screen against those screened out, as exact inventory counts; panel (a) was not recomputed after this screen.",
+                "label": "Fig. 5.1"
+              },
+              "id": "m4-fig-pilot",
+              "implies": [],
+              "kind": "figure",
+              "symbols": [],
+              "title": "The four labelled pilot episodes"
+            },
+            {
+              "anchors": [
+                "calibration.ble-derived-density"
+              ],
+              "body": "**Semester BLE census** (§5.7). The median over nodes of distinct addresses per 30-minute segment stayed at about 7 to 9 at night (01–05 h) through September. On weekdays between 09 and 17 h, the medians rose from 7–24 before 14 September to 167–804 from that date. Scanner settings did not change. The rise coincides with the researcher's report of twenty or more people by day from the same date, which is an observation, not a labelled count.\n\n**CSI jitter against the BLE count.** On the evening of 28 September, CSI jitter separated busy from empty, Spearman correlation 0.66 against the BLE bystander count, on 9 of 9 receivers. On 29 September the same statistic followed the count on the reference link only and ran against it on the comparison cohort. Inside busy hours it carried no graded count.",
+              "id": "m4-census",
+              "implies": [
+                "The census is device activity, not a headcount; addresses salted per segment block capture–recapture estimators.",
+                "So far the busy–empty contrast is a property of a link and a channel, not of the statistic."
+              ],
+              "kind": "idea",
+              "symbols": [],
+              "title": "BLE census and CSI jitter on the fleet"
+            },
+            {
+              "anchors": [
+                "calibration.ble-calibrated-csi"
+              ],
+              "body": "The BLE stream serves as a device-count teacher whose relation to people is unknown, so these results concern persistence of a calibration to that proxy (§5.8).\n\nOn two fixed links, against the Bluetooth-address teacher, the map frozen from the first day had MAE 45.6 $[38.8,55.4]$, and the same-day map had MAE 21.0 $[18.7,25.7]$ (24 September). The intervals do not overlap; the ratio is about 2.2. Refitting only the level of the frozen map did not recover the same-day performance.\n\nIn the chronological pilot of 26 September, a morning calibration lowered the mean afternoon address error from 52.72 to 38.26. It helped on two of six days.",
+              "id": "m4-frozen",
+              "implies": [
+                "A useful reference must refit the slope, not only the level, at least for this proxy target.",
+                "Six days do not support an interval that separates a general benefit from day-to-day variation."
+              ],
+              "kind": "idea",
+              "symbols": [],
+              "title": "A frozen map ages, and a level reset does not repair it"
+            },
+            {
+              "anchors": [
+                "calibration.synthetic-csi-pretraining-transfer"
+              ],
+              "body": "The September transfer work was reopened after an impairment audit (§5.9.1). The sweeps had used default impairment parameters rather than values fitted to the real receivers: carrier-frequency offset 200 Hz against a fitted summary of about 62.3 kHz, SNR 30 dB against about 8.6 dB. At five real labels, the recorded $R^2$ was 0.522 for real-only training and 0.528 for one synthetic-pretraining variant, without a paired effect interval.\n\nThe thesis concludes: \"We could not detect a transfer benefit in the archived runs, and those runs did not test the question as posed, because the synthetic channel was cleaner than the fleet receivers.\"",
+              "id": "m4-synthetic",
+              "implies": [
+                "A simulated response built into the generator is a consistency check, not independent validation (§5.9)."
+              ],
+              "kind": "idea",
+              "symbols": [],
+              "title": "Synthetic pretraining was not tested as posed"
+            },
+            {
+              "anchors": [
+                "calibration.ble-calibrated-csi"
+              ],
+              "body": "At the scope of the evidence, four parts (§5.11).\n\n1. **Local references help on average, not everywhere.** Two target anchors lowered the public-cache MAE from 1.49 to 1.13 persons, but not in every environment.\n2. **Acquisition quality bounds what a reference can fix.** The 5 GHz arms delivered more regularly at the same commanded rate, and a calibration fitted on a degraded or mis-defined observable does not transfer to a corrected one.\n3. **Elapsed time degrades a calibration, and a level reset does not repair it.** Against a device teacher, a first-day map had about 2.2 times the same-day error.\n4. **The fleet CSI contrast is link-specific.** Busy and empty separated on some links on one evening and did not generalise across the receiver cohort.\n\nThe strongest limitation is the reference itself: a public cache without lineage, a Bluetooth-address teacher whose relation to people is not identified (Module 3), and four people-count episodes on one day.",
+              "id": "m4-rq2",
+              "implies": [],
+              "kind": "idea",
+              "symbols": [],
+              "title": "The answer to RQ2"
+            }
+          ],
+          "summary": "Local references helped on average and not everywhere; acquisition quality bounds what they can fix; a first-day map aged and a level reset did not repair it; the fleet CSI contrast is link-specific.",
+          "thesis": "§5.2–5.11, Tables 5.2–5.4, Fig. 5.1",
+          "title": "Calibration results and the answer to RQ2"
+        }
+      ],
+      "order": 4,
+      "slug": "m4-instrument-calibration",
+      "subtitle": "How the fleet measures, how results are scored, and what local references did (RQ2)",
+      "title": "Instrument, protocol and calibration evidence"
+    },
+    {
+      "id": "m5",
+      "intro": "Chapter 3 said what a reference must supply before a count scale exists. Chapter 5 measured when references helped. Chapter 6 asks what the instrument may report between references, derives the resolution and horizon laws, and closes two tempting shortcuts with bounded negative results.",
+      "lessons": [
+        {
+          "id": "m5-contract",
+          "steps": [
+            {
+              "anchors": [
+                "uncertainty.output-contract",
+                "distributional-output-contract"
+              ],
+              "body": "A reported distribution names its region, interval, supported count range and conditioning information (§6.1). For each possible count $k$ it gives the probability that $N_t=k$, given everything observed up to $t$, the independent calibration information, and the acquisition quality.\n\nAn application-specific band $B$, for example \"few\" $=\\{1,2,3\\}$, is obtained by summation. A point decision can be derived, but its loss must be stated: the posterior median minimises absolute error, the mean minimises squared error, and neither establishes probability calibration.\n\nThe distributional contract is supported on the tested public splits (Module 4). A distribution that merely reproduces an occupancy prior must be compared with that prior. If acquisition is inadequate, the output is unavailable rather than zero.",
+              "id": "m5-pmf",
+              "implies": [
+                "The quality vector $q$ is a different thing from pedestrian flux $\\rho v$ (appendix notation)."
+              ],
+              "kind": "equation",
+              "latex": "p_t(k)=P(N_t=k\\mid\\mathcal D_{1:t},\\mathcal C,q_t),\\quad k\\in\\{0,\\ldots,K_{\\max}\\},\\qquad P(N_t\\in B)=\\sum_{k\\in B}p_t(k)",
+              "symbols": [
+                {
+                  "meaning": "probability of $k$ people in interval $t$",
+                  "symbol": "p_t(k)"
+                },
+                {
+                  "meaning": "all observations from the start up to $t$",
+                  "symbol": "\\mathcal D_{1:t}"
+                },
+                {
+                  "meaning": "independent calibration (reference) information",
+                  "symbol": "\\mathcal C"
+                },
+                {
+                  "meaning": "acquisition quality at $t$ (rate, gaps, record class, transmitter)",
+                  "symbol": "q_t"
+                },
+                {
+                  "meaning": "the largest count the model supports",
+                  "symbol": "K_{\\max}"
+                },
+                {
+                  "meaning": "a band of counts, fixed in advance",
+                  "symbol": "B"
+                }
+              ],
+              "title": "A distribution over counts"
+            },
+            {
+              "anchors": [
+                "uncertainty.output-contract"
+              ],
+              "body": "$K_{\\max}$ is not a formatting choice (§6.1.1). When the response is weakly informative, the posterior is set largely by that limit.\n\nFor the pilot configuration of §3.9.1, with an illustrative noise model (0.23 octaves) and a log-uniform knee prior over 0.5–20 people, the posterior mean was approximately 4.46, 7.76 and 15.15 for uniform supports of 0–8, 0–16 and 0–32. Only the declared support changed between these calculations. Under a geometric prior the same calculation gives 3.58, 4.43 and 4.75 (companion notebook).\n\nA summary that moves with the support in this way \"is not a count estimate at one-person resolution: it indicates that the requested resolution is unavailable\". The support and the tail prior are therefore reported with every distribution.",
+              "id": "m5-support",
+              "implies": [
+                "If doubling the support nearly doubles the mean, the data are not answering the question."
+              ],
+              "kind": "equation",
+              "latex": "p(N=k\\mid L_a)\\propto\\Big[\\tfrac{1}{|\\mathcal K|}\\sum_{K\\in\\mathcal K}\\mathcal N\\big(L_a;\\ L(k;A(K),K),\\ \\sigma^2\\big)\\Big]\\,p(N=k),\\qquad k\\le K_{\\max}",
+              "symbols": [
+                {
+                  "meaning": "the observation, set equal to the three-person anchor level 1.12 octaves",
+                  "symbol": "L_a"
+                },
+                {
+                  "meaning": "the declared knee grid: 161 log-spaced values from 0.5 to 20 people",
+                  "symbol": "\\mathcal K"
+                },
+                {
+                  "meaning": "the amplitude through the anchor for knee $K$ (Module 3)",
+                  "symbol": "A(K)"
+                },
+                {
+                  "meaning": "assumed observation noise, 0.23 octaves",
+                  "symbol": "\\sigma"
+                },
+                {
+                  "meaning": "the count prior: uniform on $0..K_{\\max}$, or geometric $0.2\\cdot0.8^k$",
+                  "symbol": "p(N=k)"
+                }
+              ],
+              "title": "The count support is part of the model",
+              "widget": {
+                "id": "support-posterior",
+                "params": {}
+              }
+            },
+            {
+              "anchors": [
+                "uncertainty.output-contract"
+              ],
+              "body": "At each reporting interval the contract admits four actions (§6.1.2).\n\n- **Report.** Publish the distribution and its summary at the requested resolution.\n- **Coarsen.** Publish the probability of prespecified bands, for example empty, few and busy.\n- **Request a reference.** Ask for an independent count when the expected reduction in operational loss exceeds the reference cost.\n- **Withhold.** Publish no count, while still reporting acquisition status.\n\nThe bands and the thresholds that choose among actions are fixed before any chronological evaluation; a threshold chosen on the test period turns it into validation data. The contract can then fail visibly in two ways. **Statistical failure:** reported uncertainty is too narrow. **Service failure:** the requested resolution is unavailable too often, or reference demand exceeds the budget. Withholding is reported with its frequency, so a system that answers only on an easy subset does not look superior.",
+              "id": "m5-actions",
+              "implies": [],
+              "kind": "idea",
+              "symbols": [],
+              "title": "Four reporting actions and two ways to fail"
+            }
+          ],
+          "summary": "The output is a probability for each count, conditioned on observations, references and acquisition quality. Its support is part of the model, and four actions follow from it.",
+          "thesis": "§6.1, §6.1.1–6.1.2",
+          "title": "The output contract"
+        },
+        {
+          "id": "m5-joint",
+          "steps": [
+            {
+              "anchors": [
+                "uncertainty.periodic-calibration-architecture",
+                "state-space-fusion-optimality"
+              ],
+              "body": "The joint model keeps five latent quantities at each time $t$: occupancy $N_t$, activity $M_t$, the CSI calibration parameters $\\theta_t$, the effective detectable-device ratio $r_t$ and background device activity $d_{0,t}$. It conditions on four observed streams up to $t$: channel features $L$, device observations $D$, quality $q$ and independent references $\\mathcal C$.\n\nThe output contract's $p_t(k)$ is this joint posterior with everything except $N_t$ summed out. The thesis states that this \"specifies the proposed joint estimator; first-party end-to-end evaluation remains open\".\n\nTwo bookkeeping rules from §6.2: a held BLE census must not be assimilated repeatedly as independent evidence, and overlapping CSI windows share samples.",
+              "id": "m5-joint-posterior",
+              "implies": [
+                "Only $\\mathcal C$ observes the count directly. Every other stream sees it through a scale (Module 3)."
+              ],
+              "kind": "equation",
+              "label": "Eq. (6.1)",
+              "latex": "p\\big(N_t,M_t,\\theta_t,r_t,d_{0,t}\\mid L_{1:t},D_{1:t},q_{1:t},\\mathcal C_{1:t}\\big)",
+              "symbols": [
+                {
+                  "meaning": "occupancy",
+                  "symbol": "N_t"
+                },
+                {
+                  "meaning": "activity state (a nuisance variable)",
+                  "symbol": "M_t"
+                },
+                {
+                  "meaning": "CSI calibration parameters",
+                  "symbol": "\\theta_t"
+                },
+                {
+                  "meaning": "effective detectable devices per person",
+                  "symbol": "r_t"
+                },
+                {
+                  "meaning": "background device activity",
+                  "symbol": "d_{0,t}"
+                },
+                {
+                  "meaning": "CSI features from 1 to $t$",
+                  "symbol": "L_{1:t}"
+                },
+                {
+                  "meaning": "device observations",
+                  "symbol": "D_{1:t}"
+                },
+                {
+                  "meaning": "quality information",
+                  "symbol": "q_{1:t}"
+                },
+                {
+                  "meaning": "independent references",
+                  "symbol": "\\mathcal C_{1:t}"
+                }
+              ],
+              "title": "The desired output of the joint estimator"
+            },
+            {
+              "anchors": [
+                "uncertainty.periodic-calibration-architecture"
+              ],
+              "body": "Top row, latent: $\\theta_t$, $M_t$, $N_t$ (accent ring), $r_t$, $d_{0,t}$. Bottom row, observed: $q_t$, $L_t$, $\\mathcal C_t$, $D_t$. An arrow means \"this latent quantity enters that observation's likelihood\".\n\n$L_t$ receives arrows from $\\theta_t$, $M_t$, $N_t$ and $q_t$: the CSI level depends on calibration, activity, count and quality. $D_t$ receives arrows from $N_t$, $r_t$ and $d_{0,t}$: the device law. $\\mathcal C_t$ receives one arrow, from $N_t$ alone.\n\nOn the left, the previous slice: $\\theta_{t-1}$ drifts into $\\theta_t$ (Eq. 6.2), $N_{t-1}$ moves to $N_t$ by a count transition. On the right, inference gives $p_t(k)$ and one of the four actions. A requested reference loops back as a later observation of $\\mathcal C$.",
+              "figure": {
+                "asset": "fig-joint-inference.png",
+                "caption": "Occupancy, activity and calibration jointly explain the observed channels, and only the independent reference $\\mathcal C_t$ observes the count directly. Open circles are latent, filled circles observed; dashed nodes belong to the previous slice. Arrows state the proposed likelihood structure, not verified conditional independence or a fitted field system.",
+                "label": "Fig. 6.1"
+              },
+              "id": "m5-fig-joint",
+              "implies": [],
+              "kind": "figure",
+              "symbols": [],
+              "title": "The two-slice graphical model"
+            },
+            {
+              "anchors": [
+                "uncertainty.periodic-calibration-architecture",
+                "recalibration-trigger-from-drift"
+              ],
+              "body": "Write the calibration of link $\\ell$ as $\\theta_{\\ell,t}=(b_{\\ell,t},\\log A_{\\ell,t},\\log K_{\\ell,t})$. The basic drift model adds an independent Gaussian step over each interval $\\Delta t$, with covariance $Q\\Delta t$.\n\nA random walk forgets steadily: the variance of the accumulated drift grows linearly with elapsed time, so its standard deviation grows like $\\sqrt t$. That linear growth is the $tJ_\\theta QJ_\\theta^\\top$ term of Eq. (6.6).\n\nMean reversion, change points and quality-dependent drift are alternatives that need repeated references to distinguish; the public cache lacks that chronology.",
+              "id": "m5-drift",
+              "implies": [
+                "The fleet result of Module 4 constrains the form of drift without supplying $Q$: it acts on the slope, not only the level (§6.8.5)."
+              ],
+              "kind": "equation",
+              "label": "Eq. (6.2)",
+              "latex": "\\theta_{t+\\Delta t}=\\theta_t+\\eta_t,\\qquad \\eta_t\\sim\\mathcal N(0,\\ Q\\Delta t)",
+              "symbols": [
+                {
+                  "meaning": "calibration parameters at time $t$",
+                  "symbol": "\\theta_t"
+                },
+                {
+                  "meaning": "elapsed time step",
+                  "symbol": "\\Delta t"
+                },
+                {
+                  "meaning": "the random drift step",
+                  "symbol": "\\eta_t"
+                },
+                {
+                  "meaning": "drift covariance per declared time unit",
+                  "symbol": "Q"
+                }
+              ],
+              "title": "Calibration drift as a random walk"
+            }
+          ],
+          "summary": "Occupancy, activity, the CSI calibration, the device ratio and the background are inferred together, and the calibration drifts as a random walk between references.",
+          "thesis": "§6.2, Eqs. (6.1)–(6.2), Fig. 6.1",
+          "title": "The joint state and calibration model"
+        },
+        {
+          "id": "m5-crowd",
+          "steps": [
+            {
+              "anchors": [
+                "uncertainty.continuity-conservation"
+              ],
+              "body": "Let $\\rho(x,t)$ be density in persons per m² and $v(x,t)$ mean velocity in m/s (§6.4). The product $\\rho v$ is the flux: persons crossing a unit length per second.\n\nThe continuity equation says that density at a point rises only if more people flow in than out, $\\partial_t\\rho=-\\nabla\\cdot(\\rho v)$, plus a source $s$ for entrances, exits or transfers the domain does not represent. The divergence $\\nabla\\cdot$ measures net outflow from a point.\n\nThe room count is the integral of density over the region (Module 0).",
+              "id": "m5-continuity",
+              "implies": [
+                "Conservation is a plausible restriction on a density field. The mapping from that field to CSI depends on propagation, illumination, motion and hardware (§6.3)."
+              ],
+              "kind": "equation",
+              "label": "Eq. (6.3)",
+              "latex": "\\partial_t\\rho+\\nabla\\!\\cdot(\\rho v)=s,\\qquad N_\\Omega(t)=\\int_\\Omega\\rho(x,t)\\,dx",
+              "symbols": [
+                {
+                  "meaning": "density, persons per m²",
+                  "symbol": "\\rho(x,t)"
+                },
+                {
+                  "meaning": "mean velocity, m/s",
+                  "symbol": "v(x,t)"
+                },
+                {
+                  "meaning": "flux, persons per metre per second",
+                  "symbol": "\\rho v"
+                },
+                {
+                  "meaning": "rate of change in time at a fixed point",
+                  "symbol": "\\partial_t"
+                },
+                {
+                  "meaning": "divergence: net outflow per unit area",
+                  "symbol": "\\nabla\\cdot"
+                },
+                {
+                  "meaning": "source term: entrances, exits, transfers not in the domain",
+                  "symbol": "s"
+                },
+                {
+                  "meaning": "the declared region",
+                  "symbol": "\\Omega"
+                },
+                {
+                  "meaning": "count in the region",
+                  "symbol": "N_\\Omega(t)"
+                }
+              ],
+              "title": "The continuity equation"
+            },
+            {
+              "anchors": [
+                "uncertainty.continuity-conservation",
+                "uncertainty.regime-breakdown"
+              ],
+              "body": "Integrate Eq. (6.3) over the room. By the divergence theorem, the total outflow from inside equals the flux through the boundary $\\partial\\Omega$. So the count changes at the rate people cross the boundary inwards, minus the rate they cross outwards, plus the source.\n\nA closed-room assumption is justified only during intervals in which entry and exit are known to be absent. A low-variance radio trace is not evidence of a closed boundary. Unknown boundary flow \"is a missing variable, not a residual to be penalised toward zero\" (§6.4).",
+              "id": "m5-balance",
+              "implies": [
+                "Opposing flows can carry much individual motion and little net flux, so a model driven by net flux can say little about movement-induced CSI fluctuation (§6.4)."
+              ],
+              "kind": "equation",
+              "label": "Eq. (6.4)",
+              "latex": "\\frac{dN_\\Omega}{dt}=-\\int_{\\partial\\Omega}\\rho v\\cdot n\\,dS+\\int_\\Omega s\\,dx",
+              "symbols": [
+                {
+                  "meaning": "the boundary of the region (walls and doors)",
+                  "symbol": "\\partial\\Omega"
+                },
+                {
+                  "meaning": "outward unit normal of the boundary",
+                  "symbol": "n"
+                },
+                {
+                  "meaning": "a small piece of boundary",
+                  "symbol": "dS"
+                },
+                {
+                  "meaning": "outward flux through that piece",
+                  "symbol": "\\rho v\\cdot n"
+                }
+              ],
+              "title": "A room's count changes through its boundary",
+              "widget": {
+                "id": "continuity-room",
+                "params": {}
+              }
+            },
+            {
+              "anchors": [
+                "uncertainty.aggregate-observation-operator"
+              ],
+              "body": "The left box is the crowd model. A room $\\Omega$ with people, a dashed boundary $\\partial\\Omega$ and an open door whose flux $\\rho v\\cdot n$ is unknown. Conservation turns the state into $\\rho(x,t)$, activity and $N_\\Omega(t)$.\n\nThe right box is the observation model: a propagation operator $\\mathcal H_\\ell$ maps the state to the CSI of link $\\ell$, and the calibration $\\theta_{\\ell,t}$ with instrument effects enters only there.\n\nThe figure's lesson is the separation. A physically perfect crowd state can still be read through a mis-scaled observation operator.",
+              "figure": {
+                "asset": "fig-conservation-operator.png",
+                "caption": "Conservation constrains the latent crowd state, while propagation and calibration connect that state to CSI. Flow through an open boundary is an unknown input to the balance, and calibration enters only the observation side. The sketch is conceptual and does not imply that CSI uniquely recovers a density field.",
+                "label": "Fig. 6.2"
+              },
+              "id": "m5-fig-conservation",
+              "implies": [],
+              "kind": "figure",
+              "symbols": [],
+              "title": "Conservation on one side, observation on the other"
+            },
+            {
+              "anchors": [
+                "uncertainty.fundamental-diagram-shape"
+              ],
+              "body": "Eq. (6.3) has two unknown fields and one equation. A fundamental diagram closes it by relating speed to density, for example $v=V(\\rho)e$ with a direction field $e$ (§6.5). Its empirical shape depends on geometry, interactions and the definition of density.\n\nThe thesis adds a warning that is easy to miss: \"A decline of walking speed with crowding is not a calibration curve between CSI variance and the number of people.\" A physical closure must beat both generic smoothing and an inappropriate closure where its information should bind.",
+              "id": "m5-fundamental",
+              "implies": [
+                "The continuity test of this module uses exactly this closure, with an anti-physical control."
+              ],
+              "kind": "equation",
+              "latex": "v=V(\\rho)\\,e",
+              "symbols": [
+                {
+                  "meaning": "speed as a function of density (the fundamental diagram)",
+                  "symbol": "V(\\rho)"
+                },
+                {
+                  "meaning": "direction field: where people head",
+                  "symbol": "e"
+                }
+              ],
+              "title": "A fundamental diagram closes the model"
+            },
+            {
+              "anchors": [
+                "uncertainty.aggregate-observation-operator",
+                "uncertainty.particle-filter-assimilation"
+              ],
+              "body": "For link $\\ell$, the measurement $y_{\\ell,t}$ is an operator $\\mathcal H_\\ell$ applied to the density and velocity fields, with the link's calibration $\\theta_{\\ell,t}$, plus error (§6.6).\n\nThe operator contains propagation geometry and sensor response. A spatial sensitivity weighting is an assumption that needs validation, because bodies alter multipath jointly. A room total is a much lower-dimensional target than a density map, so the thesis treats count estimation as primary and density reconstruction as a conditional extension.\n\nA transition model cannot compensate for a mis-scaled likelihood: a particle filter can produce \"a precise, physically smooth trajectory at the wrong count scale\".",
+              "id": "m5-operator",
+              "implies": [
+                "Conservation constrains $\\rho$; only $\\mathcal H_\\ell$ and $\\theta$ connect $\\rho$ to what is measured."
+              ],
+              "kind": "equation",
+              "label": "Eq. (6.5)",
+              "latex": "y_{\\ell,t}=\\mathcal H_\\ell\\big[\\rho(\\cdot,t),v(\\cdot,t);\\theta_{\\ell,t}\\big]+\\epsilon_{\\ell,t}",
+              "symbols": [
+                {
+                  "meaning": "aggregate measurement of link $\\ell$ at time $t$",
+                  "symbol": "y_{\\ell,t}"
+                },
+                {
+                  "meaning": "observation operator: propagation geometry and sensor response",
+                  "symbol": "\\mathcal H_\\ell"
+                },
+                {
+                  "meaning": "the whole density and velocity fields at time $t$",
+                  "symbol": "\\rho(\\cdot,t),\\ v(\\cdot,t)"
+                },
+                {
+                  "meaning": "calibration of link $\\ell$",
+                  "symbol": "\\theta_{\\ell,t}"
+                },
+                {
+                  "meaning": "measurement error",
+                  "symbol": "\\epsilon_{\\ell,t}"
+                }
+              ],
+              "title": "The aggregate observation operator"
+            },
+            {
+              "anchors": [
+                "uncertainty.multilink-density-inference"
+              ],
+              "body": "On the fleet, the errors of a Bluetooth-address forecast correlated across receivers at 0.60 to 0.97 (§6.6.1). A likelihood that multiplies such receivers as independent reports a posterior narrower than the evidence supports.\n\nFor $n$ errors with equal variance $\\sigma^2$ and equal pairwise correlation $\\rho$, the variance of their average is the standard result below (background). At $\\rho=0.60$, ten receivers are worth about 1.6 independent ones; at $\\rho=0.97$, about 1.03.\n\nThe joint model must estimate the error covariance, for example with a shrinkage or common-factor structure, before an added receiver can count as added information.",
+              "id": "m5-receivers",
+              "implies": [
+                "Additional links help only when their sensitivities add information after error covariance is considered (§6.6.1)."
+              ],
+              "kind": "equation",
+              "latex": "\\operatorname{Var}(\\bar\\epsilon)=\\frac{\\sigma^2}{n}\\big[1+(n-1)\\rho\\big],\\qquad n_{\\mathrm{eff}}=\\frac{n}{1+(n-1)\\rho}",
+              "symbols": [
+                {
+                  "meaning": "number of receivers",
+                  "symbol": "n"
+                },
+                {
+                  "meaning": "pairwise error correlation (here not density)",
+                  "symbol": "\\rho"
+                },
+                {
+                  "meaning": "the averaged error",
+                  "symbol": "\\bar\\epsilon"
+                },
+                {
+                  "meaning": "effective number of independent receivers",
+                  "symbol": "n_{\\mathrm{eff}}"
+                }
+              ],
+              "title": "Ten receivers on one illuminator are not ten replications",
+              "widget": {
+                "id": "correlated-receivers",
+                "params": {}
+              }
+            }
+          ],
+          "summary": "Conservation constrains a density field and its boundary flows. Propagation and calibration connect that field to CSI, and receivers on one illuminator are not independent witnesses.",
+          "thesis": "§6.3–6.7, Eqs. (6.3)–(6.5), Fig. 6.2",
+          "title": "What a crowd model can constrain"
+        },
+        {
+          "id": "m5-resolution",
+          "steps": [
+            {
+              "anchors": [
+                "uncertainty.drift-triggered-recalibration"
+              ],
+              "body": "Derive it from Module 0's slope rule. Linearise the level around the true count: an error in the level of size $\\delta L$ becomes a count error $\\delta L/|L_N|$, where $L_N=\\partial L/\\partial N$.\n\nThe level error has three independent sources. Observation noise, variance $\\sigma^2(N,q)$ at the declared aggregation interval. Calibration uncertainty right after the reference, $J_\\theta\\Sigma_0J_\\theta^\\top$: the parameter covariance $\\Sigma_0$ projected through the sensitivity row $J_\\theta=\\partial L/\\partial\\theta$. And drift since the reference, $tJ_\\theta QJ_\\theta^\\top$, from Eq. (6.2). Add the variances, take the square root, divide by the slope, and multiply by $2z_{1-\\alpha/2}$ for a full central interval.\n\nThe expression assumes a locally identifiable, differentiable inverse. It becomes unreliable near a flat response, a boundary or a multimodal posterior. And $\\sigma^2$ must match the real aggregation and error dependence: averaging correlated windows does not justify an independent-sample variance.",
+              "id": "m5-width",
+              "implies": [
+                "The resolution is a function of state, not a constant: it depends on where on the curve the room is (§6.11)."
+              ],
+              "kind": "equation",
+              "label": "Eq. (6.6)",
+              "latex": "W(N,t)\\approx\\frac{2z_{1-\\alpha/2}}{|L_N|}\\sqrt{\\sigma^2(N,q)+J_\\theta\\Sigma_0J_\\theta^\\top+t\\,J_\\theta QJ_\\theta^\\top}",
+              "symbols": [
+                {
+                  "meaning": "full width of the count interval at count $N$, time $t$ after the reference",
+                  "symbol": "W(N,t)"
+                },
+                {
+                  "meaning": "normal quantile (1.645 for 90 %)",
+                  "symbol": "z_{1-\\alpha/2}"
+                },
+                {
+                  "meaning": "slope of the level against the count",
+                  "symbol": "L_N"
+                },
+                {
+                  "meaning": "observation variance of the level at quality $q$",
+                  "symbol": "\\sigma^2(N,q)"
+                },
+                {
+                  "meaning": "sensitivity row of the level to the calibration parameters",
+                  "symbol": "J_\\theta"
+                },
+                {
+                  "meaning": "calibration covariance just after the reference",
+                  "symbol": "\\Sigma_0"
+                },
+                {
+                  "meaning": "drift covariance per unit time",
+                  "symbol": "Q"
+                },
+                {
+                  "meaning": "time since the reference",
+                  "symbol": "t"
+                }
+              ],
+              "title": "The count-interval width"
+            },
+            {
+              "anchors": [
+                "uncertainty.drift-triggered-recalibration"
+              ],
+              "body": "Ask for a width $W^\\star$. Square Eq. (6.6), set $W=W^\\star$, and move the parts that do not depend on time to one side. What remains is the budget $B(N)$: how much drift variance the requested width can absorb.\n\n- If $B(N)<0$, the requested resolution is unavailable immediately after calibration, and no update schedule repairs it.\n- If $B(N)>0$ and the projected drift $J_\\theta QJ_\\theta^\\top>0$, the drift spends the budget linearly, and the horizon is $T^\\star=B/(J_\\theta QJ_\\theta^\\top)$.\n- At $B=0$, any positive drift exhausts the budget immediately. With zero projected drift, there is no finite expiry, which \"does not prove indefinite validity\".\n\nHigher noise, uncertain anchors or lower count sensitivity shorten the horizon, and a plateau can make one-person resolution unattainable without any drift. \"More frequent references are not a remedy for poor observability.\"",
+              "check": {
+                "answer": "$B(3)<0$: the target is missed at $t=0$, before any drift. No reference schedule repairs it, because the width comes from the flat slope and the calibration covariance, not from elapsed time. Only better observability (a steeper response, less noise, better anchors) or a coarser target helps.",
+                "question": "At $N=3$ the initial full width is about 2.95 people and the target is 2. What does the budget say, and what would a daily reference do?"
+              },
+              "id": "m5-budget-horizon",
+              "implies": [
+                "Under the companion's assumptions ($A=4$, $K=3$, $\\sigma=0.05$, $\\Sigma_0=\\operatorname{diag}(0.03^2,0.10^2,0.15^2)$, $Q=\\operatorname{diag}(0.01^2,0.02^2,0.03^2)$ per hour, $W^\\star=2$): $T^\\star\\approx3385$ h at $N=0$, 124 h at $N=1$, 7.5 h at $N=2$, and $B<0$ from $N=3$.",
+                "The horizon is a planning law under an assumed $Q$. It names what a field study must estimate; it is not a measured lifetime (§6.8.5)."
+              ],
+              "kind": "equation",
+              "label": "Eqs. (6.7)–(6.8)",
+              "latex": "B(N)=\\left(\\frac{W^\\star|L_N|}{2z_{1-\\alpha/2}}\\right)^2-\\sigma^2(N,q)-J_\\theta\\Sigma_0J_\\theta^\\top,\\qquad T^\\star(N)=\\frac{B(N)}{J_\\theta QJ_\\theta^\\top}",
+              "symbols": [
+                {
+                  "meaning": "the requested full width, in people",
+                  "symbol": "W^\\star"
+                },
+                {
+                  "meaning": "variance budget left for drift",
+                  "symbol": "B(N)"
+                },
+                {
+                  "meaning": "conditional horizon: time until the width exceeds $W^\\star$",
+                  "symbol": "T^\\star(N)"
+                }
+              ],
+              "title": "The budget and the horizon",
+              "widget": {
+                "id": "resolution",
+                "params": {}
+              }
+            },
+            {
+              "anchors": [
+                "uncertainty.drift-triggered-recalibration"
+              ],
+              "body": "Horizontal axis: assumed occupancy, 0 to 8 people. Vertical axis: the full 90 % width at $t=0$, in people. The shaded band below 2 is the assumed target.\n\nThe widths are 0.20, 0.87 and 1.78 people at $N=0$, 1 and 2 (filled: target met), then 2.95, 4.52, 6.64, 9.58, 13.65 and 19.34 from $N=3$ to 8 (open: target missed). The response flattens, $|L_N|$ shrinks, and the width grows fast, before any drift.",
+              "figure": {
+                "asset": "fig-resolution-width.png",
+                "caption": "The curve is the September companion's local Gaussian full 90 % width, with $A=4$, $K=3$, observation SD 0.05 and parameter covariance diag(0.03², 0.10², 0.15²). The dashed two-person target is assumed; the curve is neither measured coverage nor a field recalibration lifetime.",
+                "label": "Fig. 6.3"
+              },
+              "id": "m5-fig-width",
+              "implies": [],
+              "kind": "figure",
+              "symbols": [],
+              "title": "Resolution can be unavailable right after calibration"
+            },
+            {
+              "anchors": [
+                "conformal-count-intervals"
+              ],
+              "body": "A Bayesian credible interval describes uncertainty under the likelihood and prior; it is not a frequentist coverage guarantee. A split-conformal set provides a different guarantee under exchangeability, and it needs calibration scores separate from the anchors that fit the map (§6.8.2).\n\nWith $m$ exchangeable scores, the threshold is the score of rank $\\lceil(m+1)(1-\\alpha)\\rceil$. If that rank exceeds $m$, the threshold is infinite. So a finite threshold needs at least nine scores for nominal 90 % coverage and nineteen for 95 %. \"These are arithmetic minima, not adequate sample sizes.\"\n\nThe evidence (§6.8.4): coverage was close to nominal inside environments; after local anchoring, uniform coverage failed in two of seven environments and the width gate failed in four. On the fleet, Bluetooth-address bands under-covered at 83.4 % against a nominal 90 %. A chronological day-level band needs at least nine exchangeable calibration days, and the archive does not yet hold nine independently labelled days.",
+              "id": "m5-conformal",
+              "implies": [
+                "Marginal coverage can hide poor performance in a room, count range or activity state, so width and stratified coverage are reported with it."
+              ],
+              "kind": "equation",
+              "latex": "\\hat q=s_{(\\lceil (m+1)(1-\\alpha)\\rceil)},\\qquad \\text{finite only if }\\lceil (m+1)(1-\\alpha)\\rceil\\le m",
+              "symbols": [
+                {
+                  "meaning": "number of exchangeable calibration scores",
+                  "symbol": "m"
+                },
+                {
+                  "meaning": "the $r$-th smallest score",
+                  "symbol": "s_{(r)}"
+                },
+                {
+                  "meaning": "ceiling: round up to a whole number",
+                  "symbol": "\\lceil\\cdot\\rceil"
+                },
+                {
+                  "meaning": "the conformal threshold; the set is every count whose score is at most $\\hat q$",
+                  "symbol": "\\hat q"
+                },
+                {
+                  "meaning": "miscoverage, 0.10 for 90 %",
+                  "symbol": "\\alpha"
+                }
+              ],
+              "title": "Prediction intervals need their own evidence",
+              "widget": {
+                "id": "conformal-rank",
+                "params": {}
+              }
+            }
+          ],
+          "summary": "The width of a count interval is the level's uncertainty divided by the level's slope. A requested width defines a budget, and the drift spends it at a rate that gives a horizon.",
+          "thesis": "§6.8, Eqs. (6.6)–(6.8), Fig. 6.3",
+          "title": "Resolution and the conditional horizon"
+        },
+        {
+          "id": "m5-negatives",
+          "steps": [
+            {
+              "anchors": [
+                "uncertainty.drift-between-successive",
+                "recalibration-trigger-from-drift"
+              ],
+              "body": "**Question.** Can an event-driven policy keep the accuracy of a fixed reference schedule while using fewer references? A trigger on the disagreement between CSI and the device channel should spend references where they are needed (§6.9.2).\n\n**Defeating comparison.** A paired trigger-minus-fixed MAE interval that leaves the $\\pm0.05$-person margin defeats accuracy equivalence, whatever the saving. A disagreement statistic whose association with true error does not clear its lower-bound gate defeats the mechanism.\n\n**Outcome.** Campaign c-ble-trigger-equivalence, 84 runs over six seeds. Trigger minus fixed was $+0.034$ persons, 90 % interval $[+0.002,+0.066]$. Mean reference use was 1.17 against 2.0, inside the budget gate. The association between disagreement and true error was 0.68, seed-cluster 95 % interval $[0.10,0.90]$, whose lower end is below the required 0.60. In one seed, true error grew while the trigger did not fire.\n\n**Boundary.** What survives is a reference saving at a small accuracy cost in this simulation. The more useful finding is the detectability failure: some harmful drift did not move the watched statistic.",
+              "id": "m5-trigger",
+              "implies": [
+                "A trigger is a decision rule, not a drift diagnosis: a change detector also responds to occupancy, motion and packet delivery (§6.8.3)."
+              ],
+              "kind": "idea",
+              "symbols": [],
+              "title": "The drift trigger",
+              "widget": {
+                "id": "equivalence",
+                "params": {
+                  "preset": "trigger"
+                }
+              }
+            },
+            {
+              "anchors": [
+                "uncertainty.pinn-traffic-state",
+                "continuity-prior-regularizes-density"
+              ],
+              "body": "For several months the continuity prior was the candidate physical contribution of the work (§6.10). The candidate loss adds two penalties to the observation fit: the squared residual of a one-dimensional continuity equation with the closure $V(\\hat\\rho)$, and a boundary term. The weights are selected without test labels.\n\nThe question is narrow: does the continuity term add information beyond an equally tuned smoothness penalty?",
+              "id": "m5-pinn-loss",
+              "implies": [
+                "A fair test compares it with smoothing at equal tuning effort and with an anti-physical closure."
+              ],
+              "kind": "equation",
+              "label": "Eq. (6.9)",
+              "latex": "\\mathcal L=\\mathcal L_{\\mathrm{obs}}+\\lambda_{\\mathrm{cont}}\\left\\|\\partial_t\\hat\\rho+\\partial_x\\{\\hat\\rho\\,V(\\hat\\rho)\\}\\right\\|^2+\\lambda_{\\mathrm{bc}}\\,\\mathcal L_{\\mathrm{boundary}}",
+              "symbols": [
+                {
+                  "meaning": "total training loss",
+                  "symbol": "\\mathcal L"
+                },
+                {
+                  "meaning": "misfit to the observations",
+                  "symbol": "\\mathcal L_{\\mathrm{obs}}"
+                },
+                {
+                  "meaning": "estimated density field",
+                  "symbol": "\\hat\\rho"
+                },
+                {
+                  "meaning": "fundamental-diagram speed (the closure)",
+                  "symbol": "V(\\hat\\rho)"
+                },
+                {
+                  "meaning": "penalty weights, chosen without test labels",
+                  "symbol": "\\lambda_{\\mathrm{cont}},\\ \\lambda_{\\mathrm{bc}}"
+                },
+                {
+                  "meaning": "sum of squares over the space–time grid",
+                  "symbol": "\\|\\cdot\\|^2"
+                },
+                {
+                  "meaning": "boundary-condition penalty",
+                  "symbol": "\\mathcal L_{\\mathrm{boundary}}"
+                }
+              ],
+              "title": "The continuity-prior loss"
+            },
+            {
+              "anchors": [
+                "uncertainty.injecting-continuity-equation",
+                "uncertainty.continuity-residual-coupling"
+              ],
+              "body": "**Outcome** (§6.10.1). Campaign c-continuity-prior-csi-density-v2: 48 coupled runs, two flow topologies, four crowd sizes and six seeds per topology, comparing an unconstrained inverse, generic smoothing and three continuity closures. Table 6.2, high-density tercile, $\\Delta$ = RMSE(smoothing) − RMSE(physical prior) in persons/m²:\n\n| Quantity | Balanced | Directed |\n|---|---|---|\n| Mean advection index | 0.27 | 0.975 |\n| Maximum peak density | 1.38 | 2.03 |\n| Unconstrained RMSE | 0.222 | 0.433 |\n| Smoothing RMSE | 0.277 | 0.352 |\n| Physical-prior RMSE | 0.280 | 0.355 |\n| $\\Delta$ | −0.0031 | −0.0023 |\n| 95 % CI | [−0.0034, −0.0027] | [−0.0034, −0.0013] |\n\nBoth intervals lie inside $\\pm0.10$: distinguishable from zero, practically negligible. An anti-physical closure performed as well as the physical one. In the balanced arm the unconstrained inverse beat both regularisers.\n\n**Mechanism** (§6.10.2). The flux term $\\rho v$ is informative only when velocity is observed, and the CSI-to-density inverse does not observe it. A physical prior is useful only when the state variables its law couples are themselves observed.",
+              "id": "m5-continuity-result",
+              "implies": [
+                "No practically meaningful advantage was detectable on one simulated floor at moderate density. Congested regimes, other floors and real hardware lie outside the result."
+              ],
+              "kind": "idea",
+              "symbols": [],
+              "title": "The continuity prior matched generic smoothing",
+              "widget": {
+                "id": "equivalence",
+                "params": {
+                  "preset": "continuity"
+                }
+              }
+            },
+            {
+              "anchors": [
+                "uncertainty.continuity-equation-residual"
+              ],
+              "body": "Read both panels with Module 0's equivalence rule. The shaded band is the margin. In (a) the interval $[+0.002,+0.066]$ crosses the right edge at $+0.05$: equivalence is not shown. In (b) both intervals are tiny and sit deep inside the band: no practical difference, even though they exclude zero (see the inset).\n\nThe two panels fail in opposite directions. The trigger is slightly worse than the schedule. The prior is no better than smoothing.",
+              "figure": {
+                "asset": "fig-negatives-panels.png",
+                "caption": "(a) Drift trigger: paired mean MAE difference, trigger minus fixed, with its 90 % interval over six seeds; the interval leaves the prespecified ±0.05-person region. (b) Continuity prior: paired RMSE differences, smoothing minus physical prior, with 95 % seed-level intervals, six seeds per regime; both lie far inside the ±0.10 persons/m² margin (inset magnified). Negative values favour smoothing.",
+                "label": "Fig. 6.4"
+              },
+              "id": "m5-fig-negatives",
+              "implies": [],
+              "kind": "figure",
+              "symbols": [],
+              "title": "The two bounded negatives"
+            }
+          ],
+          "summary": "An automatic drift trigger did not keep the accuracy of a fixed schedule, and a continuity prior matched generic smoothing. Both are kept, because each closes a design question.",
+          "thesis": "§6.9–6.10, Eq. (6.9), Table 6.2, Fig. 6.4",
+          "title": "Two tested shortcuts and why they failed"
+        },
+        {
+          "id": "m5-conclusion",
+          "steps": [
+            {
+              "anchors": [
+                "uncertainty.output-contract"
+              ],
+              "body": "Three parts (§6.11).\n\n1. **The resolution is a function of state, not a constant.** By Eq. (6.6) the attainable width depends on count sensitivity, observation variance, calibration covariance and elapsed drift. On a flat part of the response, one-person resolution can be unavailable immediately after calibration. The horizon of Eq. (6.8) is a planning law; no field lifetime was measured.\n2. **Stated uncertainty needs its own evidence.** A distribution must name its support and tail prior. Coverage held inside environments but failed uniformly in two of seven after anchoring, and receivers on one illuminator do not multiply the evidence.\n3. **Two automatic alternatives did not remove the need for explicit decisions.** The trigger failed accuracy equivalence and missed harmful drift; the continuity prior matched generic smoothing.\n\nThese findings justify the four reporting actions. The policy is a proposal whose thresholds are fixed in advance and whose field value depends on the closure study.",
+              "id": "m5-rq3",
+              "implies": [],
+              "kind": "idea",
+              "symbols": [],
+              "title": "The answer to RQ3"
+            },
+            {
+              "anchors": [
+                "uncertainty.fitted-physics-informed-transfer"
+              ],
+              "body": "**Contributions** (§7.2), each claimed in the space prior work leaves open (FreeCount, EasyCount, DASECount, Torun et al., Santos et al.):\n\n- **C1.** A joint observation model for CSI and device counts, its scale symmetry, and what each kind of reference identifies. The corpus search found no such result, \"a retrieval finding, not a proof of absence\".\n- **C2.** The conditions under which local references reduce count error, how acquisition settings change the comparison, and how a calibration ages on the fleet proxy. The contribution is the separation of permitted information and the measured failure conditions, not the estimator.\n- **C3.** The dependence of reportable resolution on calibration uncertainty and drift, the reporting actions that follow, and two bounded negatives.\n\n**Limitations** (§7.4): model-specific identification; a public cache without lineage; a device proxy as teacher; four labelled episodes on one day; no measured field lifetime; one simulated floor; dependent receivers; and the open closure study.\n\n**Privacy** (§7.6): device-free sensing is not anonymous by construction, and the thesis claims no privacy property.",
+              "id": "m5-contributions",
+              "implies": [
+                "Every number in this guide carries its unit and its boundary. A committee question about a number is answered with both."
+              ],
+              "kind": "idea",
+              "symbols": [],
+              "title": "Contributions, limitations, and what a committee will test"
+            }
+          ],
+          "summary": "The supported resolution depends on calibration age, drift and position on the response. The instrument therefore needs report, coarsen, request and withhold, and the end-to-end policy is a proposal awaiting the closure study.",
+          "thesis": "§6.11, Ch. 7",
+          "title": "The answers and their boundaries"
+        }
+      ],
+      "order": 5,
+      "slug": "m5-uncertainty",
+      "subtitle": "What the instrument may honestly report between references (RQ3)",
+      "title": "Uncertainty, resolution and decisions"
+    }
+  ],
+  "schema_version": 1,
+  "thesis_revision": "2026-10-01",
+  "title": "The thesis, from first principles"
+}

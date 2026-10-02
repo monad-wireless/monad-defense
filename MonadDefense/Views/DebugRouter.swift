@@ -53,6 +53,18 @@ enum DebugRouter {
         return arguments[index + 1]
     }
 
+    /// Open the Thesis tab on one guide step. `-DemoGuideStep m3-scale-map`.
+    static var demoGuideStepID: String? {
+        guard let index = arguments.firstIndex(of: "-DemoGuideStep"),
+            arguments.indices.contains(index + 1)
+        else { return nil }
+        return arguments[index + 1]
+    }
+
+    /// With `-DemoGuideStep`, show only that step's widget, so a screenshot of
+    /// a chart is not pushed below the fold by the prose. `-DemoWidgetOnly`.
+    static var widgetOnly: Bool { arguments.contains("-DemoWidgetOnly") }
+
     /// The session `-DemoCards` asks for, or nil when the flag is absent.
     @MainActor
     static func demoSession(from store: StudyStore) -> StudySession? {

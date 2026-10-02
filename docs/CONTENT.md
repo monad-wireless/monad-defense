@@ -52,6 +52,38 @@ wrong vault path, and the failure is otherwise silent: the app would ship with
 no content, and every review already done would be orphan-pruned at the next
 launch.
 
+## The thesis guide (Thesis tab)
+
+The Thesis tab is a second, separate bank: a guided walk through every
+equation and figure of the thesis, from school-level mathematics to the
+thesis's own derivations. It is written in the parent repo as one vault note
+per module and compiled by its own verb:
+
+```
+obsidian/monad-knowledge/edu/guides/thesis-math/m*.md   ← lessons and steps
+        │
+        ├─ monad-knowledge edu guide compile ──► MonadDefense/Resources/ThesisGuide.json
+        │                                        MonadDefense/Resources/Guide/*.png
+        └─ monad-knowledge edu guide slides  ──► publications/thesis-math/m*.md (Slidev)
+```
+
+```bash
+uv run monad-knowledge edu guide validate   # parse, figures, anchors
+uv run monad-knowledge edu guide compile    # → ThesisGuide.json + Guide/
+uv run monad-knowledge edu guide slides     # → the six projector decks
+```
+
+The same notes feed the phone and the projector, so they cannot drift;
+`tests/test_edu_guide.py` in the parent repo fails when either committed
+output is older than the notes. A step's `widget.id` is one of a closed set
+(`monad_knowledge/edu/guide.py:WIDGETS`) that both `Views/Guide/Widgets/` and
+the decks' Vue components implement; the same test checks the three lists
+agree. The figures are rendered by `publications/thesis-math/tools/render_figures.py`
+(TikZ from the thesis sources, matplotlib copied).
+
+The guide is not scheduled and not graded. Opening a step marks it read in
+`UserDefaults`; nothing reaches FSRS, the review logs or the Stats tab.
+
 ### The other read-side commands
 
 | command | what it answers |

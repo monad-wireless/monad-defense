@@ -50,7 +50,7 @@ private enum MathSymbols {
         "mu": "\u{03BC}", "nu": "\u{03BD}", "xi": "\u{03BE}", "pi": "\u{03C0}",
         "rho": "\u{03C1}", "sigma": "\u{03C3}", "tau": "\u{03C4}", "upsilon": "\u{03C5}",
         "phi": "\u{03C6}", "varphi": "\u{03C6}", "chi": "\u{03C7}", "psi": "\u{03C8}",
-        "omega": "\u{03C9}",
+        "omega": "\u{03C9}", "ell": "\u{2113}",
     ]
 
     /// Macro name → glyph, for macros that render upright.
@@ -62,6 +62,9 @@ private enum MathSymbols {
         "ldots": "\u{2026}", "cdots": "\u{22EF}", "dots": "\u{2026}",
         "exp": "exp", "log": "log", "ln": "ln", "sin": "sin", "cos": "cos", "tan": "tan",
         "max": "max", "min": "min", "arg": "arg", "det": "det", "dim": "dim",
+        "lim": "lim", "top": "\u{22A4}", "exists": "\u{2203}", "forall": "\u{2200}",
+        "|": "\u{2016}", "lceil": "\u{2308}", "rceil": "\u{2309}", "lfloor": "\u{230A}", "rfloor": "\u{230B}",
+        "{": "{", "}": "}",
     ]
 
     /// Macro name → glyph, for relations and binary operators (spaced).
@@ -76,6 +79,8 @@ private enum MathSymbols {
         "leftrightarrow": "\u{2194}", "implies": "\u{21D2}", "iff": "\u{21D4}",
         "ll": "\u{226A}", "gg": "\u{226B}", "simeq": "\u{2243}", "cong": "\u{2245}",
         "perp": "\u{22A5}", "cup": "\u{222A}", "cap": "\u{2229}", "setminus": "\u{2216}",
+        "mid": "\u{2223}", "star": "\u{22C6}", "longmapsto": "\u{27FC}", "circ": "\u{2218}",
+        "subseteq": "\u{2286}", "nsubset": "\u{2284}",
     ]
 
     /// Macro name → glyph, for operators that take limits above and below.
@@ -89,7 +94,23 @@ private enum MathSymbols {
         ",": 0.16, ":": 0.22, ";": 0.28, "!": -0.16, "quad": 1.0, "qquad": 2.0, " ": 0.3,
     ]
 
-    static let accents: Set<String> = ["hat", "bar", "vec", "tilde", "dot", "overline"]
+    static let accents: Set<String> = ["hat", "bar", "vec", "tilde", "widetilde", "widehat", "dot", "overline"]
+
+    /// `\mathcal` and `\mathbb` letters. Unicode's script and double-struck
+    /// blocks have holes where older characters already existed (ℬ, ℰ, ℋ, …),
+    /// so the letters are listed rather than computed by offset.
+    static let calligraphic: [Character: String] = [
+        "A": "\u{1D49C}", "B": "\u{212C}", "C": "\u{1D49E}", "D": "\u{1D49F}", "E": "\u{2130}",
+        "F": "\u{2131}", "G": "\u{1D4A2}", "H": "\u{210B}", "I": "\u{2110}", "J": "\u{1D4A5}",
+        "K": "\u{1D4A6}", "L": "\u{2112}", "M": "\u{2133}", "N": "\u{1D4A9}", "O": "\u{1D4AA}",
+        "P": "\u{1D4AB}", "Q": "\u{1D4AC}", "R": "\u{211B}", "S": "\u{1D4AE}", "T": "\u{1D4AF}",
+        "U": "\u{1D4B0}", "V": "\u{1D4B1}", "W": "\u{1D4B2}", "X": "\u{1D4B3}", "Y": "\u{1D4B4}",
+        "Z": "\u{1D4B5}",
+    ]
+    static let doubleStruck: [Character: String] = [
+        "C": "\u{2102}", "E": "\u{1D53C}", "N": "\u{2115}", "P": "\u{2119}", "Q": "\u{211A}",
+        "R": "\u{211D}", "Z": "\u{2124}", "1": "\u{1D7D9}",
+    ]
 
     /// Macros whose single argument changes the style of its contents.
     static let styleGroups: [String: MathAtomStyle] = [
@@ -233,6 +254,22 @@ struct MathParser {
             }
             return .empty
         }
+        if name == "text" {
+            // `\text{octaves of amplitude}` keeps its spaces; every other group
+            // skips them, as maths mode does.
+            return .atom(try readRawGroup(), .upright)
+        }
+        if name == "mathcal" || name == "mathbb" {
+            let letters = name == "mathcal" ? MathSymbols.calligraphic : MathSymbols.doubleStruck
+            return Self.mapLetters(try parseArgument(style: .upright), letters)
+        }
+        if name == "overset" {
+            // `\overset{?}{=}`: the small mark sits above its base, which a
+            // superscript approximates closely enough at these sizes.
+            let over = try parseArgument(style: .upright)
+            let base = try parseArgument(style: style)
+            return .scripted(base: base, sub: nil, sup: over)
+        }
         if let groupStyle = MathSymbols.styleGroups[name] {
             return try parseArgument(style: groupStyle)
         }
@@ -250,6 +287,36 @@ struct MathParser {
         // An unknown macro is rendered upright rather than dropped, so the
         // reader sees the word instead of a hole.
         return .atom(name, .upright)
+    }
+
+    /// The characters of a `{...}` group verbatim, nested braces included.
+    private mutating func readRawGroup() throws -> String {
+        skipSpaces()
+        guard current == "{" else { throw MathParseError() }
+        index += 1
+        var depth = 1
+        var text = ""
+        while let c = advance() {
+            if c == "{" { depth += 1 }
+            if c == "}" {
+                depth -= 1
+                if depth == 0 { return text }
+            }
+            text.append(c)
+        }
+        throw MathParseError()
+    }
+
+    private static func mapLetters(_ node: MathNode, _ letters: [Character: String]) -> MathNode {
+        switch node {
+        case .atom(let text, let style):
+            let mapped = text.map { letters[$0] ?? String($0) }.joined()
+            return .atom(mapped, style == .bold ? .bold : .upright)
+        case .row(let children):
+            return .row(children.map { mapLetters($0, letters) })
+        default:
+            return node
+        }
     }
 
     /// The next `{...}` group, or the next single atom if there are no braces.
@@ -344,7 +411,8 @@ private struct MathNodeView: View {
         case .relation: font = .system(size: size, design: .serif)
         }
         let air = style == .relation ? size * 0.18 : 0
-        return Text(text)
+        // LaTeX's `-` is a minus sign, not a hyphen.
+        return Text(style == .relation && text == "-" ? "\u{2212}" : text)
             .font(font)
             .padding(.horizontal, air)
     }
@@ -352,10 +420,10 @@ private struct MathNodeView: View {
     private func accentView(kind: String, base: MathNode) -> some View {
         let mark: String
         switch kind {
-        case "hat": mark = "\u{0302}"
+        case "hat", "widehat": mark = "\u{0302}"
         case "bar", "overline": mark = "\u{0304}"
         case "vec": mark = "\u{20D7}"
-        case "tilde": mark = "\u{0303}"
+        case "tilde", "widetilde": mark = "\u{0303}"
         default: mark = "\u{0307}"
         }
         // Combining marks attach to the glyph, which is what the reader expects

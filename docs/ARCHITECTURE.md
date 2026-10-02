@@ -151,12 +151,28 @@ cards that have since changed.
 
 See [CONTENT.md](CONTENT.md) for the loop this closes.
 
+## Thesis guide
+
+`ThesisGuide.json` is read by `ThesisGuide.loadBundled()` (`Models/GuideModels.swift`)
+and is optional: if it is missing or from a newer compiler, the Thesis tab says
+so and the rest of the app is unaffected. `Views/Guide/` holds the module list,
+the lesson pager and `StepView`; `GuideText.swift` renders step prose, flattening
+inline `$…$` maths through the same `MathParser` into one wrapping `Text`.
+
+Each widget id has one view in `Views/Guide/Widgets/`, dispatched by
+`GuideWidgetView`. Their numbers come from `Models/GuideMath.swift`, a port of
+the decks' `models.js`; both reproduce the companion notebook's pinned values
+(posterior means 4.46 / 7.76 / 15.15, widths of Fig. 6.3, horizons 3385 / 124 /
+7.48 h). The read position lives in `Store/GuideReadState.swift`, in
+`UserDefaults`, never in SwiftData.
+
 ## Debug router
 
 `Views/DebugRouter.swift` reads launch arguments and opens a chosen card, a
 chosen reader or a chosen card's figures straight from launch. It exists so
 `design/screenshots.sh` is reproducible rather than the result of tapping in
-the right order.
+the right order. `-DemoGuideStep <step-id>` opens the Thesis tab at one guide
+step, and `-DemoWidgetOnly` with it shows only that step's widget.
 
 The whole file sits inside `#if DEBUG` and therefore cannot exist in a release
 build. A launch argument that jumps into arbitrary app state is a debugging

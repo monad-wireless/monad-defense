@@ -106,6 +106,17 @@ formula shrinks to fit before it becomes a horizontal scroller.
 Anything it cannot parse falls back to the raw source in monospace. A formula
 that renders as its own LaTeX is ugly; one that crashes the session is worse.
 
+## The Thesis tab
+
+A guided walk through the mathematics of the thesis: 6 modules, 97 steps, every
+equation symbol by symbol, every thesis figure with how to read it, and 28
+native interactive widgets (Swift Charts, no evaluator, no network). It starts
+at school level (slopes, logarithms, complex numbers as arrows) and ends at the
+resolution horizon and the two bounded negatives. Steps are read, not graded:
+the tab never touches the FSRS queue. The same vault notes render the Slidev
+decks in the parent repo's `publications/thesis-math/`. See
+[docs/CONTENT.md](docs/CONTENT.md#the-thesis-guide-thesis-tab).
+
 ## Content
 
 Content is not written here. It is compiled from vault deck notes into
