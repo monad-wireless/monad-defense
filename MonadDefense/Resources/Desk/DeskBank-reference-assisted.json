@@ -1,0 +1,3706 @@
+{
+  "bank_id": "sha256:96372c8a336817030aca7018d6eabce18ec5792e7c646b594e7593d61fce10c6",
+  "cards": [
+    {
+      "evidence": {
+        "change_key": "sha256:8db0f50e105a8544f97f9235299ea428dd5de8c0f27f66fec9d0ce3022327c3b",
+        "complete": true,
+        "evidence_digest": "sha256:933a38897200e4dff59b9dc0ee42079ca05313c569093e1de8b2061b84079103",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "year_conflict",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "wang2026_2758",
+                "title": "A Survey on Wi-Fi Sensing Generalizability: Taxonomy, Techniques, Datasets, and Future Research Prospects",
+                "year": 2026
+              },
+              {
+                "paper_id": "zhang2025_a250",
+                "title": "Leveraging Online Learning for Domain-Adaptation in Wi-Fi-Based Device-Free Localization",
+                "year": 2025
+              }
+            ],
+            "citers_total": 2,
+            "first_author": "wang",
+            "id": "ext:AirFi: Empowering WiFi-based passive human gesture recognition to unseen environment via domain generalization",
+            "title": "AirFi: Empowering WiFi-based passive human gesture recognition to unseen environment via domain generalization",
+            "year": 2024
+          },
+          "score": null,
+          "vault": {
+            "first_author": "wang",
+            "paper_id": "wang2022_7c8f",
+            "title": "AirFi: Empowering WiFi-based Passive Human Gesture Recognition to Unseen Environment via Domain Generalization",
+            "year": 2022
+          },
+          "year_gap": 2
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:AirFi: Empowering WiFi-based passive human gesture recognition to unseen environment via domain generalization->wang2022_7c8f"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'AirFi: Empowering WiFi-based passive human gesture recognition to unseen environment via domain generalization' the vault paper 'AirFi: Empowering WiFi-based Passive Human Gesture Recognition to Unseen Environment via Domain Generalization'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:AirFi: Empowering WiFi-based passive human gesture recognition to unseen environment via domain generalization->wang2022_7c8f",
+      "task_id": "reference:reference:ext:AirFi: Empowering WiFi-based passive human gesture recognition to unseen environment via domain generalization->wang2022_7c8f:reference-rubric/1",
+      "task_revision": "sha256:ec431efaf4f2c02e9057fd4b32eb3c4ac96457b5153abbad508b085e75b0a7ee"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:c5a9e9f168546b4ea328ce596f7b8b22983bef24765b9c4c69da7eb1b7aaa677",
+        "complete": true,
+        "evidence_digest": "sha256:a568efa61f458769f7ed2e7863463b6ae1efbb2052f2e9d2e7ea5120e0546b13",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "year_conflict",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "angelopoulos2025_8070",
+                "title": "Learn then test: Calibrating predictive algorithms to achieve risk control",
+                "year": 2025
+              },
+              {
+                "paper_id": "mao2024_e4c6",
+                "title": "Valid Model-Free Spatial Prediction",
+                "year": 2024
+              },
+              {
+                "paper_id": "fontana2023_66ca",
+                "title": "Conformal prediction: A unified review of theory and new challenges",
+                "year": 2023
+              },
+              {
+                "paper_id": "guan2023_449b",
+                "title": "Localized conformal prediction: a generalized inference framework for conformal prediction",
+                "year": 2023
+              },
+              {
+                "paper_id": "barber2021_bbb2",
+                "title": "Predictive inference with the jackknife+",
+                "year": 2021
+              }
+            ],
+            "citers_total": 7,
+            "first_author": "vovk",
+            "id": "ext:Algorithmic Learning in a Random World",
+            "title": "Algorithmic Learning in a Random World",
+            "year": 2005
+          },
+          "score": null,
+          "vault": {
+            "first_author": "vovk",
+            "paper_id": "vovk2022_bebc",
+            "title": "Algorithmic Learning in a Random World",
+            "year": 2022
+          },
+          "year_gap": 17
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Algorithmic Learning in a Random World->vovk2022_bebc"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Algorithmic Learning in a Random World' the vault paper 'Algorithmic Learning in a Random World'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Algorithmic Learning in a Random World->vovk2022_bebc",
+      "task_id": "reference:reference:ext:Algorithmic Learning in a Random World->vovk2022_bebc:reference-rubric/1",
+      "task_revision": "sha256:0a65dfd7b8901c71feef7ea862338d93c8d0b10355f9f124bf25754398e29456"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:db157b4133039c8279e6a8110ccda0d5c7a45cfeef485fc65af5c14c6a4a4503",
+        "complete": true,
+        "evidence_digest": "sha256:1bee92068ad3e155f4ce00bdf3015e07da9ec8e0efce0bb9f7718ab8be611fe8",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "year_conflict",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "gibbs2025_3920",
+                "title": "Conformal prediction with conditional guarantees",
+                "year": 2025
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "vovk",
+            "id": "ext:Algorithmic learning in a random world",
+            "title": "Algorithmic learning in a random world",
+            "year": 2005
+          },
+          "score": null,
+          "vault": {
+            "first_author": "vovk",
+            "paper_id": "vovk2022_bebc",
+            "title": "Algorithmic Learning in a Random World",
+            "year": 2022
+          },
+          "year_gap": 17
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Algorithmic learning in a random world->vovk2022_bebc"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Algorithmic learning in a random world' the vault paper 'Algorithmic Learning in a Random World'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Algorithmic learning in a random world->vovk2022_bebc",
+      "task_id": "reference:reference:ext:Algorithmic learning in a random world->vovk2022_bebc:reference-rubric/1",
+      "task_revision": "sha256:0f0fdd19d39ce6ba4f47a538849016f8cc0e49cf38f0682d28c8ee12f1f8ae15"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:4f39d1e505857da11e067ce0157c090626c36e6ba0c8f437eb315448ed51af5b",
+        "complete": true,
+        "evidence_digest": "sha256:575cca193e24872eaa7ec0ae1806ec8bd805d149257c7516f4365bae6cbf5e9d",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "year_conflict",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "chahal2020_66c5",
+                "title": "Trust management in social Internet of Things: A taxonomy, open issues, and challenges",
+                "year": 2020
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "gelman",
+            "id": "ext:Bayesian Data Analysis",
+            "title": "Bayesian Data Analysis",
+            "year": 1995
+          },
+          "score": null,
+          "vault": {
+            "first_author": "gelman",
+            "paper_id": "gelman2013_f364",
+            "title": "Bayesian Data Analysis",
+            "year": 2013
+          },
+          "year_gap": 18
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Bayesian Data Analysis->gelman2013_f364"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Bayesian Data Analysis' the vault paper 'Bayesian Data Analysis'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Bayesian Data Analysis->gelman2013_f364",
+      "task_id": "reference:reference:ext:Bayesian Data Analysis->gelman2013_f364:reference-rubric/1",
+      "task_revision": "sha256:1ba4d1f60b70a77dc8ed097802365c61e600e7142c1052ff34dd99a7bd414f74"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:2554c9289477f2b4a2df50fa7a515af0f9aa92e13bd4e9c66c736a2d429e087a",
+        "complete": true,
+        "evidence_digest": "sha256:7ae6766cc421b04332a79f9c4bc85ddcba6813c03bde5965db7ac6891a470266",
+        "fields": {
+          "authors_compatible": false,
+          "reason": "year_conflict",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "xu2023_67d4",
+                "title": "Conformal Prediction for Time Series",
+                "year": 2023
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "zeni",
+            "id": "ext:Conformal prediction: A unified review of theory and new challenges",
+            "title": "Conformal prediction: A unified review of theory and new challenges",
+            "year": 2020
+          },
+          "score": null,
+          "vault": {
+            "first_author": "fontana",
+            "paper_id": "fontana2023_66ca",
+            "title": "Conformal prediction: A unified review of theory and new challenges",
+            "year": 2023
+          },
+          "year_gap": 3
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Conformal prediction: A unified review of theory and new challenges->fontana2023_66ca"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Conformal prediction: A unified review of theory and new challenges' the vault paper 'Conformal prediction: A unified review of theory and new challenges'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Conformal prediction: A unified review of theory and new challenges->fontana2023_66ca",
+      "task_id": "reference:reference:ext:Conformal prediction: A unified review of theory and new challenges->fontana2023_66ca:reference-rubric/1",
+      "task_revision": "sha256:2da3ef9a1a6ed312d6e446dd205ecfa7ed8e837327b94f19052c4a10b5451067"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:8018a3e721c823f3afc0c9dec1a748b98f3b4f8a94c86e4be4b1aa6c8fba3109",
+        "complete": true,
+        "evidence_digest": "sha256:7fc200ecf5c139fbdda7acf64449eb58e33db7628a55e37af30a8ef71056fef7",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "year_conflict",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "du2025_5663",
+                "title": "An Overview on IEEE 802.11bf: WLAN Sensing",
+                "year": 2025
+              },
+              {
+                "paper_id": "adeel2019_ada0",
+                "title": "A Survey on the Role of Wireless Sensor Networks and IoT in Disaster Management",
+                "year": 2019
+              },
+              {
+                "paper_id": "stoica1989_614d",
+                "title": "MUSIC, maximum likelihood, and Cramer-Rao bound",
+                "year": 1989
+              }
+            ],
+            "citers_total": 3,
+            "first_author": "schmidt",
+            "id": "ext:Multiple emitter location and signal parameter estimation",
+            "title": "Multiple emitter location and signal parameter estimation",
+            "year": 1979
+          },
+          "score": null,
+          "vault": {
+            "first_author": "schmidt",
+            "paper_id": "schmidt1986_8a38",
+            "title": "Multiple emitter location and signal parameter estimation",
+            "year": 1986
+          },
+          "year_gap": 7
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Multiple emitter location and signal parameter estimation->schmidt1986_8a38"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Multiple emitter location and signal parameter estimation' the vault paper 'Multiple emitter location and signal parameter estimation'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Multiple emitter location and signal parameter estimation->schmidt1986_8a38",
+      "task_id": "reference:reference:ext:Multiple emitter location and signal parameter estimation->schmidt1986_8a38:reference-rubric/1",
+      "task_revision": "sha256:cd381ec65cb2475acfaf32151438fe291dc4fb34855c80e1ca56b07c2fca6cae"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:c7dee21a1f00d7893f51af0a65a555dcc3a5b7d99adc8604bf96b946305f38cd",
+        "complete": true,
+        "evidence_digest": "sha256:29f408e6d68d954f31f18dd47cd6aecd66685c8dac30d6d56063e153fd23ec61",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "year_conflict",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "di2023_285b",
+                "title": "Physics-Informed Deep Learning for Traffic State Estimation: A Survey and the Outlook",
+                "year": 2023
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "meng",
+            "id": "ext:When Physics Meets Machine Learning: A Survey of Physics-Informed Machine Learning",
+            "title": "When Physics Meets Machine Learning: A Survey of Physics-Informed Machine Learning",
+            "year": 2022
+          },
+          "score": null,
+          "vault": {
+            "first_author": "meng",
+            "paper_id": "meng2025_c64e",
+            "title": "When physics meets machine learning: a survey of physics-informed machine learning",
+            "year": 2025
+          },
+          "year_gap": 3
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:When Physics Meets Machine Learning: A Survey of Physics-Informed Machine Learning->meng2025_c64e"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'When Physics Meets Machine Learning: A Survey of Physics-Informed Machine Learning' the vault paper 'When physics meets machine learning: a survey of physics-informed machine learning'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:When Physics Meets Machine Learning: A Survey of Physics-Informed Machine Learning->meng2025_c64e",
+      "task_id": "reference:reference:ext:When Physics Meets Machine Learning: A Survey of Physics-Informed Machine Learning->meng2025_c64e:reference-rubric/1",
+      "task_revision": "sha256:6a919fe502e0273741600170f06692cc40781109ac84bda1903e0f34eb9185a9"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:a2202c7c5a75550836b9cb5f8316c6f13b0c1aeb046d2348d26a6081da4cd786",
+        "complete": true,
+        "evidence_digest": "sha256:04092b4c91a55c86030812cd52e15f557c368925948f9969e7b6cf281b9949c0",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "alzaabi2024_ccf4",
+                "title": "Non-Contact Wi-Fi Sensing of Respiration Rate for Older Adults in Care: A Validity and Repeatability Study",
+                "year": 2024
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "alzaabi",
+            "id": "ext:Respiration rate measurement validity and repeatability of ubiquitous non-contact WI-Fi sensing for older adults in care",
+            "title": "Respiration rate measurement validity and repeatability of ubiquitous non-contact WI-Fi sensing for older adults in care",
+            "year": 2022
+          },
+          "score": 0.9211,
+          "vault": {
+            "first_author": "alzaabi",
+            "paper_id": "alzaabi2024_ccf4",
+            "title": "Non-Contact Wi-Fi Sensing of Respiration Rate for Older Adults in Care: A Validity and Repeatability Study",
+            "year": 2024
+          },
+          "year_gap": 2
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Respiration rate measurement validity and repeatability of ubiquitous non-contact WI-Fi sensing for older adults in care->alzaabi2024_ccf4"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Respiration rate measurement validity and repeatability of ubiquitous non-contact WI-Fi sensing for older adults in care' the vault paper 'Non-Contact Wi-Fi Sensing of Respiration Rate for Older Adults in Care: A Validity and Repeatability Study'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Respiration rate measurement validity and repeatability of ubiquitous non-contact WI-Fi sensing for older adults in care->alzaabi2024_ccf4",
+      "task_id": "reference:reference:ext:Respiration rate measurement validity and repeatability of ubiquitous non-contact WI-Fi sensing for older adults in care->alzaabi2024_ccf4:reference-rubric/1",
+      "task_revision": "sha256:5866ca776a4340534180f3e4919c39f4103829225519e42e0485d7d5405c3425"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:8b319cce9bf38d34cb00cab511fef7befde6b208ba1a2ea36dbdafbb8f376bf8",
+        "complete": true,
+        "evidence_digest": "sha256:e73a8619b8e2529e1f4bee9b62cb0a433d57f1e84c1179d70af003d0dea709f2",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "chaudhari2026_85b1",
+                "title": "WiFi as Infrastructure: Valuation Impact of CSI Sensing on Smart Buildings and REIT Portfolios",
+                "year": 2026
+              },
+              {
+                "paper_id": "yang2023_a34a",
+                "title": "SenseFi: A library and benchmark on deep-learning-empowered WiFi human sensing",
+                "year": 2023
+              }
+            ],
+            "citers_total": 2,
+            "first_author": null,
+            "id": "ext:EfficientFi: Towards Large-Scale Lightweight WiFi Sensing via CSI Compression",
+            "title": "EfficientFi: Towards Large-Scale Lightweight WiFi Sensing via CSI Compression",
+            "year": 2022
+          },
+          "score": 0.9175,
+          "vault": {
+            "first_author": "yang",
+            "paper_id": "yang2022_cd5c",
+            "title": "EfficientFi: Toward Large-Scale Lightweight WiFi Sensing via CSI Compression",
+            "year": 2022
+          },
+          "year_gap": 0
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:EfficientFi: Towards Large-Scale Lightweight WiFi Sensing via CSI Compression->yang2022_cd5c"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'EfficientFi: Towards Large-Scale Lightweight WiFi Sensing via CSI Compression' the vault paper 'EfficientFi: Toward Large-Scale Lightweight WiFi Sensing via CSI Compression'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:EfficientFi: Towards Large-Scale Lightweight WiFi Sensing via CSI Compression->yang2022_cd5c",
+      "task_id": "reference:reference:ext:EfficientFi: Towards Large-Scale Lightweight WiFi Sensing via CSI Compression->yang2022_cd5c:reference-rubric/1",
+      "task_revision": "sha256:3eb2e82e9ff67c940d240b5e128ff3e199e45402a62f4a79bba90df4ff8ce6e4"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:0fe5cfcf606b5a4626d2ee097b9836b679443aac265b709b75c422bc6e000534",
+        "complete": true,
+        "evidence_digest": "sha256:696be87655b677fdb98c7d4305f195cd197c1dd1149817e3a0e6af9134f0f988",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "yang2024_a72c",
+                "title": "Holodeck: Language Guided Generation of 3D Embodied AI Environments",
+                "year": 2024
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "tang",
+            "id": "ext:Diffuscene: Scene graph denoising diffusion probabilistic model for generative indoor scene synthesis",
+            "title": "Diffuscene: Scene graph denoising diffusion probabilistic model for generative indoor scene synthesis",
+            "year": 2023
+          },
+          "score": 0.9011,
+          "vault": {
+            "first_author": "tang",
+            "paper_id": "tang2024_8535",
+            "title": "DiffuScene: Denoising Diffusion Models for Generative Indoor Scene Synthesis",
+            "year": 2024
+          },
+          "year_gap": 1
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Diffuscene: Scene graph denoising diffusion probabilistic model for generative indoor scene synthesis->tang2024_8535"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Diffuscene: Scene graph denoising diffusion probabilistic model for generative indoor scene synthesis' the vault paper 'DiffuScene: Denoising Diffusion Models for Generative Indoor Scene Synthesis'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Diffuscene: Scene graph denoising diffusion probabilistic model for generative indoor scene synthesis->tang2024_8535",
+      "task_id": "reference:reference:ext:Diffuscene: Scene graph denoising diffusion probabilistic model for generative indoor scene synthesis->tang2024_8535:reference-rubric/1",
+      "task_revision": "sha256:cfdbf946d5ff4dd07590abe93f656502163213286494851241f707e550c5b856"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:750256165b66abdeb7abc267957f2f581701e361b9aad8e83bc1ab90e90797ca",
+        "complete": true,
+        "evidence_digest": "sha256:2849a34333d08bfbf6b47944efc6829d740e0d714c272edd1589419a4ce01028",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "yan2025_22bc",
+                "title": "Crowd counting with WiFi sensing based on iterative attentional feature fusion",
+                "year": 2025
+              },
+              {
+                "paper_id": "guo2022_c2a2",
+                "title": "TWCC: A Robust Through-the-Wall Crowd Counting System Using Ambient WiFi Signals",
+                "year": 2022
+              }
+            ],
+            "citers_total": 2,
+            "first_author": "liu",
+            "id": "ext:WiCount: A deep learning approach for crowd counting using WiFi signal",
+            "title": "WiCount: A deep learning approach for crowd counting using WiFi signal",
+            "year": 2017
+          },
+          "score": 0.8965,
+          "vault": {
+            "first_author": "liu",
+            "paper_id": "liu2017_cc0e",
+            "title": "WiCount: A Deep Learning Approach for Crowd Counting Using WiFi Signals",
+            "year": 2017
+          },
+          "year_gap": 0
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:WiCount: A deep learning approach for crowd counting using WiFi signal->liu2017_cc0e"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'WiCount: A deep learning approach for crowd counting using WiFi signal' the vault paper 'WiCount: A Deep Learning Approach for Crowd Counting Using WiFi Signals'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:WiCount: A deep learning approach for crowd counting using WiFi signal->liu2017_cc0e",
+      "task_id": "reference:reference:ext:WiCount: A deep learning approach for crowd counting using WiFi signal->liu2017_cc0e:reference-rubric/1",
+      "task_revision": "sha256:42944cb637c17b6e885ea75c047999543cf1e096a009c6aa3704de13e3a06376"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:db4c6776055286f43d273764e2ab1002f7d684a4cd023e55c12b0c23062d2d70",
+        "complete": true,
+        "evidence_digest": "sha256:db478cf63f871d0ab0f43074dba646d2068294660d0adb65d652e487341fc6fd",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "guarino2026_e72c",
+                "title": "A survey on CSI-based Wi-Fi sensing datasets and models with a focus on reproducibility",
+                "year": 2026
+              },
+              {
+                "paper_id": "yue2026_231d",
+                "title": "Deep Learning-Enhanced Human Sensing with Channel State Information: A Survey",
+                "year": 2026
+              }
+            ],
+            "citers_total": 2,
+            "first_author": "zhou",
+            "id": "ext:Augment domain adversarial adaptation models for WiFi-based HAR",
+            "title": "Augment domain adversarial adaptation models for WiFi-based HAR",
+            "year": 2024
+          },
+          "score": 0.8957,
+          "vault": {
+            "first_author": "zhou",
+            "paper_id": "zhou2024_2d23",
+            "title": "i-Sample: Augment Domain Adversarial Adaptation Models for WiFi-based HAR",
+            "year": 2024
+          },
+          "year_gap": 0
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Augment domain adversarial adaptation models for WiFi-based HAR->zhou2024_2d23"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Augment domain adversarial adaptation models for WiFi-based HAR' the vault paper 'i-Sample: Augment Domain Adversarial Adaptation Models for WiFi-based HAR'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Augment domain adversarial adaptation models for WiFi-based HAR->zhou2024_2d23",
+      "task_id": "reference:reference:ext:Augment domain adversarial adaptation models for WiFi-based HAR->zhou2024_2d23:reference-rubric/1",
+      "task_revision": "sha256:52508d7da2e79d89718ad17d641cfbf646b2aa97e59f4b06204af88f8459ed61"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:fd3d8a876466284e24ef23cc2127b4a5931b5ef681de2647b2f6c531d005ac55",
+        "complete": true,
+        "evidence_digest": "sha256:e9a852cc1d340c81db38b29d17ce6f897cda399486aefd876bf8b8bc3aae787a",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "sun2026_2f5e",
+                "title": "Radio Radiance Field: The New Frontier of Spatial Wireless Channel Representation",
+                "year": 2026
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "zhang",
+            "id": "ext:WiSegRT: Dataset for Site-Specific Indoor Radio Propagation Modeling with 3D Segmentation and Differentiable Ray-Tracing",
+            "title": "WiSegRT: Dataset for Site-Specific Indoor Radio Propagation Modeling with 3D Segmentation and Differentiable Ray-Tracing",
+            "year": 2024
+          },
+          "score": 0.8956,
+          "vault": {
+            "first_author": "zhang",
+            "paper_id": "zhang2024_df4a",
+            "title": "WiSegRT: Dataset for Site-Specific Indoor Radio Propagation Modeling with 3D Segmentation and Differentiable Ray-Tracing: (Invited Paper)",
+            "year": 2024
+          },
+          "year_gap": 0
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:WiSegRT: Dataset for Site-Specific Indoor Radio Propagation Modeling with 3D Segmentation and Differentiable Ray-Tracing->zhang2024_df4a"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'WiSegRT: Dataset for Site-Specific Indoor Radio Propagation Modeling with 3D Segmentation and Differentiable Ray-Tracing' the vault paper 'WiSegRT: Dataset for Site-Specific Indoor Radio Propagation Modeling with 3D Segmentation and Differentiable Ray-Tracing: (Invited Paper)'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:WiSegRT: Dataset for Site-Specific Indoor Radio Propagation Modeling with 3D Segmentation and Differentiable Ray-Tracing->zhang2024_df4a",
+      "task_id": "reference:reference:ext:WiSegRT: Dataset for Site-Specific Indoor Radio Propagation Modeling with 3D Segmentation and Differentiable Ray-Tracing->zhang2024_df4a:reference-rubric/1",
+      "task_revision": "sha256:3cdca9b923c16168253e6f53154be1cdf42c60710ea8468c067fa85a44c84dd6"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:684377aca257bb776ddb3dd17d47ff170bc8dfe6ea4ba408480f158a0e6a57e1",
+        "complete": true,
+        "evidence_digest": "sha256:4a096cee9b9bccd4d3ecc6cec18097a6ebc2b69db3ce47370e3ee6d97d52f67b",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "truong2020_3bc3",
+                "title": "Selective review of offline change point detection methods",
+                "year": 2020
+              },
+              {
+                "paper_id": "gama2014_8f2e",
+                "title": "A survey on concept drift adaptation",
+                "year": 2014
+              },
+              {
+                "paper_id": "bin2008_8bb7",
+                "title": "A NetFlow based flow analysis and monitoring system in enterprise networks",
+                "year": 2008
+              }
+            ],
+            "citers_total": 3,
+            "first_author": "basseville",
+            "id": "ext:Detection of Abrupt Changes -Theory and Application",
+            "title": "Detection of Abrupt Changes -Theory and Application",
+            "year": 1993
+          },
+          "score": 0.8893,
+          "vault": {
+            "first_author": "basseville",
+            "paper_id": "basseville1993_4c05",
+            "title": "Detection of abrupt changes",
+            "year": 1993
+          },
+          "year_gap": 0
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Detection of Abrupt Changes -Theory and Application->basseville1993_4c05"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Detection of Abrupt Changes -Theory and Application' the vault paper 'Detection of abrupt changes'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Detection of Abrupt Changes -Theory and Application->basseville1993_4c05",
+      "task_id": "reference:reference:ext:Detection of Abrupt Changes -Theory and Application->basseville1993_4c05:reference-rubric/1",
+      "task_revision": "sha256:caa6fc13859bf20511d13d1c43c3491c138f50c70c8ba155c5a29374b9c65390"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:8c06fbeda11ae27bc3b50d3ad1bccb5533e7cba9ca0bca1fd38dbec4908b4da9",
+        "complete": true,
+        "evidence_digest": "sha256:6a43b9f8f45578280d98f6d05726cfbc2e1e99950ffca4aa31d291a4d0c1b97e",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "boufenneche2019_3d32",
+                "title": "Formal Modeling of Greedy Behavior in Secure Internet of Things Networks",
+                "year": 2019
+              },
+              {
+                "paper_id": "rodrguez2019_cc22",
+                "title": "Formal Modelling and Incremental Verification of the MQTT IoT Protocol",
+                "year": 2019
+              },
+              {
+                "paper_id": "jensen2015_9f14",
+                "title": "Colored Petri nets: a graphical language for formal modeling and validation of concurrent systems",
+                "year": 2015
+              },
+              {
+                "paper_id": "alur1999_8e22",
+                "title": "Timed Automata",
+                "year": 1999
+              }
+            ],
+            "citers_total": 4,
+            "first_author": "alur",
+            "id": "ext:A theory of timed automata",
+            "title": "A theory of timed automata",
+            "year": 1994
+          },
+          "score": 0.8881,
+          "vault": {
+            "first_author": "alur",
+            "paper_id": "alur1999_8e22",
+            "title": "Timed Automata",
+            "year": 1999
+          },
+          "year_gap": 5
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:A theory of timed automata->alur1999_8e22"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'A theory of timed automata' the vault paper 'Timed Automata'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:A theory of timed automata->alur1999_8e22",
+      "task_id": "reference:reference:ext:A theory of timed automata->alur1999_8e22:reference-rubric/1",
+      "task_revision": "sha256:78f2378f577c665ce8e8ea7477d77b74d7043b60dac14bc1d5ed0e38e3a4ff64"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:c703921e56392064df73907606fc73698dad0b8805e35effe33ba99c67cd8f83",
+        "complete": true,
+        "evidence_digest": "sha256:a16c07f6fd09aa2a1a9d96c176a68e24302f6598ba4bfc61fa15bed479c7f694",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "amutha2020_8196",
+                "title": "WSN Strategies Based on Sensors, Deployment, Sensing Models, Coverage and Energy Efficiency: Review, Approaches and Open Issues",
+                "year": 2020
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "wang",
+            "id": "ext:Coverage, connectivity, and deployment in wireless sensor networks",
+            "title": "Coverage, connectivity, and deployment in wireless sensor networks",
+            "year": 2014
+          },
+          "score": 0.8842,
+          "vault": {
+            "first_author": null,
+            "paper_id": "farsi2023_b5b4",
+            "title": "Deployment Techniques in Wireless Sensor Networks, Coverage and Connectivity: A Survey",
+            "year": 2023
+          },
+          "year_gap": 9
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Coverage, connectivity, and deployment in wireless sensor networks->farsi2023_b5b4"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Coverage, connectivity, and deployment in wireless sensor networks' the vault paper 'Deployment Techniques in Wireless Sensor Networks, Coverage and Connectivity: A Survey'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Coverage, connectivity, and deployment in wireless sensor networks->farsi2023_b5b4",
+      "task_id": "reference:reference:ext:Coverage, connectivity, and deployment in wireless sensor networks->farsi2023_b5b4:reference-rubric/1",
+      "task_revision": "sha256:0881bf1804e3bd6e5b6b87e793cdc74d3e2fb3aec34e7c367c18746a80fc7ccc"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:f99d0573f09411b22c4cf5b619c8f964356a9b00a4ccec1495d04ab42cf3b020",
+        "complete": true,
+        "evidence_digest": "sha256:836cb9be2c511d125cd98233a7ed75aa82c9b711c86a387fbaf72fa5384c2fb0",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "duives2013_3924",
+                "title": "State-of-the-art crowd motion simulation models",
+                "year": 2013
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "moussaid",
+            "id": "ext:The walking behavior of pedestrian social groups and its impact on crowd dynamics",
+            "title": "The walking behavior of pedestrian social groups and its impact on crowd dynamics",
+            "year": 2010
+          },
+          "score": 0.8833,
+          "vault": {
+            "first_author": "moussaid",
+            "paper_id": "moussad2010_4bc2",
+            "title": "The Walking Behaviour of Pedestrian Social Groups and Its Impact on Crowd Dynamics",
+            "year": 2010
+          },
+          "year_gap": 0
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:The walking behavior of pedestrian social groups and its impact on crowd dynamics->moussad2010_4bc2"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'The walking behavior of pedestrian social groups and its impact on crowd dynamics' the vault paper 'The Walking Behaviour of Pedestrian Social Groups and Its Impact on Crowd Dynamics'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:The walking behavior of pedestrian social groups and its impact on crowd dynamics->moussad2010_4bc2",
+      "task_id": "reference:reference:ext:The walking behavior of pedestrian social groups and its impact on crowd dynamics->moussad2010_4bc2:reference-rubric/1",
+      "task_revision": "sha256:7bfd8e43aea18dad53686b2b3370ad5d908d93855235ee10f7dacaf0c43f10df"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:d940201375c36594634db95a1929520b8b054fca9f15e2b07ea836cdcbb1bcab",
+        "complete": true,
+        "evidence_digest": "sha256:42d62cc66f6a87861d14924186e54c079924d036de973b287b5e0a44243ec239",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "guarino2026_e72c",
+                "title": "A survey on CSI-based Wi-Fi sensing datasets and models with a focus on reproducibility",
+                "year": 2026
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "wang",
+            "id": "ext:Empowering WiFi-based passive human gesture recognition to unseen environment via domain generalization",
+            "title": "Empowering WiFi-based passive human gesture recognition to unseen environment via domain generalization",
+            "year": 2024
+          },
+          "score": 0.8744,
+          "vault": {
+            "first_author": "wang",
+            "paper_id": "wang2022_7c8f",
+            "title": "AirFi: Empowering WiFi-based Passive Human Gesture Recognition to Unseen Environment via Domain Generalization",
+            "year": 2022
+          },
+          "year_gap": 2
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Empowering WiFi-based passive human gesture recognition to unseen environment via domain generalization->wang2022_7c8f"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Empowering WiFi-based passive human gesture recognition to unseen environment via domain generalization' the vault paper 'AirFi: Empowering WiFi-based Passive Human Gesture Recognition to Unseen Environment via Domain Generalization'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Empowering WiFi-based passive human gesture recognition to unseen environment via domain generalization->wang2022_7c8f",
+      "task_id": "reference:reference:ext:Empowering WiFi-based passive human gesture recognition to unseen environment via domain generalization->wang2022_7c8f:reference-rubric/1",
+      "task_revision": "sha256:a2d03d2dc9afd21d8db71176ba9393afc1f49f3d99f172678f37d0b00c8a0362"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:0dba55b7c70af7d3b216b1078d22d00d9cd70f12beb9f0e06351caafb96c4a4f",
+        "complete": true,
+        "evidence_digest": "sha256:6e2de5cb4efcc2495e0b66d555c61bf42650e324754bcf9093d044a5a894adf9",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "perea2015_4bdb",
+                "title": "Sliding Windows and Persistence: An Application of Topological Methods to Signal Analysis",
+                "year": 2015
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "perea",
+            "id": "ext:SW1PerS: Sliding Windows and 1-Persistence Scoring; Discovering Periodicity",
+            "title": "SW1PerS: Sliding Windows and 1-Persistence Scoring; Discovering Periodicity",
+            "year": 2013
+          },
+          "score": 0.8725,
+          "vault": {
+            "first_author": "perea",
+            "paper_id": "perea2015_17fa",
+            "title": "SW1PerS: Sliding windows and 1-persistence scoring; discovering periodicity in gene expression time series data",
+            "year": 2015
+          },
+          "year_gap": 2
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:SW1PerS: Sliding Windows and 1-Persistence Scoring; Discovering Periodicity->perea2015_17fa"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'SW1PerS: Sliding Windows and 1-Persistence Scoring; Discovering Periodicity' the vault paper 'SW1PerS: Sliding windows and 1-persistence scoring; discovering periodicity in gene expression time series data'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:SW1PerS: Sliding Windows and 1-Persistence Scoring; Discovering Periodicity->perea2015_17fa",
+      "task_id": "reference:reference:ext:SW1PerS: Sliding Windows and 1-Persistence Scoring; Discovering Periodicity->perea2015_17fa:reference-rubric/1",
+      "task_revision": "sha256:a11476d35962aaefb28b3f006a865175eda9c805b1a8922f744d204f5c5d22e9"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:f581c633921c1294d4a4fd9de641a080cc11397358c985436e6edc133c9925bc",
+        "complete": true,
+        "evidence_digest": "sha256:eb6b73eadfc7a709d7542c9696bd5b9f3a21fa57902318d31a162356a8a12887",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "zhang2024_aea3",
+                "title": "Exploring Efficient Optimization Techniques in Online Retrieval-Augmented Generation Application",
+                "year": 2024
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "chen",
+            "id": "ext:Dense x retrieval: What retrieval granularity should we use? arXiv preprint",
+            "title": "Dense x retrieval: What retrieval granularity should we use? arXiv preprint",
+            "year": 2023
+          },
+          "score": 0.8627,
+          "vault": {
+            "first_author": "chen",
+            "paper_id": "chen2024_8f22",
+            "title": "Dense X Retrieval: What Retrieval Granularity Should We Use?",
+            "year": 2024
+          },
+          "year_gap": 1
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Dense x retrieval: What retrieval granularity should we use? arXiv preprint->chen2024_8f22"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Dense x retrieval: What retrieval granularity should we use? arXiv preprint' the vault paper 'Dense X Retrieval: What Retrieval Granularity Should We Use?'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Dense x retrieval: What retrieval granularity should we use? arXiv preprint->chen2024_8f22",
+      "task_id": "reference:reference:ext:Dense x retrieval: What retrieval granularity should we use? arXiv preprint->chen2024_8f22:reference-rubric/1",
+      "task_revision": "sha256:bd1c2d4a74e3a42ca0fcaf16a0521f2bcde5ee604bdb29345eddd2e73c3045bb"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:83974fd953982a4f6731606287bd8b4d8e362a6c6c5c3e1ca8e62b1932a42890",
+        "complete": true,
+        "evidence_digest": "sha256:9c958f44720286f6b012ed247e1ea5009f684f7c69f1f9e65d1c3c6ea06e6ed8",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "louazani2020_78a1",
+                "title": "Time Petri Nets based model for CL-MAC protocol with packet loss",
+                "year": 2020
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "louazani",
+            "id": "ext:Time Petri Net model for CL-MAC with Packet Loss Protocol in Wireless Sensor Networks",
+            "title": "Time Petri Net model for CL-MAC with Packet Loss Protocol in Wireless Sensor Networks",
+            "year": 2018
+          },
+          "score": 0.8618,
+          "vault": {
+            "first_author": "louazani",
+            "paper_id": "louazani2020_78a1",
+            "title": "Time Petri Nets based model for CL-MAC protocol with packet loss",
+            "year": 2020
+          },
+          "year_gap": 2
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Time Petri Net model for CL-MAC with Packet Loss Protocol in Wireless Sensor Networks->louazani2020_78a1"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Time Petri Net model for CL-MAC with Packet Loss Protocol in Wireless Sensor Networks' the vault paper 'Time Petri Nets based model for CL-MAC protocol with packet loss'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Time Petri Net model for CL-MAC with Packet Loss Protocol in Wireless Sensor Networks->louazani2020_78a1",
+      "task_id": "reference:reference:ext:Time Petri Net model for CL-MAC with Packet Loss Protocol in Wireless Sensor Networks->louazani2020_78a1:reference-rubric/1",
+      "task_revision": "sha256:f32e5865b94f10a8a89f4ca47b6b3308942a14858d00559f61b31bdbd532f871"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:b954f66000c9586b3217526bc7b5efbbcfd8ccce3190eb37512d152a77f48d38",
+        "complete": true,
+        "evidence_digest": "sha256:122d8d50a70c992d549b48b1211fd5c31678ce17becce0029c3d3773c91ca252",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "wang2019_d6f9",
+                "title": "A Survey on Human Behavior Recognition Using Channel State Information",
+                "year": 2019
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "depatla",
+            "id": "ext:Crowd counting through walls using WiFi,'' in Proc",
+            "title": "Crowd counting through walls using WiFi,'' in Proc",
+            "year": 2018
+          },
+          "score": 0.8615,
+          "vault": {
+            "first_author": "depatla",
+            "paper_id": "depatla2018_97a9",
+            "title": "Crowd Counting Through Walls Using WiFi",
+            "year": 2018
+          },
+          "year_gap": 0
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Crowd counting through walls using WiFi,'' in Proc->depatla2018_97a9"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Crowd counting through walls using WiFi,'' in Proc' the vault paper 'Crowd Counting Through Walls Using WiFi'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Crowd counting through walls using WiFi,'' in Proc->depatla2018_97a9",
+      "task_id": "reference:reference:ext:Crowd counting through walls using WiFi,'' in Proc->depatla2018_97a9:reference-rubric/1",
+      "task_revision": "sha256:0f9a319ee25cd578a9ccead064c1543804aee8802f77b9a75792128834a512c9"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:34a5f3b93fcfaa03916231488856f4fc185cc6ea9cb7f1e5ad4fc50686fe6021",
+        "complete": true,
+        "evidence_digest": "sha256:c575ab2c7db759d7cdf5bbe81a8d853669d280871d978f33c94d3e59b00f275c",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "wang2022_2397",
+                "title": "Integrated Sensing and Communication: Enabling Techniques, Applications, Tools and Data Sets, Standardization, and Future Directions",
+                "year": 2022
+              },
+              {
+                "paper_id": "vishwakarma2021_fe49",
+                "title": "GAN Based Noise Generation to Aid Activity Recognition when Augmenting Measured WiFi Radar Data with Simulations",
+                "year": 2021
+              }
+            ],
+            "citers_total": 2,
+            "first_author": "vishwakarma",
+            "id": "ext:SimHumalator: An open source WiFi based passive radar human simulator for activity recognition",
+            "title": "SimHumalator: An open source WiFi based passive radar human simulator for activity recognition",
+            "year": 2021
+          },
+          "score": 0.8606,
+          "vault": {
+            "first_author": "vishwakarma",
+            "paper_id": "vishwakarma2022_7143",
+            "title": "SimHumalator: An Open-Source End-to-End Radar Simulator for Human Activity Recognition",
+            "year": 2022
+          },
+          "year_gap": 1
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:SimHumalator: An open source WiFi based passive radar human simulator for activity recognition->vishwakarma2022_7143"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'SimHumalator: An open source WiFi based passive radar human simulator for activity recognition' the vault paper 'SimHumalator: An Open-Source End-to-End Radar Simulator for Human Activity Recognition'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:SimHumalator: An open source WiFi based passive radar human simulator for activity recognition->vishwakarma2022_7143",
+      "task_id": "reference:reference:ext:SimHumalator: An open source WiFi based passive radar human simulator for activity recognition->vishwakarma2022_7143:reference-rubric/1",
+      "task_revision": "sha256:91e3e5f77106c3ed0868fc689a780c477e6586061552e5a10dfc556dd31f69de"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:519e58cb3fa22c913f4809f864750acbed1942f733de3f66abc5e9bc5a0406c7",
+        "complete": true,
+        "evidence_digest": "sha256:59e9785cf6627dc47345d3a68b64637af96d2e49c3e4ffa41ab1142551aba54e",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "isufi2024_148d",
+                "title": "Graph Filters for Signal Processing and Machine Learning on Graphs",
+                "year": 2024
+              },
+              {
+                "paper_id": "ortega2018_b024",
+                "title": "Graph Signal Processing: Overview, Challenges, and Applications",
+                "year": 2018
+              }
+            ],
+            "citers_total": 2,
+            "first_author": null,
+            "id": "ext:Discrete signal processing on graphs: Frequency analysis",
+            "title": "Discrete signal processing on graphs: Frequency analysis",
+            "year": 2014
+          },
+          "score": 0.8558,
+          "vault": {
+            "first_author": "sandryhaila",
+            "paper_id": "sandryhaila2013_a360",
+            "title": "Discrete Signal Processing on Graphs",
+            "year": 2013
+          },
+          "year_gap": 1
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Discrete signal processing on graphs: Frequency analysis->sandryhaila2013_a360"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Discrete signal processing on graphs: Frequency analysis' the vault paper 'Discrete Signal Processing on Graphs'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Discrete signal processing on graphs: Frequency analysis->sandryhaila2013_a360",
+      "task_id": "reference:reference:ext:Discrete signal processing on graphs: Frequency analysis->sandryhaila2013_a360:reference-rubric/1",
+      "task_revision": "sha256:37fb2804ee0f3162891c8b6157ec20be87ca8e8fff9c51a4e8f161935c46a039"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:9e1b71a5d52bad717e2113d1ed09d37eeae1dc078afc00fd71b5bf09d94fe96c",
+        "complete": true,
+        "evidence_digest": "sha256:3d40365cb38465eb0cbe918e4bb32525d854c41793284df969e231e003ee756a",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "fu2011_21f0",
+                "title": "On Wireless Sensor Networks Formal Modeling Based on Petri Nets",
+                "year": 2011
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "murata",
+            "id": "ext:Petri nets: properties, analysis, and application",
+            "title": "Petri nets: properties, analysis, and application",
+            "year": 1989
+          },
+          "score": 0.8523,
+          "vault": {
+            "first_author": "murata",
+            "paper_id": "murata1989_d3ec",
+            "title": "Petri nets: Properties, analysis and applications",
+            "year": 1989
+          },
+          "year_gap": 0
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Petri nets: properties, analysis, and application->murata1989_d3ec"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Petri nets: properties, analysis, and application' the vault paper 'Petri nets: Properties, analysis and applications'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Petri nets: properties, analysis, and application->murata1989_d3ec",
+      "task_id": "reference:reference:ext:Petri nets: properties, analysis, and application->murata1989_d3ec:reference-rubric/1",
+      "task_revision": "sha256:f42dab0e308a9bf01da94470fb5f56ff6b0780e0999de89709f018771a828f53"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:4cdf4281e4cfd0f5098dce1bb45851a9a0c880c047901bf38e0624dac061d937",
+        "complete": true,
+        "evidence_digest": "sha256:b1f36d8d815e8e0338b3c1b0683faa1634e5b8052718ec95de9ec4e94f8c1d48",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "yue2026_231d",
+                "title": "Deep Learning-Enhanced Human Sensing with Channel State Information: A Survey",
+                "year": 2026
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "rao",
+            "id": "ext:CSI-based multifeatures fusion adaptive device-free passive indoor fingerprinting localization",
+            "title": "CSI-based multifeatures fusion adaptive device-free passive indoor fingerprinting localization",
+            "year": 2023
+          },
+          "score": 0.8475,
+          "vault": {
+            "first_author": "rao",
+            "paper_id": "rao2024_55e3",
+            "title": "MFFALoc: CSI-Based Multifeatures Fusion Adaptive Device-Free Passive Indoor Fingerprinting Localization",
+            "year": 2024
+          },
+          "year_gap": 1
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:CSI-based multifeatures fusion adaptive device-free passive indoor fingerprinting localization->rao2024_55e3"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'CSI-based multifeatures fusion adaptive device-free passive indoor fingerprinting localization' the vault paper 'MFFALoc: CSI-Based Multifeatures Fusion Adaptive Device-Free Passive Indoor Fingerprinting Localization'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:CSI-based multifeatures fusion adaptive device-free passive indoor fingerprinting localization->rao2024_55e3",
+      "task_id": "reference:reference:ext:CSI-based multifeatures fusion adaptive device-free passive indoor fingerprinting localization->rao2024_55e3:reference-rubric/1",
+      "task_revision": "sha256:dc1045ffbb7fcabff0b6c89bf3abc76e9a3fdf8097c8328bd03e158bb75b068e"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:ecd94c56b9f21b430acf03c85fddac29c6952330a9a806653a8cd9fd34a95501",
+        "complete": true,
+        "evidence_digest": "sha256:c20e17637f8a93495149b964e4ed50731b99e4ffccf3d20b25a4c272e47b4206",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "hajar2021_cd25",
+                "title": "A survey on wireless body area networks: architecture, security challenges and research opportunities",
+                "year": 2021
+              },
+              {
+                "paper_id": "saleh2020_f0c7",
+                "title": "Privacy Preservation for Wireless Sensor Networks in Healthcare: State of the Art, and Open Research Challenges",
+                "year": 2020
+              }
+            ],
+            "citers_total": 2,
+            "first_author": "movassaghi",
+            "id": "ext:Wireless Body Area Networks: A Survey",
+            "title": "Wireless Body Area Networks: A Survey",
+            "year": 2014
+          },
+          "score": 0.8431,
+          "vault": {
+            "first_author": null,
+            "paper_id": "ullah2022_5f67",
+            "title": "A Comprehensive Survey of Wireless Body Area Networks",
+            "year": 2022
+          },
+          "year_gap": 8
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Wireless Body Area Networks: A Survey->ullah2022_5f67"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Wireless Body Area Networks: A Survey' the vault paper 'A Comprehensive Survey of Wireless Body Area Networks'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Wireless Body Area Networks: A Survey->ullah2022_5f67",
+      "task_id": "reference:reference:ext:Wireless Body Area Networks: A Survey->ullah2022_5f67:reference-rubric/1",
+      "task_revision": "sha256:a713d958842fc0b463275ed271c238e2625cde91522c1bc5e832d1bf6c5a4a37"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:d9944a2bbb95d8e7216f5421360e0cc55d5be3ad5c16cb6d43bfbe4bb9868ce9",
+        "complete": true,
+        "evidence_digest": "sha256:b653dd69561f4c285c0df8d4a7f220dc0d9058e1970537aa9287f0faf25c3a37",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "ali2025_7a40",
+                "title": "Enhancing People Counting in Cluttered Environments Using mm-Wave Radar, LSTM, and Ensemble Learning",
+                "year": 2025
+              },
+              {
+                "paper_id": "cakoni2025_2ee0",
+                "title": "Complementarity and Fusion of FMCW and Wi-Fi Passive Radars for Pedestrian Flow Monitoring",
+                "year": 2025
+              },
+              {
+                "paper_id": "sakhnini2024_de9b",
+                "title": "Crowd Counting Measurements in a Festival Area Using a mmWave FMCW Radar",
+                "year": 2024
+              },
+              {
+                "paper_id": "cakoni2023_7150",
+                "title": "Group Counting Using Micro-Doppler Signatures From a 77GHz FMCW Radar",
+                "year": 2023
+              },
+              {
+                "paper_id": "choi2022_0091",
+                "title": "Deep Learning Approach for Radar-Based People Counting",
+                "year": 2022
+              }
+            ],
+            "citers_total": 6,
+            "first_author": "choi",
+            "id": "ext:Accurate people counting based on radar: Deep learning approach",
+            "title": "Accurate people counting based on radar: Deep learning approach",
+            "year": 2020
+          },
+          "score": 0.8416,
+          "vault": {
+            "first_author": "choi",
+            "paper_id": "choi2022_0091",
+            "title": "Deep Learning Approach for Radar-Based People Counting",
+            "year": 2022
+          },
+          "year_gap": 2
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Accurate people counting based on radar: Deep learning approach->choi2022_0091"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Accurate people counting based on radar: Deep learning approach' the vault paper 'Deep Learning Approach for Radar-Based People Counting'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Accurate people counting based on radar: Deep learning approach->choi2022_0091",
+      "task_id": "reference:reference:ext:Accurate people counting based on radar: Deep learning approach->choi2022_0091:reference-rubric/1",
+      "task_revision": "sha256:261028b80704053f54fe88329ea52ac4391d84c96f4cdc49e017f86b2b0589e0"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:73a69ed1a3842b21941fcf979cbe59d0260da565f0c018c0fbac972dce8c1dd4",
+        "complete": true,
+        "evidence_digest": "sha256:ef7d717720469747429b87d17a8d8ab95d5142f49b821700df92f836323c37e8",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "namboodiri2008_8e53",
+                "title": "Alert: An Adaptive Low-Latency Event-Driven MAC Protocol for Wireless Sensor Networks",
+                "year": 2008
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "namboodiri",
+            "id": "ext:Alert: A Low-Latency MAC protocol for Wireless Sensor Networks",
+            "title": "Alert: A Low-Latency MAC protocol for Wireless Sensor Networks",
+            "year": null
+          },
+          "score": 0.8301,
+          "vault": {
+            "first_author": "namboodiri",
+            "paper_id": "namboodiri2008_8e53",
+            "title": "Alert: An Adaptive Low-Latency Event-Driven MAC Protocol for Wireless Sensor Networks",
+            "year": 2008
+          },
+          "year_gap": null
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Alert: A Low-Latency MAC protocol for Wireless Sensor Networks->namboodiri2008_8e53"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Alert: A Low-Latency MAC protocol for Wireless Sensor Networks' the vault paper 'Alert: An Adaptive Low-Latency Event-Driven MAC Protocol for Wireless Sensor Networks'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Alert: A Low-Latency MAC protocol for Wireless Sensor Networks->namboodiri2008_8e53",
+      "task_id": "reference:reference:ext:Alert: A Low-Latency MAC protocol for Wireless Sensor Networks->namboodiri2008_8e53:reference-rubric/1",
+      "task_revision": "sha256:6d60d2f27c8140f755ff6546e4623234237c03a0e9d5b5484b5de92080322b59"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:a1d191ee757da7f76ac0dc7d15ea397e045d229039a8d1d40c706b3a777f0fc3",
+        "complete": true,
+        "evidence_digest": "sha256:472ba121f8c8a9727dd83141f9733ae0a092906f795885fbf56db32fa94a7ce6",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "iannizzotto2025_b55c",
+                "title": "Passive Indoor People Counting by Bluetooth Signal Deformation Analysis with Deep Learning",
+                "year": 2025
+              },
+              {
+                "paper_id": "son2024_99fa",
+                "title": "Channel State Information (CSI) Amplitude Coloring Scheme for Enhancing Accuracy of an Indoor Occupancy Detection System Using Wi-Fi Sensing",
+                "year": 2024
+              },
+              {
+                "paper_id": "iannizzotto2022_1c98",
+                "title": "A Perspective on Passive Human Sensing with Bluetooth",
+                "year": 2022
+              }
+            ],
+            "citers_total": 3,
+            "first_author": "liu",
+            "id": "ext:Human Activity Sensing with Wireless Signals: A Survey",
+            "title": "Human Activity Sensing with Wireless Signals: A Survey",
+            "year": 1210
+          },
+          "score": 0.8251,
+          "vault": {
+            "first_author": "liu",
+            "paper_id": "liu2020_855e",
+            "title": "Wireless Sensing for Human Activity: A Survey",
+            "year": 2020
+          },
+          "year_gap": 810
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Human Activity Sensing with Wireless Signals: A Survey->liu2020_855e"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Human Activity Sensing with Wireless Signals: A Survey' the vault paper 'Wireless Sensing for Human Activity: A Survey'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Human Activity Sensing with Wireless Signals: A Survey->liu2020_855e",
+      "task_id": "reference:reference:ext:Human Activity Sensing with Wireless Signals: A Survey->liu2020_855e:reference-rubric/1",
+      "task_revision": "sha256:8ad43a6fcf0129524f5ac3c1d2dd077e6080aad5a11435306ef547b5d4f2631a"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:ce97036137d498b6426a8c5c520947fd6a4ac763ac2114d386e4c044e40a080e",
+        "complete": true,
+        "evidence_digest": "sha256:f7e344c281622324a300819d180c937652b684cddc01c34eb22238054633d271",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "guarino2026_e72c",
+                "title": "A survey on CSI-based Wi-Fi sensing datasets and models with a focus on reproducibility",
+                "year": 2026
+              },
+              {
+                "paper_id": "cha2025_cd6e",
+                "title": "Meta-Learning-Based People Counting and Localization Models Employing CSI From Commodity Wi-Fi NICs",
+                "year": 2025
+              },
+              {
+                "paper_id": "alzaabi2024_ccf4",
+                "title": "Non-Contact Wi-Fi Sensing of Respiration Rate for Older Adults in Care: A Validity and Repeatability Study",
+                "year": 2024
+              },
+              {
+                "paper_id": "barahimi2024_b62c",
+                "title": "Context-Aware Predictive Coding: A Representation Learning Framework for WiFi Sensing",
+                "year": 2024
+              },
+              {
+                "paper_id": "chen2023_5cbd",
+                "title": "Cross-Domain WiFi Sensing with Channel State Information: A Survey",
+                "year": 2023
+              }
+            ],
+            "citers_total": 7,
+            "first_author": "liu",
+            "id": "ext:Human activity sensing with wireless signals: A survey",
+            "title": "Human activity sensing with wireless signals: A survey",
+            "year": 2020
+          },
+          "score": 0.8251,
+          "vault": {
+            "first_author": "liu",
+            "paper_id": "liu2020_855e",
+            "title": "Wireless Sensing for Human Activity: A Survey",
+            "year": 2020
+          },
+          "year_gap": 0
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Human activity sensing with wireless signals: A survey->liu2020_855e"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Human activity sensing with wireless signals: A survey' the vault paper 'Wireless Sensing for Human Activity: A Survey'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Human activity sensing with wireless signals: A survey->liu2020_855e",
+      "task_id": "reference:reference:ext:Human activity sensing with wireless signals: A survey->liu2020_855e:reference-rubric/1",
+      "task_revision": "sha256:f95e83f6f5f08dc525c3e06933df10ced160f3f048f080f9922c72cca17ad381"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:97d73daf30da45c2292b21e7164577e2151bf6fd3ea55162ebcdefef15bb07c0",
+        "complete": true,
+        "evidence_digest": "sha256:06b8326cc293a57ad89230ec9d43a153118c376511779d8e19d686ef57a8bacb",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "qadir2022_4748",
+                "title": "Towards 6G Internet of Things: Recent advances, use cases, and open challenges",
+                "year": 2022
+              }
+            ],
+            "citers_total": 1,
+            "first_author": null,
+            "id": "ext:6G wireless systems: A vision, architectural elements, and future directions",
+            "title": "6G wireless systems: A vision, architectural elements, and future directions",
+            "year": 2020
+          },
+          "score": 0.8204,
+          "vault": {
+            "first_author": "gubbi",
+            "paper_id": "gubbi2013_fab5",
+            "title": "Internet of Things (IoT): A vision, architectural elements, and future directions",
+            "year": 2013
+          },
+          "year_gap": 7
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:6G wireless systems: A vision, architectural elements, and future directions->gubbi2013_fab5"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference '6G wireless systems: A vision, architectural elements, and future directions' the vault paper 'Internet of Things (IoT): A vision, architectural elements, and future directions'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:6G wireless systems: A vision, architectural elements, and future directions->gubbi2013_fab5",
+      "task_id": "reference:reference:ext:6G wireless systems: A vision, architectural elements, and future directions->gubbi2013_fab5:reference-rubric/1",
+      "task_revision": "sha256:77d848918a07e24dbad1fc04497afb55907470d965b51c49ae66eba47513b3ee"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:59a9ea94749062eda04a8fc8d843019cff4e277a1d8e169d4ef8a96f6e67e09f",
+        "complete": true,
+        "evidence_digest": "sha256:81eecbc6c3ca1e5c10e475e72ecebfcb7aaba5f59731bf46659d80f05aadc954",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "benmaissa2023_70f0",
+                "title": "Modeling and Analyzing Wireless Sensor Networks with VeriSensor: An Integrated Workflow",
+                "year": 2023
+              }
+            ],
+            "citers_total": 1,
+            "first_author": null,
+            "id": "ext:Modeling and Analyzing Wireless Sensor Networks with VeriSensor",
+            "title": "Modeling and Analyzing Wireless Sensor Networks with VeriSensor",
+            "year": 2012
+          },
+          "score": 0.8185,
+          "vault": {
+            "first_author": null,
+            "paper_id": "benmaissa2023_70f0",
+            "title": "Modeling and Analyzing Wireless Sensor Networks with VeriSensor: An Integrated Workflow",
+            "year": 2023
+          },
+          "year_gap": 11
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Modeling and Analyzing Wireless Sensor Networks with VeriSensor->benmaissa2023_70f0"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Modeling and Analyzing Wireless Sensor Networks with VeriSensor' the vault paper 'Modeling and Analyzing Wireless Sensor Networks with VeriSensor: An Integrated Workflow'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Modeling and Analyzing Wireless Sensor Networks with VeriSensor->benmaissa2023_70f0",
+      "task_id": "reference:reference:ext:Modeling and Analyzing Wireless Sensor Networks with VeriSensor->benmaissa2023_70f0:reference-rubric/1",
+      "task_revision": "sha256:c69a2f7690d722a23f6def5f22cb96bcd5d272f31c9c3094d30b26970d4667b8"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:ecd94c56b9f21b430acf03c85fddac29c6952330a9a806653a8cd9fd34a95501",
+        "complete": true,
+        "evidence_digest": "sha256:84655af5c8f6f59a6c924856d0eb9ce1bdf27ac0dad404948a11255368ad5d06",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "hajar2021_cd25",
+                "title": "A survey on wireless body area networks: architecture, security challenges and research opportunities",
+                "year": 2021
+              },
+              {
+                "paper_id": "saleh2020_f0c7",
+                "title": "Privacy Preservation for Wireless Sensor Networks in Healthcare: State of the Art, and Open Research Challenges",
+                "year": 2020
+              }
+            ],
+            "citers_total": 2,
+            "first_author": "latre",
+            "id": "ext:A Survey on Wireless Body Area Networks",
+            "title": "A Survey on Wireless Body Area Networks",
+            "year": 2011
+          },
+          "score": 0.8169,
+          "vault": {
+            "first_author": null,
+            "paper_id": "ullah2022_5f67",
+            "title": "A Comprehensive Survey of Wireless Body Area Networks",
+            "year": 2022
+          },
+          "year_gap": 11
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:A Survey on Wireless Body Area Networks->ullah2022_5f67"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'A Survey on Wireless Body Area Networks' the vault paper 'A Comprehensive Survey of Wireless Body Area Networks'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:A Survey on Wireless Body Area Networks->ullah2022_5f67",
+      "task_id": "reference:reference:ext:A Survey on Wireless Body Area Networks->ullah2022_5f67:reference-rubric/1",
+      "task_revision": "sha256:3804322c0002511addb48206772ebac4c15321a026a67f4b13fdbc78371e0b0b"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:06fc297e171022fbd91cc24cb2698bb99816ebc121c5d23afb6a0774750224cc",
+        "complete": true,
+        "evidence_digest": "sha256:50f75827f2e4c68cec13c0651e9d7635177010cbf9a93909fbd02f810e489022",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "guarino2026_e72c",
+                "title": "A survey on CSI-based Wi-Fi sensing datasets and models with a focus on reproducibility",
+                "year": 2026
+              },
+              {
+                "paper_id": "son2024_99fa",
+                "title": "Channel State Information (CSI) Amplitude Coloring Scheme for Enhancing Accuracy of an Indoor Occupancy Detection System Using Wi-Fi Sensing",
+                "year": 2024
+              }
+            ],
+            "citers_total": 2,
+            "first_author": "yang",
+            "id": "ext:Toward Large-Scale Lightweight WiFi Sensing via CSI Compression",
+            "title": "Toward Large-Scale Lightweight WiFi Sensing via CSI Compression",
+            "year": null
+          },
+          "score": 0.8153,
+          "vault": {
+            "first_author": "yang",
+            "paper_id": "yang2022_cd5c",
+            "title": "EfficientFi: Toward Large-Scale Lightweight WiFi Sensing via CSI Compression",
+            "year": 2022
+          },
+          "year_gap": null
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Toward Large-Scale Lightweight WiFi Sensing via CSI Compression->yang2022_cd5c"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Toward Large-Scale Lightweight WiFi Sensing via CSI Compression' the vault paper 'EfficientFi: Toward Large-Scale Lightweight WiFi Sensing via CSI Compression'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Toward Large-Scale Lightweight WiFi Sensing via CSI Compression->yang2022_cd5c",
+      "task_id": "reference:reference:ext:Toward Large-Scale Lightweight WiFi Sensing via CSI Compression->yang2022_cd5c:reference-rubric/1",
+      "task_revision": "sha256:76711be11b09235716b165a1941aa963d712a74b2f5d953614fba5224ee1681e"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:9236b1b62ca1ab299b723c3e7d1d11204308f957e65c9e31e747c9ede0b32ffa",
+        "complete": true,
+        "evidence_digest": "sha256:44ac84bdaddcd0533ae7d0057bcde3a063dd6f6489ea7b0bb326e534f3f9f9f8",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "cai2015_22ea",
+                "title": "Optimal estimation and rank detection for sparse spiked covariance matrices",
+                "year": 2015
+              },
+              {
+                "paper_id": "kritchman2009_f659",
+                "title": "Non-Parametric Detection of the Number of Signals: Hypothesis Testing and Random Matrix Theory",
+                "year": 2009
+              }
+            ],
+            "citers_total": 2,
+            "first_author": "johnstone",
+            "id": "ext:On the distribution of the largest eigenvalue in principal component analysis",
+            "title": "On the distribution of the largest eigenvalue in principal component analysis",
+            "year": 2001
+          },
+          "score": 0.8095,
+          "vault": {
+            "first_author": "johnstone",
+            "paper_id": "johnstone2001_ed73",
+            "title": "On the distribution of the largest eigenvalue in principal components analysis",
+            "year": 2001
+          },
+          "year_gap": 0
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:On the distribution of the largest eigenvalue in principal component analysis->johnstone2001_ed73"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'On the distribution of the largest eigenvalue in principal component analysis' the vault paper 'On the distribution of the largest eigenvalue in principal components analysis'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:On the distribution of the largest eigenvalue in principal component analysis->johnstone2001_ed73",
+      "task_id": "reference:reference:ext:On the distribution of the largest eigenvalue in principal component analysis->johnstone2001_ed73:reference-rubric/1",
+      "task_revision": "sha256:97e3e1d697b717397770ad85709971e2cb04ae1dd68d6ab4a04ef2a6da8d50a9"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:06f5d62d44ad0b7374df7355072fc7b9a20068c46bc995523d41fe81b2dc89bf",
+        "complete": true,
+        "evidence_digest": "sha256:1fdf14db3e2c54e64246656c77430ef9dcde0e38b155e8fa862cd8d1e64830e3",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "lusch2018_0426",
+                "title": "Deep learning for universal linear embeddings of nonlinear dynamics",
+                "year": 2018
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "mezic",
+            "id": "ext:Spectral properties of dynamical systems, model reduction and decompositions. Nonlinear Dyn",
+            "title": "Spectral properties of dynamical systems, model reduction and decompositions. Nonlinear Dyn",
+            "year": 2005
+          },
+          "score": 0.8088,
+          "vault": {
+            "first_author": "mezic",
+            "paper_id": "mezi2005_97cd",
+            "title": "Spectral Properties of Dynamical Systems, Model Reduction and Decompositions",
+            "year": 2005
+          },
+          "year_gap": 0
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Spectral properties of dynamical systems, model reduction and decompositions. Nonlinear Dyn->mezi2005_97cd"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Spectral properties of dynamical systems, model reduction and decompositions. Nonlinear Dyn' the vault paper 'Spectral Properties of Dynamical Systems, Model Reduction and Decompositions'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Spectral properties of dynamical systems, model reduction and decompositions. Nonlinear Dyn->mezi2005_97cd",
+      "task_id": "reference:reference:ext:Spectral properties of dynamical systems, model reduction and decompositions. Nonlinear Dyn->mezi2005_97cd:reference-rubric/1",
+      "task_revision": "sha256:7710c5675e11abd34bddf24ca925fdba0a06e22e652e96c7cf586660372afce6"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:0590f2453a6d5b528f640fb96a0ec600fb1beb37dc0b14c2f87835b046905e10",
+        "complete": true,
+        "evidence_digest": "sha256:a1db0ce1a045b6c2551bdc68edd21a477446b03ae44bfd36ca31044ed4251ea5",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "di2023_285b",
+                "title": "Physics-Informed Deep Learning for Traffic State Estimation: A Survey and the Outlook",
+                "year": 2023
+              },
+              {
+                "paper_id": "huang2022_b7d1",
+                "title": "Physics-Informed Deep Learning for Traffic State Estimation: Illustrations With LWR and CTM Models",
+                "year": 2022
+              },
+              {
+                "paper_id": "shi2022_1e5b",
+                "title": "A Physics-Informed Deep Learning Paradigm for Traffic State and Fundamental Diagram Estimation",
+                "year": 2022
+              }
+            ],
+            "citers_total": 3,
+            "first_author": null,
+            "id": "ext:Physics informed deep learning for traffic state estimation",
+            "title": "Physics informed deep learning for traffic state estimation",
+            "year": 2020
+          },
+          "score": 0.8046,
+          "vault": {
+            "first_author": "di",
+            "paper_id": "di2023_285b",
+            "title": "Physics-Informed Deep Learning for Traffic State Estimation: A Survey and the Outlook",
+            "year": 2023
+          },
+          "year_gap": 3
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Physics informed deep learning for traffic state estimation->di2023_285b"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Physics informed deep learning for traffic state estimation' the vault paper 'Physics-Informed Deep Learning for Traffic State Estimation: A Survey and the Outlook'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Physics informed deep learning for traffic state estimation->di2023_285b",
+      "task_id": "reference:reference:ext:Physics informed deep learning for traffic state estimation->di2023_285b:reference-rubric/1",
+      "task_revision": "sha256:56ff909295f6177ee6240fd652f985582a1ed5a7420ab18529d0fafe2648facb"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:52833657fbd85b3d769dca5883e23c40dcc6c4f4f487581b8c4c5b60bc6c6579",
+        "complete": true,
+        "evidence_digest": "sha256:8294c50484eefa98e07bb9d694b57f62de4c7195d58fcefa237e8653f66631f7",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "nadakuditi2010_3553",
+                "title": "Fundamental Limit of Sample Generalized Eigenvalue Based Detection of Signals in Noise Using Relatively Few Signal-Bearing and Noise-Only Samples",
+                "year": 2010
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "nadakuditi",
+            "id": "ext:Fundamental limit of sample eigenvalue based detection of signals in colored noise using relatively few samples",
+            "title": "Fundamental limit of sample eigenvalue based detection of signals in colored noise using relatively few samples",
+            "year": null
+          },
+          "score": 0.802,
+          "vault": {
+            "first_author": "nadakuditi",
+            "paper_id": "nadakuditi2010_3553",
+            "title": "Fundamental Limit of Sample Generalized Eigenvalue Based Detection of Signals in Noise Using Relatively Few Signal-Bearing and Noise-Only Samples",
+            "year": 2010
+          },
+          "year_gap": null
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Fundamental limit of sample eigenvalue based detection of signals in colored noise using relatively few samples->nadakuditi2010_3553"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Fundamental limit of sample eigenvalue based detection of signals in colored noise using relatively few samples' the vault paper 'Fundamental Limit of Sample Generalized Eigenvalue Based Detection of Signals in Noise Using Relatively Few Signal-Bearing and Noise-Only Samples'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Fundamental limit of sample eigenvalue based detection of signals in colored noise using relatively few samples->nadakuditi2010_3553",
+      "task_id": "reference:reference:ext:Fundamental limit of sample eigenvalue based detection of signals in colored noise using relatively few samples->nadakuditi2010_3553:reference-rubric/1",
+      "task_revision": "sha256:087eb7e49ca851c85512aec02061b2eb64bbf156628ea4cbed03ecf9d49c4fda"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:ecd94c56b9f21b430acf03c85fddac29c6952330a9a806653a8cd9fd34a95501",
+        "complete": true,
+        "evidence_digest": "sha256:a13e3ea97a2a1893f72ab5f4832adbce4791a7439038b5955f720739050f3674",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "hajar2021_cd25",
+                "title": "A survey on wireless body area networks: architecture, security challenges and research opportunities",
+                "year": 2021
+              },
+              {
+                "paper_id": "saleh2020_f0c7",
+                "title": "Privacy Preservation for Wireless Sensor Networks in Healthcare: State of the Art, and Open Research Challenges",
+                "year": 2020
+              }
+            ],
+            "citers_total": 2,
+            "first_author": "chen",
+            "id": "ext:Body Area Networks: A Survey",
+            "title": "Body Area Networks: A Survey",
+            "year": 2011
+          },
+          "score": 0.7995,
+          "vault": {
+            "first_author": null,
+            "paper_id": "ullah2022_5f67",
+            "title": "A Comprehensive Survey of Wireless Body Area Networks",
+            "year": 2022
+          },
+          "year_gap": 11
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Body Area Networks: A Survey->ullah2022_5f67"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Body Area Networks: A Survey' the vault paper 'A Comprehensive Survey of Wireless Body Area Networks'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Body Area Networks: A Survey->ullah2022_5f67",
+      "task_id": "reference:reference:ext:Body Area Networks: A Survey->ullah2022_5f67:reference-rubric/1",
+      "task_revision": "sha256:726a239c2c2d47bacc9b691de6f55b1a080f653cf473b6dfdf7862706d4c1804"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:1904146c876d8e5ac44abcb008347b22ccef8f152a1d214eba14e691b650f62d",
+        "complete": true,
+        "evidence_digest": "sha256:a008e7194b2f30979b5d322de0bd52630b1070f846713f138a8564118ed71e32",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "clark2001_0e99",
+                "title": "Tests of equal forecast accuracy and encompassing for nested models",
+                "year": 2001
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "clark",
+            "id": "ext:Not-for-publication appendix to 'Tests of equal forecast accuracy and encompassing for nested models",
+            "title": "Not-for-publication appendix to 'Tests of equal forecast accuracy and encompassing for nested models",
+            "year": 2000
+          },
+          "score": 0.7948,
+          "vault": {
+            "first_author": "clark",
+            "paper_id": "clark2001_0e99",
+            "title": "Tests of equal forecast accuracy and encompassing for nested models",
+            "year": 2001
+          },
+          "year_gap": 1
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Not-for-publication appendix to 'Tests of equal forecast accuracy and encompassing for nested models->clark2001_0e99"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Not-for-publication appendix to 'Tests of equal forecast accuracy and encompassing for nested models' the vault paper 'Tests of equal forecast accuracy and encompassing for nested models'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Not-for-publication appendix to 'Tests of equal forecast accuracy and encompassing for nested models->clark2001_0e99",
+      "task_id": "reference:reference:ext:Not-for-publication appendix to 'Tests of equal forecast accuracy and encompassing for nested models->clark2001_0e99:reference-rubric/1",
+      "task_revision": "sha256:aba01531c523b4623ca5720996d9016e97daffd7d857a3e9dd279ef35a70ec19"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:e84551ab3a1a3d9fa328531ce329b21ee7b949e3d08f838d0a6d1a9318ebea91",
+        "complete": true,
+        "evidence_digest": "sha256:54139babd487b657682ffa24e0c61085ba487fc22e268d084d2233a77c138292",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "gao2023_3cbc",
+                "title": "RowBee: A Routing Protocol Based on Cross-Technology Communication for Energy-Harvesting Wireless Sensor Networks",
+                "year": 2023
+              },
+              {
+                "paper_id": "he2023_c387",
+                "title": "Cross-Technology Communication for the Internet of Things: A Survey",
+                "year": 2023
+              },
+              {
+                "paper_id": "li2020_95b9",
+                "title": "BlueFi: Physical-layer Cross-Technology Communication from Bluetooth to WiFi",
+                "year": 2020
+              },
+              {
+                "paper_id": "liu2020_c777",
+                "title": "XFi: Cross-technology IoT Data Collection via Commodity WiFi",
+                "year": 2020
+              },
+              {
+                "paper_id": "jiang2017_2ebe",
+                "title": "BlueBee",
+                "year": 2017
+              }
+            ],
+            "citers_total": 8,
+            "first_author": "chebrolu",
+            "id": "ext:Esense: Communication through energy sensing",
+            "title": "Esense: Communication through energy sensing",
+            "year": 2009
+          },
+          "score": 0.7922,
+          "vault": {
+            "first_author": "chebrolu",
+            "paper_id": "chebrolu2009_aae0",
+            "title": "Esense",
+            "year": 2009
+          },
+          "year_gap": 0
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Esense: Communication through energy sensing->chebrolu2009_aae0"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Esense: Communication through energy sensing' the vault paper 'Esense'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Esense: Communication through energy sensing->chebrolu2009_aae0",
+      "task_id": "reference:reference:ext:Esense: Communication through energy sensing->chebrolu2009_aae0:reference-rubric/1",
+      "task_revision": "sha256:879b51bc10016bccdf00fdcacb4a2f7f53d2ebccc66c049ada106eb120bfce5d"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:cb20525d9773600a6e8fdd330f1bd292ee863947e124cc669c73a732029ab811",
+        "complete": true,
+        "evidence_digest": "sha256:dbd1cc5f22d70ac58cfaefa4a9d522adac350e9f790a37a24f61d4364fbcfaad",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "chen2026_fad8",
+                "title": "A Foundational Edge-AI Sensing Framework for Occupancy-Driven Energy Management in SMOs",
+                "year": 2026
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "khan",
+            "id": "ext:Efficient Device-Free Crowd Counting by Leveraging Transfer Learning",
+            "title": "Efficient Device-Free Crowd Counting by Leveraging Transfer Learning",
+            "year": 2023
+          },
+          "score": 0.792,
+          "vault": {
+            "first_author": "khan",
+            "paper_id": "khan2023_b7c5",
+            "title": "CrossCount: Efficient Device-Free Crowd Counting by Leveraging Transfer Learning",
+            "year": 2023
+          },
+          "year_gap": 0
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Efficient Device-Free Crowd Counting by Leveraging Transfer Learning->khan2023_b7c5"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Efficient Device-Free Crowd Counting by Leveraging Transfer Learning' the vault paper 'CrossCount: Efficient Device-Free Crowd Counting by Leveraging Transfer Learning'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Efficient Device-Free Crowd Counting by Leveraging Transfer Learning->khan2023_b7c5",
+      "task_id": "reference:reference:ext:Efficient Device-Free Crowd Counting by Leveraging Transfer Learning->khan2023_b7c5:reference-rubric/1",
+      "task_revision": "sha256:55fb532c059110b391cf01e68b923fc9cec33a9e0ebc2fadb3e0369eac4c5c25"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:807da5f4cf35f12ab9435c646f416975509117ea62aaa5f9b704611de4ff30a0",
+        "complete": true,
+        "evidence_digest": "sha256:9ab561f59d4190214ae3f45102a475491e9f8d4a2b1b855b7f84e008d32e69b3",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "wang2016_74a4",
+                "title": "Human respiration detection with commodity wifi devices",
+                "year": 2016
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "wu",
+            "id": "ext:Non-Invasive Detection of Moving and Stationary Human With WiFi. Selected Areas in Communications",
+            "title": "Non-Invasive Detection of Moving and Stationary Human With WiFi. Selected Areas in Communications",
+            "year": 2015
+          },
+          "score": 0.7901,
+          "vault": {
+            "first_author": "wu",
+            "paper_id": "wu2015_129b",
+            "title": "Non-Invasive Detection of Moving and Stationary Human With WiFi",
+            "year": 2015
+          },
+          "year_gap": 0
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Non-Invasive Detection of Moving and Stationary Human With WiFi. Selected Areas in Communications->wu2015_129b"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Non-Invasive Detection of Moving and Stationary Human With WiFi. Selected Areas in Communications' the vault paper 'Non-Invasive Detection of Moving and Stationary Human With WiFi'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Non-Invasive Detection of Moving and Stationary Human With WiFi. Selected Areas in Communications->wu2015_129b",
+      "task_id": "reference:reference:ext:Non-Invasive Detection of Moving and Stationary Human With WiFi. Selected Areas in Communications->wu2015_129b:reference-rubric/1",
+      "task_revision": "sha256:518de284176844183f2a76357b8509909f72e1b99a825eff912325b616fddcae"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:85f759c2d15258a6fabb29eb8492a5cf97eebbb64e72b8a872d87dcf580750af",
+        "complete": true,
+        "evidence_digest": "sha256:d4d839c629722acdfb59ce9cf9f310cee258a96bd25c0c484996a2c0244196b1",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "zeng2009_86a8",
+                "title": "Eigenvalue-based spectrum sensing algorithms for cognitive radio",
+                "year": 2009
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "johnstone",
+            "id": "ext:On the distribution of the largest eigenvalue in principle components analysis",
+            "title": "On the distribution of the largest eigenvalue in principle components analysis",
+            "year": 2001
+          },
+          "score": 0.7886,
+          "vault": {
+            "first_author": "johnstone",
+            "paper_id": "johnstone2001_ed73",
+            "title": "On the distribution of the largest eigenvalue in principal components analysis",
+            "year": 2001
+          },
+          "year_gap": 0
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:On the distribution of the largest eigenvalue in principle components analysis->johnstone2001_ed73"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'On the distribution of the largest eigenvalue in principle components analysis' the vault paper 'On the distribution of the largest eigenvalue in principal components analysis'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:On the distribution of the largest eigenvalue in principle components analysis->johnstone2001_ed73",
+      "task_id": "reference:reference:ext:On the distribution of the largest eigenvalue in principle components analysis->johnstone2001_ed73:reference-rubric/1",
+      "task_revision": "sha256:85c4927ac5feb67bfc2eba9d41275663ad1cad94ced551489fb4ba5f465bc0f5"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:64009e07e58b72a4973d8b682c787bc302792ce6124d28dd44e29d4b655c7589",
+        "complete": true,
+        "evidence_digest": "sha256:6d970fd4505833b0e70361549e0292d610001310f7f10cce57d04fa1142319ef",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "damodaran2018_1f53",
+                "title": "DeepJDOT: Deep Joint Distribution Optimal Transport for Unsupervised Domain Adaptation",
+                "year": 2018
+              },
+              {
+                "paper_id": "courty2017_6f32",
+                "title": "Optimal Transport for Domain Adaptation",
+                "year": 2017
+              },
+              {
+                "paper_id": "redko2017_2fa6",
+                "title": "Theoretical Analysis of Domain Adaptation with Optimal Transport",
+                "year": 2017
+              }
+            ],
+            "citers_total": 3,
+            "first_author": "courty",
+            "id": "ext:Domain adaptation with regularized optimal transport",
+            "title": "Domain adaptation with regularized optimal transport",
+            "year": 2014
+          },
+          "score": 0.7862,
+          "vault": {
+            "first_author": "courty",
+            "paper_id": "courty2017_6f32",
+            "title": "Optimal Transport for Domain Adaptation",
+            "year": 2017
+          },
+          "year_gap": 3
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Domain adaptation with regularized optimal transport->courty2017_6f32"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Domain adaptation with regularized optimal transport' the vault paper 'Optimal Transport for Domain Adaptation'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Domain adaptation with regularized optimal transport->courty2017_6f32",
+      "task_id": "reference:reference:ext:Domain adaptation with regularized optimal transport->courty2017_6f32:reference-rubric/1",
+      "task_revision": "sha256:ac178fa6f1c7d1cec7daa42a81efebd2fed4c345b072f4ac79f7c68ed09f4d9f"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:f86c5090da3401e752f54b87a37b180be9c147d0117cccdd1cea08af62352cf8",
+        "complete": true,
+        "evidence_digest": "sha256:f54feb35bc48d6dc8daee8663652b1818f68b4d9c0e2e706b73db3cf8ece5933",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "saxe2019_c0d0",
+                "title": "On the information bottleneck theory of deep learning*",
+                "year": 2019
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "tishby",
+            "id": "ext:Deep learning and the information bottleneck principle IEEE Information Theory Workshop",
+            "title": "Deep learning and the information bottleneck principle IEEE Information Theory Workshop",
+            "year": 2015
+          },
+          "score": 0.7855,
+          "vault": {
+            "first_author": "tishby",
+            "paper_id": "tishby2015_3690",
+            "title": "Deep learning and the information bottleneck principle",
+            "year": 2015
+          },
+          "year_gap": 0
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Deep learning and the information bottleneck principle IEEE Information Theory Workshop->tishby2015_3690"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Deep learning and the information bottleneck principle IEEE Information Theory Workshop' the vault paper 'Deep learning and the information bottleneck principle'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Deep learning and the information bottleneck principle IEEE Information Theory Workshop->tishby2015_3690",
+      "task_id": "reference:reference:ext:Deep learning and the information bottleneck principle IEEE Information Theory Workshop->tishby2015_3690:reference-rubric/1",
+      "task_revision": "sha256:5c01111bb23b76fdd505c9541a4697f6db943fd01155c27c1f7407609418706c"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:0c20f554a93dcd871e18d6a9a707a859c4d218511d7332fa83bdf67d1ebceaaf",
+        "complete": true,
+        "evidence_digest": "sha256:718fb2a6b25e4c0b28ce5d6f426c8df8b732196e4af968e12ed68d32c400cbb6",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "arsigny2006_f6a6",
+                "title": "Log‐Euclidean metrics for fast and simple calculus on diffusion tensors",
+                "year": 2006
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "arsigny",
+            "id": "ext:Fast and simple computations on tensors with Log-Euclidean metrics",
+            "title": "Fast and simple computations on tensors with Log-Euclidean metrics",
+            "year": 2005
+          },
+          "score": 0.7822,
+          "vault": {
+            "first_author": "arsigny",
+            "paper_id": "arsigny2006_f6a6",
+            "title": "Log‐Euclidean metrics for fast and simple calculus on diffusion tensors",
+            "year": 2006
+          },
+          "year_gap": 1
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Fast and simple computations on tensors with Log-Euclidean metrics->arsigny2006_f6a6"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Fast and simple computations on tensors with Log-Euclidean metrics' the vault paper 'Log‐Euclidean metrics for fast and simple calculus on diffusion tensors'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Fast and simple computations on tensors with Log-Euclidean metrics->arsigny2006_f6a6",
+      "task_id": "reference:reference:ext:Fast and simple computations on tensors with Log-Euclidean metrics->arsigny2006_f6a6:reference-rubric/1",
+      "task_revision": "sha256:13de4af307597e9dcfeb0d979aaa0b017799cf231d1ec3a7a8f5f543800dc59b"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:df87dc0a5328355a9ea48ba14c536b0612d0bc91d3b49108b66f6447e8d89bb8",
+        "complete": true,
+        "evidence_digest": "sha256:eddf23c1839f47db4e1d634576556470471b06b81cd808f8870d4f50956249e3",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "jebrane2026_3e34",
+                "title": "A hybrid mesoscopic/agent-based model for crowd dynamics with emotional contagion",
+                "year": 2026
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "agnelli",
+            "id": "ext:Spatial kinetic modeling of crowd evacuation: Coupling social behavior and infectious disease contagion",
+            "title": "Spatial kinetic modeling of crowd evacuation: Coupling social behavior and infectious disease contagion",
+            "year": 2025
+          },
+          "score": 0.7813,
+          "vault": {
+            "first_author": "agnelli",
+            "paper_id": "agnelli2023_ea3a",
+            "title": "A Spatial Kinetic Model of Crowd Evacuation Dynamics with Infectious Disease Contagion",
+            "year": 2023
+          },
+          "year_gap": 2
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Spatial kinetic modeling of crowd evacuation: Coupling social behavior and infectious disease contagion->agnelli2023_ea3a"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Spatial kinetic modeling of crowd evacuation: Coupling social behavior and infectious disease contagion' the vault paper 'A Spatial Kinetic Model of Crowd Evacuation Dynamics with Infectious Disease Contagion'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Spatial kinetic modeling of crowd evacuation: Coupling social behavior and infectious disease contagion->agnelli2023_ea3a",
+      "task_id": "reference:reference:ext:Spatial kinetic modeling of crowd evacuation: Coupling social behavior and infectious disease contagion->agnelli2023_ea3a:reference-rubric/1",
+      "task_revision": "sha256:10e59711d632b8102daf7bebd8565e8091504a0ff8ded2e6182894d5f5cdaa0f"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:2e1843d0c6b77a67840756fb3818b26bf63ead608c949bf4f697cff015876b1c",
+        "complete": true,
+        "evidence_digest": "sha256:4c68e03f7df20af406df0fe087bbbc1295cbeb76df9d0c838b0246ab6fcfb9de",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "barachant2013_35a0",
+                "title": "Classification of covariance matrices using a Riemannian-based kernel for BCI applications",
+                "year": 2013
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "barachant",
+            "id": "ext:BCI signal classification using a Riemannian-based kernel",
+            "title": "BCI signal classification using a Riemannian-based kernel",
+            "year": 2012
+          },
+          "score": 0.7775,
+          "vault": {
+            "first_author": "barachant",
+            "paper_id": "barachant2013_35a0",
+            "title": "Classification of covariance matrices using a Riemannian-based kernel for BCI applications",
+            "year": 2013
+          },
+          "year_gap": 1
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:BCI signal classification using a Riemannian-based kernel->barachant2013_35a0"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'BCI signal classification using a Riemannian-based kernel' the vault paper 'Classification of covariance matrices using a Riemannian-based kernel for BCI applications'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:BCI signal classification using a Riemannian-based kernel->barachant2013_35a0",
+      "task_id": "reference:reference:ext:BCI signal classification using a Riemannian-based kernel->barachant2013_35a0:reference-rubric/1",
+      "task_revision": "sha256:710d5721a6372339d624eeaba5629f219d3458e24a4b4c9fab0eb2bf5ed453a5"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:d38eb6aa0bd84d7b349e977a420b07e4595b6358a55e0784376159dae8c3ef95",
+        "complete": true,
+        "evidence_digest": "sha256:8d4b98c535566f6cc11590067ed9e1a201e1eb3c108cabeab5a74f4ecc2e91a9",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "angelopoulos2023_8cc7",
+                "title": "Conformal Prediction: A Gentle Introduction",
+                "year": 2023
+              },
+              {
+                "paper_id": "barber2023_941e",
+                "title": "Conformal prediction beyond exchangeability",
+                "year": 2023
+              }
+            ],
+            "citers_total": 2,
+            "first_author": "xu",
+            "id": "ext:Conformal prediction interval for dynamic time-series",
+            "title": "Conformal prediction interval for dynamic time-series",
+            "year": 2021
+          },
+          "score": 0.7743,
+          "vault": {
+            "first_author": "xu",
+            "paper_id": "xu2023_67d4",
+            "title": "Conformal Prediction for Time Series",
+            "year": 2023
+          },
+          "year_gap": 2
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Conformal prediction interval for dynamic time-series->xu2023_67d4"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Conformal prediction interval for dynamic time-series' the vault paper 'Conformal Prediction for Time Series'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Conformal prediction interval for dynamic time-series->xu2023_67d4",
+      "task_id": "reference:reference:ext:Conformal prediction interval for dynamic time-series->xu2023_67d4:reference-rubric/1",
+      "task_revision": "sha256:4ed03eadb9a62489b44e0c66c8f788b0f1af96707cb287e100b358dea68a7f2f"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:d940201375c36594634db95a1929520b8b054fca9f15e2b07ea836cdcbb1bcab",
+        "complete": true,
+        "evidence_digest": "sha256:180d6310fbc17209ed71645200f41c2a267574e1fd69bb4be8727a8d21bb17ad",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "guarino2026_e72c",
+                "title": "A survey on CSI-based Wi-Fi sensing datasets and models with a focus on reproducibility",
+                "year": 2026
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "zhang",
+            "id": "ext:Towards cross-site and large-scale WiFi sensing",
+            "title": "Towards cross-site and large-scale WiFi sensing",
+            "year": 2018
+          },
+          "score": 0.7685,
+          "vault": {
+            "first_author": "zhang",
+            "paper_id": "zhang2018_138d",
+            "title": "CrossSense: Towards Cross-Site and Large-Scale WiFi Sensing",
+            "year": 2018
+          },
+          "year_gap": 0
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Towards cross-site and large-scale WiFi sensing->zhang2018_138d"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Towards cross-site and large-scale WiFi sensing' the vault paper 'CrossSense: Towards Cross-Site and Large-Scale WiFi Sensing'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Towards cross-site and large-scale WiFi sensing->zhang2018_138d",
+      "task_id": "reference:reference:ext:Towards cross-site and large-scale WiFi sensing->zhang2018_138d:reference-rubric/1",
+      "task_revision": "sha256:aa14dcf441a9731db31dc343aae3bf93f45d1d83553b052e41ec14fe75ff3e86"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:f2c61547f090287c8747e9838268fd7987722af906facb46f6a7ac18b0eb1fb2",
+        "complete": true,
+        "evidence_digest": "sha256:736387abbb61459dfcbb61e731a7d056fdbb11bc5b040d955b7079fa4749d4ce",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "korda2018_afb4",
+                "title": "Linear predictors for nonlinear dynamical systems: Koopman operator meets model predictive control",
+                "year": 2018
+              },
+              {
+                "paper_id": "lusch2018_0426",
+                "title": "Deep learning for universal linear embeddings of nonlinear dynamics",
+                "year": 2018
+              },
+              {
+                "paper_id": "brunton2017_c9fc",
+                "title": "Chaos as an intermittently forced linear system",
+                "year": 2017
+              },
+              {
+                "paper_id": "proctor2016_2407",
+                "title": "Dynamic Mode Decomposition with Control",
+                "year": 2016
+              },
+              {
+                "paper_id": "williams2015_6b7c",
+                "title": "A Data–Driven Approximation of the Koopman Operator: Extending Dynamic Mode Decomposition",
+                "year": 2015
+              }
+            ],
+            "citers_total": 5,
+            "first_author": null,
+            "id": "ext:On dynamic mode decomposition: Theory and applications",
+            "title": "On dynamic mode decomposition: Theory and applications",
+            "year": 2014
+          },
+          "score": 0.7662,
+          "vault": {
+            "first_author": "proctor",
+            "paper_id": "proctor2016_2407",
+            "title": "Dynamic Mode Decomposition with Control",
+            "year": 2016
+          },
+          "year_gap": 2
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:On dynamic mode decomposition: Theory and applications->proctor2016_2407"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'On dynamic mode decomposition: Theory and applications' the vault paper 'Dynamic Mode Decomposition with Control'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:On dynamic mode decomposition: Theory and applications->proctor2016_2407",
+      "task_id": "reference:reference:ext:On dynamic mode decomposition: Theory and applications->proctor2016_2407:reference-rubric/1",
+      "task_revision": "sha256:dab8a19692bd0c9fce008c0dc70d40d490bb88845c409ef03204a5ba52c0c059"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:0fa422e4164d7d13606557ffbe97c0ec8c6d82e6defcb9899b9f8c0041f51fc9",
+        "complete": true,
+        "evidence_digest": "sha256:b3715d9c35969ac59180c3f1bd7d99ce31f4b9451082c81b04aab9f80df41d27",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "he2023_c387",
+                "title": "Cross-Technology Communication for the Internet of Things: A Survey",
+                "year": 2023
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "cho",
+            "id": "ext:BlueFi: Bluetooth over WiFi",
+            "title": "BlueFi: Bluetooth over WiFi",
+            "year": 2021
+          },
+          "score": 0.7646,
+          "vault": {
+            "first_author": "cho",
+            "paper_id": "cho2021_3237",
+            "title": "BlueFi",
+            "year": 2021
+          },
+          "year_gap": 0
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:BlueFi: Bluetooth over WiFi->cho2021_3237"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'BlueFi: Bluetooth over WiFi' the vault paper 'BlueFi'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:BlueFi: Bluetooth over WiFi->cho2021_3237",
+      "task_id": "reference:reference:ext:BlueFi: Bluetooth over WiFi->cho2021_3237:reference-rubric/1",
+      "task_revision": "sha256:59be3a18aecf084e0f3498d0bf4505a035d5dc969570fa933da559d03d477b30"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:4324a1f5cf7019e043ccbcaf41d7aadccdc5b037f114726c963f5591e50f90de",
+        "complete": true,
+        "evidence_digest": "sha256:1e9037cc37556c64bb53f7bb8b6264af7ee820af8f33dcce4bdeeb5a3968a135",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "wang2022_2397",
+                "title": "Integrated Sensing and Communication: Enabling Techniques, Applications, Tools and Data Sets, Standardization, and Future Directions",
+                "year": 2022
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "koikeakino",
+            "id": "ext:Fingerprinting-based indoor localization with commercial",
+            "title": "Fingerprinting-based indoor localization with commercial",
+            "year": null
+          },
+          "score": 0.7638,
+          "vault": {
+            "first_author": "koikeakino",
+            "paper_id": "koikeakino2020_ef0a",
+            "title": "Fingerprinting-Based Indoor Localization With Commercial MMWave WiFi: A Deep Learning Approach",
+            "year": 2020
+          },
+          "year_gap": null
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Fingerprinting-based indoor localization with commercial->koikeakino2020_ef0a"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Fingerprinting-based indoor localization with commercial' the vault paper 'Fingerprinting-Based Indoor Localization With Commercial MMWave WiFi: A Deep Learning Approach'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Fingerprinting-based indoor localization with commercial->koikeakino2020_ef0a",
+      "task_id": "reference:reference:ext:Fingerprinting-based indoor localization with commercial->koikeakino2020_ef0a:reference-rubric/1",
+      "task_revision": "sha256:2c98ac9d5d94d2c585b1a93637fc93559ac5cc33b08820e3bab8ca599df952a8"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:63ec12b5fd2fb55365c5f6d43d052eb6c7a4545582a79af0e18d8fc6b9daecab",
+        "complete": true,
+        "evidence_digest": "sha256:fba03a15868796e3a370af55ede1d8756ee4bd59595f873764d9863ed9fb4e0a",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "farsi2023_b5b4",
+                "title": "Deployment Techniques in Wireless Sensor Networks, Coverage and Connectivity: A Survey",
+                "year": 2023
+              }
+            ],
+            "citers_total": 1,
+            "first_author": null,
+            "id": "ext:Survey of deployment algorithms in wireless sensor networks: Coverage and connectivity issues and challenges",
+            "title": "Survey of deployment algorithms in wireless sensor networks: Coverage and connectivity issues and challenges",
+            "year": 2017
+          },
+          "score": 0.7513,
+          "vault": {
+            "first_author": null,
+            "paper_id": "farsi2023_b5b4",
+            "title": "Deployment Techniques in Wireless Sensor Networks, Coverage and Connectivity: A Survey",
+            "year": 2023
+          },
+          "year_gap": 6
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Survey of deployment algorithms in wireless sensor networks: Coverage and connectivity issues and challenges->farsi2023_b5b4"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Survey of deployment algorithms in wireless sensor networks: Coverage and connectivity issues and challenges' the vault paper 'Deployment Techniques in Wireless Sensor Networks, Coverage and Connectivity: A Survey'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Survey of deployment algorithms in wireless sensor networks: Coverage and connectivity issues and challenges->farsi2023_b5b4",
+      "task_id": "reference:reference:ext:Survey of deployment algorithms in wireless sensor networks: Coverage and connectivity issues and challenges->farsi2023_b5b4:reference-rubric/1",
+      "task_revision": "sha256:0148e9af7a69e14f438463c9874f0255e0061486342fe896938634c6529e71a8"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:a2b63612ee041d21da554fec9177ae00ed92fb3227f5460a3252f0626e6abbdc",
+        "complete": true,
+        "evidence_digest": "sha256:a7924d5ce6b38e7a3ce4a51215988ad93a10672ff318eb1cb1fd42c5872fd20c",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "hasan2023_8bfd",
+                "title": "InSight: A Bluetooth Beacon-based Ad-hoc Emergency Alert System for Smart Cities",
+                "year": 2023
+              }
+            ],
+            "citers_total": 1,
+            "first_author": null,
+            "id": "ext:Smartphone-based Distracted Pedestrian Localization using Bluetooth Low Energy Beacons",
+            "title": "Smartphone-based Distracted Pedestrian Localization using Bluetooth Low Energy Beacons",
+            "year": 2020
+          },
+          "score": 0.7486,
+          "vault": {
+            "first_author": "zhuang",
+            "paper_id": "zhuang2016_a6e9",
+            "title": "Smartphone-Based Indoor Localization with Bluetooth Low Energy Beacons",
+            "year": 2016
+          },
+          "year_gap": 4
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Smartphone-based Distracted Pedestrian Localization using Bluetooth Low Energy Beacons->zhuang2016_a6e9"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Smartphone-based Distracted Pedestrian Localization using Bluetooth Low Energy Beacons' the vault paper 'Smartphone-Based Indoor Localization with Bluetooth Low Energy Beacons'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Smartphone-based Distracted Pedestrian Localization using Bluetooth Low Energy Beacons->zhuang2016_a6e9",
+      "task_id": "reference:reference:ext:Smartphone-based Distracted Pedestrian Localization using Bluetooth Low Energy Beacons->zhuang2016_a6e9:reference-rubric/1",
+      "task_revision": "sha256:2df59042f8f4777977c72aee3eb6031d7603a95dd28dba53cc95961cc7f4729c"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:020bcd88b8ea440cffc6cce354688f8d98e59b1e96008d4a5f1595cc100909b3",
+        "complete": true,
+        "evidence_digest": "sha256:f408858868c1af64e4512dbaf4ad091e531ea3bad22e6b117a72a696170bc2f9",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "fontana2023_66ca",
+                "title": "Conformal prediction: A unified review of theory and new challenges",
+                "year": 2023
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "barber",
+            "id": "ext:Predictive inference with the jackknife+. arXiv preprint",
+            "title": "Predictive inference with the jackknife+. arXiv preprint",
+            "year": 2019
+          },
+          "score": 0.7422,
+          "vault": {
+            "first_author": "barber",
+            "paper_id": "barber2021_bbb2",
+            "title": "Predictive inference with the jackknife+",
+            "year": 2021
+          },
+          "year_gap": 2
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Predictive inference with the jackknife+. arXiv preprint->barber2021_bbb2"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Predictive inference with the jackknife+. arXiv preprint' the vault paper 'Predictive inference with the jackknife+'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Predictive inference with the jackknife+. arXiv preprint->barber2021_bbb2",
+      "task_id": "reference:reference:ext:Predictive inference with the jackknife+. arXiv preprint->barber2021_bbb2:reference-rubric/1",
+      "task_revision": "sha256:cbe678f443133b35cd13cf3621afb4c10f388f2c48c352c51d3c44cc334e4586"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:f69926eea5fc6a8854197771d12a67ab1e64b904f7aecf229a20228558353e7d",
+        "complete": true,
+        "evidence_digest": "sha256:6f0c5bc9986ea8f76cf2da44d9b46ac01347d4f6f81c3b7662df8edfc2509717",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "murata1989_d3ec",
+                "title": "Petri nets: Properties, analysis and applications",
+                "year": 1989
+              }
+            ],
+            "citers_total": 1,
+            "first_author": null,
+            "id": "ext:Structural properties of Petri nets",
+            "title": "Structural properties of Petri nets",
+            "year": 1978
+          },
+          "score": 0.7405,
+          "vault": {
+            "first_author": "murata",
+            "paper_id": "murata1989_d3ec",
+            "title": "Petri nets: Properties, analysis and applications",
+            "year": 1989
+          },
+          "year_gap": 11
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Structural properties of Petri nets->murata1989_d3ec"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Structural properties of Petri nets' the vault paper 'Petri nets: Properties, analysis and applications'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Structural properties of Petri nets->murata1989_d3ec",
+      "task_id": "reference:reference:ext:Structural properties of Petri nets->murata1989_d3ec:reference-rubric/1",
+      "task_revision": "sha256:dc3fec2e4fc76ec8d121e70c0404ba108a455fff5ef79e7f96b6bb0078c4e522"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:7d963e79ea5189eab30d3890c8a06816e5e6f1fc08d25ab64c1814e6d5705598",
+        "complete": true,
+        "evidence_digest": "sha256:868b985420effda7474cfc840cad61da82af449636e2857ef4311ba20a542c29",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "sanchezgomez2020_3619",
+                "title": "Secure bootstrapping and header compression for IoT constrained networks",
+                "year": 2020
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "minaburo",
+            "id": "ext:LPWAN Static Context Header Compression (SCHC) and fragmentation for IPv6 and UDP",
+            "title": "LPWAN Static Context Header Compression (SCHC) and fragmentation for IPv6 and UDP",
+            "year": 2019
+          },
+          "score": 0.7403,
+          "vault": {
+            "first_author": "minaburo",
+            "paper_id": "minaburo2020_63bf",
+            "title": "SCHC: Generic Framework for Static Context Header Compression and Fragmentation",
+            "year": 2020
+          },
+          "year_gap": 1
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:LPWAN Static Context Header Compression (SCHC) and fragmentation for IPv6 and UDP->minaburo2020_63bf"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'LPWAN Static Context Header Compression (SCHC) and fragmentation for IPv6 and UDP' the vault paper 'SCHC: Generic Framework for Static Context Header Compression and Fragmentation'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:LPWAN Static Context Header Compression (SCHC) and fragmentation for IPv6 and UDP->minaburo2020_63bf",
+      "task_id": "reference:reference:ext:LPWAN Static Context Header Compression (SCHC) and fragmentation for IPv6 and UDP->minaburo2020_63bf:reference-rubric/1",
+      "task_revision": "sha256:52637a90a52e781defb2716ebf3d24309fd7f5ad011659aa6bf81a7a9fb8202b"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:116a2edb75eb7fe7eeec09e80c6aa7adb3e7ca971af5c787cfb8bc2aa4bb9403",
+        "complete": true,
+        "evidence_digest": "sha256:7610b4876d55a87400f8b24f8613fd8563b51a3bec99de02d6f557c430789644",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "zheng2024_b81e",
+                "title": "Addressing Unreliability Propagation in Scientific Digital Libraries",
+                "year": 2024
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "hengzheng",
+            "id": "ext:PROTOCOL: Annotation by chemistry expert #2 for Addressing Unreliability Propagation in Scientific Digital Libraries",
+            "title": "PROTOCOL: Annotation by chemistry expert #2 for Addressing Unreliability Propagation in Scientific Digital Libraries",
+            "year": 2024
+          },
+          "score": 0.7331,
+          "vault": {
+            "first_author": "zheng",
+            "paper_id": "zheng2024_b81e",
+            "title": "Addressing Unreliability Propagation in Scientific Digital Libraries",
+            "year": 2024
+          },
+          "year_gap": 0
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:PROTOCOL: Annotation by chemistry expert #2 for Addressing Unreliability Propagation in Scientific Digital Libraries->zheng2024_b81e"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'PROTOCOL: Annotation by chemistry expert #2 for Addressing Unreliability Propagation in Scientific Digital Libraries' the vault paper 'Addressing Unreliability Propagation in Scientific Digital Libraries'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:PROTOCOL: Annotation by chemistry expert #2 for Addressing Unreliability Propagation in Scientific Digital Libraries->zheng2024_b81e",
+      "task_id": "reference:reference:ext:PROTOCOL: Annotation by chemistry expert #2 for Addressing Unreliability Propagation in Scientific Digital Libraries->zheng2024_b81e:reference-rubric/1",
+      "task_revision": "sha256:fe913921cbc49ab69a99fb3d773707b636037258012993b0955bdebedec3a369"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:ce2690b411f5677f07d2b68d8081911bc96ac9da78ad6ecdf9ac7e72839e2aed",
+        "complete": true,
+        "evidence_digest": "sha256:f1a106c357d4f4ba4a52957bdf812af21a2826792476f8110ea6bf98280b6a1a",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "kumar2022_3c32",
+                "title": "Dimensions of Internet of Things: Technological Taxonomy Architecture Applications and Open Challenges—A Systematic Review",
+                "year": 2022
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "effatparvar",
+            "id": "ext:A comprehensive survey of energy-aware routing protocols in wireless body area sensor networks",
+            "title": "A comprehensive survey of energy-aware routing protocols in wireless body area sensor networks",
+            "year": 2016
+          },
+          "score": 0.7327,
+          "vault": {
+            "first_author": null,
+            "paper_id": "ullah2022_5f67",
+            "title": "A Comprehensive Survey of Wireless Body Area Networks",
+            "year": 2022
+          },
+          "year_gap": 6
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:A comprehensive survey of energy-aware routing protocols in wireless body area sensor networks->ullah2022_5f67"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'A comprehensive survey of energy-aware routing protocols in wireless body area sensor networks' the vault paper 'A Comprehensive Survey of Wireless Body Area Networks'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:A comprehensive survey of energy-aware routing protocols in wireless body area sensor networks->ullah2022_5f67",
+      "task_id": "reference:reference:ext:A comprehensive survey of energy-aware routing protocols in wireless body area sensor networks->ullah2022_5f67:reference-rubric/1",
+      "task_revision": "sha256:14ee17068742fd2094403371194e3cead481a1ec07ca2b3daca61a23ae4bd282"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:107e35c00cf898355b3bbe56518a804ef3d431ca17d0928b21d3b34b37b385c2",
+        "complete": true,
+        "evidence_digest": "sha256:1697fc017089f3dca182b58c219fdafc9fd0b89b13113855d7b9187c7f0426ca",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "diggle2013_d5d3",
+                "title": "Spatial and Spatio-Temporal Log-Gaussian Cox Processes: Extending the Geostatistical Paradigm",
+                "year": 2013
+              }
+            ],
+            "citers_total": 1,
+            "first_author": null,
+            "id": "ext:Corrigendum: Spatiotemporal prediction for log-Gaussian Cox processes",
+            "title": "Corrigendum: Spatiotemporal prediction for log-Gaussian Cox processes",
+            "year": 2013
+          },
+          "score": 0.7268,
+          "vault": {
+            "first_author": "møller",
+            "paper_id": "mller1998_f4b2",
+            "title": "Log Gaussian Cox Processes",
+            "year": 1998
+          },
+          "year_gap": 15
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Corrigendum: Spatiotemporal prediction for log-Gaussian Cox processes->mller1998_f4b2"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Corrigendum: Spatiotemporal prediction for log-Gaussian Cox processes' the vault paper 'Log Gaussian Cox Processes'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Corrigendum: Spatiotemporal prediction for log-Gaussian Cox processes->mller1998_f4b2",
+      "task_id": "reference:reference:ext:Corrigendum: Spatiotemporal prediction for log-Gaussian Cox processes->mller1998_f4b2:reference-rubric/1",
+      "task_revision": "sha256:998e69948b67ddb4ecdfba980f67345b28629af6712515e71e4f2903be86cd19"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:eb6d7fd424a7de326254523cdf6f75da23bfc0bcc8d11f7fd9ea2a758203b7ec",
+        "complete": true,
+        "evidence_digest": "sha256:9aa05e57244e8c41edf604861b01d9cf0af135729bc966376edc95002762be49",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "li2016_111a",
+                "title": "A Survey on Truth Discovery",
+                "year": 2016
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "li",
+            "id": "ext:On the discovery of evolving truth",
+            "title": "On the discovery of evolving truth",
+            "year": 2015
+          },
+          "score": 0.7259,
+          "vault": {
+            "first_author": "li",
+            "paper_id": "li2016_111a",
+            "title": "A Survey on Truth Discovery",
+            "year": 2016
+          },
+          "year_gap": 1
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:On the discovery of evolving truth->li2016_111a"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'On the discovery of evolving truth' the vault paper 'A Survey on Truth Discovery'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:On the discovery of evolving truth->li2016_111a",
+      "task_id": "reference:reference:ext:On the discovery of evolving truth->li2016_111a:reference-rubric/1",
+      "task_revision": "sha256:93acae817d664a78db53c0443da179fbe2afff6579fe1320474b485c7717ea5a"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:093fe2dea791949ef61bf14adcfcd5dae360ab447c8e287278ad8f19c930a4c4",
+        "complete": true,
+        "evidence_digest": "sha256:036c7146986e042683fd2728c8d67195676a6411a1917e4bae18b1446a53d6d5",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "farsi2023_b5b4",
+                "title": "Deployment Techniques in Wireless Sensor Networks, Coverage and Connectivity: A Survey",
+                "year": 2023
+              },
+              {
+                "paper_id": "zhen2022_bb0b",
+                "title": "Efficient Adaptive Beacon Deployment Optimization for Indoor Crowd Monitoring Applications",
+                "year": 2022
+              },
+              {
+                "paper_id": "afghantoloee2021_8628",
+                "title": "A Local 3D Voronoi-Based Optimization Method for Sensor Network Deployment in Complex Indoor Environments",
+                "year": 2021
+              },
+              {
+                "paper_id": "amutha2020_8196",
+                "title": "WSN Strategies Based on Sensors, Deployment, Sensing Models, Coverage and Energy Efficiency: Review, Approaches and Open Issues",
+                "year": 2020
+              },
+              {
+                "paper_id": "gubbi2013_fab5",
+                "title": "Internet of Things (IoT): A vision, architectural elements, and future directions",
+                "year": 2013
+              }
+            ],
+            "citers_total": 5,
+            "first_author": "ghosh",
+            "id": "ext:Coverage and connectivity issues in wireless sensor networks: A survey",
+            "title": "Coverage and connectivity issues in wireless sensor networks: A survey",
+            "year": 2008
+          },
+          "score": 0.7215,
+          "vault": {
+            "first_author": null,
+            "paper_id": "farsi2023_b5b4",
+            "title": "Deployment Techniques in Wireless Sensor Networks, Coverage and Connectivity: A Survey",
+            "year": 2023
+          },
+          "year_gap": 15
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Coverage and connectivity issues in wireless sensor networks: A survey->farsi2023_b5b4"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Coverage and connectivity issues in wireless sensor networks: A survey' the vault paper 'Deployment Techniques in Wireless Sensor Networks, Coverage and Connectivity: A Survey'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Coverage and connectivity issues in wireless sensor networks: A survey->farsi2023_b5b4",
+      "task_id": "reference:reference:ext:Coverage and connectivity issues in wireless sensor networks: A survey->farsi2023_b5b4:reference-rubric/1",
+      "task_revision": "sha256:21872ba7d6cda2bf7743df63fff3c50b86b0bbea8b673eda6774ede2f5172c6a"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:a8d33d582d9ccdf31328796cc9c97a4107c5c30d3a8792e248dd0f0ad9d115b5",
+        "complete": true,
+        "evidence_digest": "sha256:514cc6e8de3b52c00526a25f13c6563a58ae05bbc2a1ab1c72a370e9162d8bf3",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "hajar2021_cd25",
+                "title": "A survey on wireless body area networks: architecture, security challenges and research opportunities",
+                "year": 2021
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "masdari",
+            "id": "ext:Comprehensive analysis of the authentication methods in wireless body area networks",
+            "title": "Comprehensive analysis of the authentication methods in wireless body area networks",
+            "year": 2016
+          },
+          "score": 0.7196,
+          "vault": {
+            "first_author": null,
+            "paper_id": "ullah2022_5f67",
+            "title": "A Comprehensive Survey of Wireless Body Area Networks",
+            "year": 2022
+          },
+          "year_gap": 6
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Comprehensive analysis of the authentication methods in wireless body area networks->ullah2022_5f67"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Comprehensive analysis of the authentication methods in wireless body area networks' the vault paper 'A Comprehensive Survey of Wireless Body Area Networks'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Comprehensive analysis of the authentication methods in wireless body area networks->ullah2022_5f67",
+      "task_id": "reference:reference:ext:Comprehensive analysis of the authentication methods in wireless body area networks->ullah2022_5f67:reference-rubric/1",
+      "task_revision": "sha256:16037219b00a5e63a51424ca666f914911a565448552443ba9d1ffb99038c646"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:4fe714627c864d1a690eec211ac8c95a56ac2a1922a19a4fd4f1f5a6d72ecd7b",
+        "complete": true,
+        "evidence_digest": "sha256:e1bdcfa019c48ecde06f3ce2b441b3f9a5f8813e532bdefc8dfff211edc51981",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "ajayi2024_5138",
+                "title": "Scientific Table Data Extraction with Uncertainty Quantification",
+                "year": 2024
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "ajayi",
+            "id": "ext:Uncertainty Quantification in Table Structure Recognition",
+            "title": "Uncertainty Quantification in Table Structure Recognition",
+            "year": 2024
+          },
+          "score": 0.7183,
+          "vault": {
+            "first_author": "ajayi",
+            "paper_id": "ajayi2024_5138",
+            "title": "Scientific Table Data Extraction with Uncertainty Quantification",
+            "year": 2024
+          },
+          "year_gap": 0
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Uncertainty Quantification in Table Structure Recognition->ajayi2024_5138"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Uncertainty Quantification in Table Structure Recognition' the vault paper 'Scientific Table Data Extraction with Uncertainty Quantification'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Uncertainty Quantification in Table Structure Recognition->ajayi2024_5138",
+      "task_id": "reference:reference:ext:Uncertainty Quantification in Table Structure Recognition->ajayi2024_5138:reference-rubric/1",
+      "task_revision": "sha256:f7fc6f33a6d6d48d20febfdd1b9ceaeb061870961a2a022117eec459f0273869"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:b17e4c5f441802ea0215ff9995416bc47eba1a835b9ac61c3fcc612839293c4e",
+        "complete": true,
+        "evidence_digest": "sha256:3bb8281eadec497e79c785f7e1ea74fc3b19d96853341a6f6f69019696f5c788",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "denis2019_853f",
+                "title": "A Survey on Detection, Tracking and Identification in Radio Frequency-Based Device-Free Localization",
+                "year": 2019
+              },
+              {
+                "paper_id": "wilson2011_f62c",
+                "title": "See-Through Walls: Motion Tracking Using Variance-Based Radio Tomography Networks",
+                "year": 2011
+              }
+            ],
+            "citers_total": 2,
+            "first_author": "wilson",
+            "id": "ext:Regularization Methods for Radio Tomographic Imaging",
+            "title": "Regularization Methods for Radio Tomographic Imaging",
+            "year": 2009
+          },
+          "score": 0.7174,
+          "vault": {
+            "first_author": "wilson",
+            "paper_id": "wilson2010_2f8b",
+            "title": "Radio Tomographic Imaging with Wireless Networks",
+            "year": 2010
+          },
+          "year_gap": 1
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Regularization Methods for Radio Tomographic Imaging->wilson2010_2f8b"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Regularization Methods for Radio Tomographic Imaging' the vault paper 'Radio Tomographic Imaging with Wireless Networks'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Regularization Methods for Radio Tomographic Imaging->wilson2010_2f8b",
+      "task_id": "reference:reference:ext:Regularization Methods for Radio Tomographic Imaging->wilson2010_2f8b:reference-rubric/1",
+      "task_revision": "sha256:59c4eb622c7e8504cf0c4825e1be06e608546d314afa8d5a0511cac8e2a74e13"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:b96ce5d16fb7d15d37560ec5ea266d0ef21148b6f62eefe980eacd6e3b627ea9",
+        "complete": true,
+        "evidence_digest": "sha256:bbc5eef11b32f073b849ae05522e3a2023287bd03d2fb2061f8dc5b2f26bc973",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "yaghoubi2022_3b25",
+                "title": "Wireless Body Area Network (WBAN): A Survey on Architecture, Technologies, Energy Consumption, and Security Challenges",
+                "year": 2022
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "zou",
+            "id": "ext:A Survey on Secure Wireless Body Area Networks",
+            "title": "A Survey on Secure Wireless Body Area Networks",
+            "year": 2017
+          },
+          "score": 0.7145,
+          "vault": {
+            "first_author": null,
+            "paper_id": "ullah2022_5f67",
+            "title": "A Comprehensive Survey of Wireless Body Area Networks",
+            "year": 2022
+          },
+          "year_gap": 5
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:A Survey on Secure Wireless Body Area Networks->ullah2022_5f67"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'A Survey on Secure Wireless Body Area Networks' the vault paper 'A Comprehensive Survey of Wireless Body Area Networks'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:A Survey on Secure Wireless Body Area Networks->ullah2022_5f67",
+      "task_id": "reference:reference:ext:A Survey on Secure Wireless Body Area Networks->ullah2022_5f67:reference-rubric/1",
+      "task_revision": "sha256:f0131f202eaec994c608ea1c5ab7eb434dcd9754c00261ab679b22fd828c9d17"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:1f5b3e7b8ecaaf69ba957ddb85fd9448ada359b11036af0d445e758892ea7c91",
+        "complete": true,
+        "evidence_digest": "sha256:51deb4713a31ce43d6f011907bfba14fe3e20ae3376ab396b518db8f098c98f6",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "tancev2022_4223",
+                "title": "Stochastic Online Calibration of Low-Cost Gas Sensor Networks With Mobile References",
+                "year": 2022
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "balzano",
+            "id": "ext:Blind calibration of networks of sensors: Theory and algorithms",
+            "title": "Blind calibration of networks of sensors: Theory and algorithms",
+            "year": 2008
+          },
+          "score": 0.7134,
+          "vault": {
+            "first_author": "balzano",
+            "paper_id": "balzano2007_61e4",
+            "title": "Blind Calibration of Sensor Networks",
+            "year": 2007
+          },
+          "year_gap": 1
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Blind calibration of networks of sensors: Theory and algorithms->balzano2007_61e4"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Blind calibration of networks of sensors: Theory and algorithms' the vault paper 'Blind Calibration of Sensor Networks'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Blind calibration of networks of sensors: Theory and algorithms->balzano2007_61e4",
+      "task_id": "reference:reference:ext:Blind calibration of networks of sensors: Theory and algorithms->balzano2007_61e4:reference-rubric/1",
+      "task_revision": "sha256:f7951a85264bf78a4cea6c33b2366cfece0ad73fb9e81085c26239cfe6667121"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:727bf40173f0381fae1ea8f866eeb689512760ca958d146a005c9d4171490ae8",
+        "complete": true,
+        "evidence_digest": "sha256:ca7747d5693b27a3b4b97402860aea642cd183ac88fe8f27ce5040c2967830a4",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "sharma2024_c8a2",
+                "title": "Towards Energy Efficient Wireless Sensing by Leveraging Ambient Wi-Fi Traffic",
+                "year": 2024
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "yang",
+            "id": "ext:Towards Large-Scale Lightweight WiFi Sensing via CSI Compression",
+            "title": "Towards Large-Scale Lightweight WiFi Sensing via CSI Compression",
+            "year": null
+          },
+          "score": 0.7134,
+          "vault": {
+            "first_author": "yang",
+            "paper_id": "yang2022_cd5c",
+            "title": "EfficientFi: Toward Large-Scale Lightweight WiFi Sensing via CSI Compression",
+            "year": 2022
+          },
+          "year_gap": null
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Towards Large-Scale Lightweight WiFi Sensing via CSI Compression->yang2022_cd5c"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Towards Large-Scale Lightweight WiFi Sensing via CSI Compression' the vault paper 'EfficientFi: Toward Large-Scale Lightweight WiFi Sensing via CSI Compression'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Towards Large-Scale Lightweight WiFi Sensing via CSI Compression->yang2022_cd5c",
+      "task_id": "reference:reference:ext:Towards Large-Scale Lightweight WiFi Sensing via CSI Compression->yang2022_cd5c:reference-rubric/1",
+      "task_revision": "sha256:a1f367f49a7e32c4f1b3206ccef875e9513551da9d137e0d3f441dc3624205a7"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:9e8db5941954443fde673bb95f361bf3c22c87a0342ff0bd81f79a1b1545fc45",
+        "complete": true,
+        "evidence_digest": "sha256:024c6dade66199c063259a88d9b079da553e897127aa5c46fd49169b5889d284",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "tan2025_d7ea",
+                "title": "Crowd Dynamics Demand Adaptivity: Self-Adaptive Physics-Informed Neural Network for Crowd Simulation",
+                "year": 2025
+              },
+              {
+                "paper_id": "zhang2025_a250",
+                "title": "Leveraging Online Learning for Domain-Adaptation in Wi-Fi-Based Device-Free Localization",
+                "year": 2025
+              },
+              {
+                "paper_id": "cheng2023_fe17",
+                "title": "Machine Learning With Data Assimilation and Uncertainty Quantification for Dynamical Systems: A Review",
+                "year": 2023
+              },
+              {
+                "paper_id": "di2023_285b",
+                "title": "Physics-Informed Deep Learning for Traffic State Estimation: A Survey and the Outlook",
+                "year": 2023
+              }
+            ],
+            "citers_total": 4,
+            "first_author": null,
+            "id": "ext:Physics-informed machine learning",
+            "title": "Physics-informed machine learning",
+            "year": 2021
+          },
+          "score": 0.7098,
+          "vault": {
+            "first_author": "meng",
+            "paper_id": "meng2025_c64e",
+            "title": "When physics meets machine learning: a survey of physics-informed machine learning",
+            "year": 2025
+          },
+          "year_gap": 4
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Physics-informed machine learning->meng2025_c64e"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Physics-informed machine learning' the vault paper 'When physics meets machine learning: a survey of physics-informed machine learning'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Physics-informed machine learning->meng2025_c64e",
+      "task_id": "reference:reference:ext:Physics-informed machine learning->meng2025_c64e:reference-rubric/1",
+      "task_revision": "sha256:9a3cb0dde9645706053e07efed7007d21b399ff99ab29342dfa8763fa4ee0fe8"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:7c1cd150fb16e464629881b0c7472018940c4f2fda1fa0373409ecdc1bb9ea04",
+        "complete": true,
+        "evidence_digest": "sha256:efc301c2063b8a077376e926e2cc61ac8cadec42ce5409963e8396f2f18bbca1",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "farsi2023_b5b4",
+                "title": "Deployment Techniques in Wireless Sensor Networks, Coverage and Connectivity: A Survey",
+                "year": 2023
+              },
+              {
+                "paper_id": "amutha2020_8196",
+                "title": "WSN Strategies Based on Sensors, Deployment, Sensing Models, Coverage and Energy Efficiency: Review, Approaches and Open Issues",
+                "year": 2020
+              },
+              {
+                "paper_id": "priyadarshi2020_2497",
+                "title": "Deployment techniques in wireless sensor networks: a survey, classification, challenges, and future research issues",
+                "year": 2020
+              }
+            ],
+            "citers_total": 3,
+            "first_author": "zhu",
+            "id": "ext:A survey on coverage and connectivity issues in wireless sensor networks",
+            "title": "A survey on coverage and connectivity issues in wireless sensor networks",
+            "year": 2012
+          },
+          "score": 0.7092,
+          "vault": {
+            "first_author": null,
+            "paper_id": "farsi2023_b5b4",
+            "title": "Deployment Techniques in Wireless Sensor Networks, Coverage and Connectivity: A Survey",
+            "year": 2023
+          },
+          "year_gap": 11
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:A survey on coverage and connectivity issues in wireless sensor networks->farsi2023_b5b4"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'A survey on coverage and connectivity issues in wireless sensor networks' the vault paper 'Deployment Techniques in Wireless Sensor Networks, Coverage and Connectivity: A Survey'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:A survey on coverage and connectivity issues in wireless sensor networks->farsi2023_b5b4",
+      "task_id": "reference:reference:ext:A survey on coverage and connectivity issues in wireless sensor networks->farsi2023_b5b4:reference-rubric/1",
+      "task_revision": "sha256:45a8a192a18bb41b855dc3a41b21e0a7730b4f8047bf01d361dc80e647d0b7d3"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:49815241d56b348c8d08fda55c809885063bbbaa059c9f403b196a051f8ef5ac",
+        "complete": true,
+        "evidence_digest": "sha256:29496d869b6da456ebed6f6844f80bfab963a6f34d3b0199a3c1cfe1570b18cb",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "saleh2020_f0c7",
+                "title": "Privacy Preservation for Wireless Sensor Networks in Healthcare: State of the Art, and Open Research Challenges",
+                "year": 2020
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "crosby",
+            "id": "ext:Wireless Body Area Networks for Healthcare: A Survey",
+            "title": "Wireless Body Area Networks for Healthcare: A Survey",
+            "year": 2012
+          },
+          "score": 0.7048,
+          "vault": {
+            "first_author": null,
+            "paper_id": "ullah2022_5f67",
+            "title": "A Comprehensive Survey of Wireless Body Area Networks",
+            "year": 2022
+          },
+          "year_gap": 10
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Wireless Body Area Networks for Healthcare: A Survey->ullah2022_5f67"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Wireless Body Area Networks for Healthcare: A Survey' the vault paper 'A Comprehensive Survey of Wireless Body Area Networks'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Wireless Body Area Networks for Healthcare: A Survey->ullah2022_5f67",
+      "task_id": "reference:reference:ext:Wireless Body Area Networks for Healthcare: A Survey->ullah2022_5f67:reference-rubric/1",
+      "task_revision": "sha256:4fe5d260884283e40603147cccb42d3d93675ac2614dcf8f6e867f16ffd08f48"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:8a94145fe52860ea413c6b4cd826067410c30044a6457bea90dde324efcc209a",
+        "complete": true,
+        "evidence_digest": "sha256:63f079bdde13fecfe76a0bd89b1d48f53b4fa232bf035a10ecf41beabf99cf62",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "alvarez2013_9ed3",
+                "title": "Linear Latent Force Models Using Gaussian Processes",
+                "year": 2013
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "alvarez",
+            "id": "ext:Latent Force Models",
+            "title": "Latent Force Models",
+            "year": 2009
+          },
+          "score": 0.7047,
+          "vault": {
+            "first_author": "alvarez",
+            "paper_id": "alvarez2013_9ed3",
+            "title": "Linear Latent Force Models Using Gaussian Processes",
+            "year": 2013
+          },
+          "year_gap": 4
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Latent Force Models->alvarez2013_9ed3"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Latent Force Models' the vault paper 'Linear Latent Force Models Using Gaussian Processes'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Latent Force Models->alvarez2013_9ed3",
+      "task_id": "reference:reference:ext:Latent Force Models->alvarez2013_9ed3:reference-rubric/1",
+      "task_revision": "sha256:95f6a9069cef2de7b02e3253cc6d8fe9f7f4f94ed4491ee5e3df574a12209308"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:f7ff133d033cfc9af086589a87702bce45c0dd7d5b0bf15952e09d0c26ab3f61",
+        "complete": true,
+        "evidence_digest": "sha256:1c28af216d96cd00014e2c19d7977aa2437e6de60704898864bfbb4b4f52fbce",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "tsunoda2024_ab8a",
+                "title": "Preprints vs. Journal Articles: Citation Impact in COVID-19 Research",
+                "year": 2024
+              }
+            ],
+            "citers_total": 1,
+            "first_author": "tsunoda",
+            "id": "ext:The Impact of Preprints on the Citations of Journal Articles Related to COVID-19",
+            "title": "The Impact of Preprints on the Citations of Journal Articles Related to COVID-19",
+            "year": 2024
+          },
+          "score": 0.7027,
+          "vault": {
+            "first_author": "tsunoda",
+            "paper_id": "tsunoda2024_ab8a",
+            "title": "Preprints vs. Journal Articles: Citation Impact in COVID-19 Research",
+            "year": 2024
+          },
+          "year_gap": 0
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:The Impact of Preprints on the Citations of Journal Articles Related to COVID-19->tsunoda2024_ab8a"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'The Impact of Preprints on the Citations of Journal Articles Related to COVID-19' the vault paper 'Preprints vs. Journal Articles: Citation Impact in COVID-19 Research'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:The Impact of Preprints on the Citations of Journal Articles Related to COVID-19->tsunoda2024_ab8a",
+      "task_id": "reference:reference:ext:The Impact of Preprints on the Citations of Journal Articles Related to COVID-19->tsunoda2024_ab8a:reference-rubric/1",
+      "task_revision": "sha256:79f99f10281d6d629575fe6ec83b2bda799b150a0e53e7926cb0ebf75ab9e14d"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:d4c8e1bebfa585dcebbb050475772e7584c8368e64e5faec9f0a254d37685506",
+        "complete": true,
+        "evidence_digest": "sha256:05fc6da5fbd41f8006e00c1732ad7957bdb650cee3a57ae6203d13decf5b1f28",
+        "fields": {
+          "authors_compatible": true,
+          "reason": "fuzzy_title",
+          "reference": {
+            "citers": [
+              {
+                "paper_id": "kim2022_e676",
+                "title": "Cross-Layer MAC/Routing Protocol for Reliability Improvement of the Internet of Things",
+                "year": 2022
+              }
+            ],
+            "citers_total": 1,
+            "first_author": null,
+            "id": "ext:Routing over Low Power and Lossy Networks",
+            "title": "Routing over Low Power and Lossy Networks",
+            "year": 2022
+          },
+          "score": 0.7002,
+          "vault": {
+            "first_author": "musaddiq",
+            "paper_id": "musaddiq2020_0516",
+            "title": "Routing protocol for Low-Power and Lossy Networks for heterogeneous traffic network",
+            "year": 2020
+          },
+          "year_gap": 2
+        },
+        "missing": [],
+        "stack": "reference",
+        "subject_id": "reference:ext:Routing over Low Power and Lossy Networks->musaddiq2020_0516"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Is the reference 'Routing over Low Power and Lossy Networks' the vault paper 'Routing protocol for Low-Power and Lossy Networks for heterogeneous traffic network'?",
+      "rubric_version": "reference-rubric/1",
+      "stack": "reference",
+      "subject_id": "reference:ext:Routing over Low Power and Lossy Networks->musaddiq2020_0516",
+      "task_id": "reference:reference:ext:Routing over Low Power and Lossy Networks->musaddiq2020_0516:reference-rubric/1",
+      "task_revision": "sha256:48a1b9c03b33dd8be89dd88547ca6cded8070a10ed5d7da660f5659a24c06a6b"
+    }
+  ],
+  "catalogue": {
+    "complete": true,
+    "items": [],
+    "kind": "reference",
+    "read_at": "2026-10-13T18:08:30Z"
+  },
+  "compiled_at": "2026-10-13T18:08:30Z",
+  "compiler_version": "desk-compiler/1",
+  "counts": {
+    "by_reason": {
+      "fuzzy_title": 70,
+      "year_conflict": 7
+    },
+    "cards": 77,
+    "tasks": 77
+  },
+  "frame": null,
+  "mode": "assisted",
+  "policy": {
+    "excludes": "pairs with an effective reviewer verdict; author-conflicting pairs",
+    "includes": "exact titles with a year conflict; author-compatible fuzzy titles at min_score or more",
+    "min_score": 0.7,
+    "source": "graph/references.py review_candidates",
+    "study": "notebooks/studies/2026-10-13-reference-resolution",
+    "version": "reference-queue/1"
+  },
+  "queue_id": "reference-active-20261013T180819Z-fc9f4af3",
+  "read_window": {
+    "end": "2026-10-13T18:08:19Z",
+    "start": "2026-10-13T18:08:19Z"
+  },
+  "rubric_version": "reference-rubric/1",
+  "schema": "monad-knowledge/desk-bank/1",
+  "sources": {
+    "graph": "ok"
+  },
+  "stack": "reference",
+  "view": "active"
+}

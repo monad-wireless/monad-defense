@@ -47,7 +47,7 @@ struct ResponseWidget: View {
             .chartXAxisLabel("people N · dashed: ceiling")
             .chartYAxisLabel(levelView ? "level L (octaves)" : "variability V")
         } controls: {
-            GChoice(label: "Curve", selection: $levelView, options: [(false, "V(N)"), (true, "L(N, M), Eq. 3.1")])
+            GChoice(label: "Curve", selection: $levelView, options: [(false, "V(N)"), (true, "L(N, M)")])
             GSlider(label: "Amplitude A", value: $A, range: 0.2...10, digits: 1)
             GSlider(label: "Knee K", value: $K, range: 0.5...20, unit: "people", digits: 1, log: true)
             if levelView {

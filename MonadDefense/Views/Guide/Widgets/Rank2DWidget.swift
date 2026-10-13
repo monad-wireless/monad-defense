@@ -18,7 +18,7 @@ struct Rank2DWidget: View {
                 ? "\\kappa=\\cot\\tfrac{\\theta}{2}=\(tex(cond, 2)),\\quad \\text{area}=\\frac{4\\epsilon^2}{\\sin\\theta}=\(tex(area, 3))"
                 : "\\operatorname{rank}=1",
             readout: [two ? "identified · condition number \(fmt(cond, 2))" : "not identified: a whole line fits"],
-            words: "one measurement leaves a line. Two cut it to a point, but a shallow angle stretches the overlap into a sliver: identified in principle, poorly conditioned in practice. Nearby anchor counts behave like a shallow angle (Fig. 3.5)."
+            words: "one measurement leaves a line. Two cut it to a point, but a shallow angle stretches the overlap into a sliver: identified in principle, poorly conditioned in practice. Two measurements that react almost alike behave like a shallow angle."
         ) {
             Canvas { ctx, size in
                 let s = min(size.width, size.height) / 3

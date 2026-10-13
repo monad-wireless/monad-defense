@@ -1,0 +1,236 @@
+{
+  "bank_id": "sha256:dc288f597f47c367f9c4dffbb7b81a95bcfc414da797219a0be9879b119ff2f5",
+  "cards": [
+    {
+      "evidence": {
+        "change_key": "sha256:bdf360240f9fa06ed3cb7fa7251baf8019fffbbd32178377f7a5b87ec8ff4264",
+        "complete": true,
+        "evidence_digest": "sha256:a255762a486bbc6c83501d532d15cdf2d2d296c462cb3d304e7b5aa142c49c2d",
+        "fields": {
+          "claim_id": "c03",
+          "claim_text": "the method improves accuracy (c03)",
+          "claim_type": null,
+          "locator_note": "page numbers are stored values, not verified PDF pages",
+          "origins": [
+            {
+              "page": 4,
+              "page_verified": false,
+              "paper": "smith2020_ab12",
+              "paragraph_id": "p-c03",
+              "section": "Results",
+              "text": "the method improved accuracy in the controlled setting"
+            }
+          ],
+          "papers": [
+            {
+              "paper_id": "smith2020_ab12",
+              "title": "A Source Paper"
+            }
+          ],
+          "producer": "paragraph_extraction"
+        },
+        "missing": [],
+        "stack": "fidelity",
+        "subject_id": "claim:c03"
+      },
+      "history": null,
+      "proposal_ref": null,
+      "question": "Does the extracted claim stay faithful to the displayed source paragraph(s)?",
+      "rubric_version": "fidelity-rubric/1",
+      "stack": "fidelity",
+      "subject_id": "claim:c03",
+      "task_id": "fidelity:claim:c03:fidelity-rubric/1",
+      "task_revision": "sha256:382bf17cdb7eb27bd6d549470cb0e9b7aee5f993b3ea926c6e32116765591134"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:bdf360240f9fa06ed3cb7fa7251baf8019fffbbd32178377f7a5b87ec8ff4264",
+        "complete": true,
+        "evidence_digest": "sha256:65d0bdfc5e6d9aa3b119511906d0d77e292a64bef96262b57d747868a2577d15",
+        "fields": {
+          "claim_id": "c04",
+          "claim_text": "the method improves accuracy (c04)",
+          "claim_type": null,
+          "locator_note": "page numbers are stored values, not verified PDF pages",
+          "origins": [
+            {
+              "page": 4,
+              "page_verified": false,
+              "paper": "smith2020_ab12",
+              "paragraph_id": "p-c04",
+              "section": "Results",
+              "text": "the method improved accuracy in the controlled setting"
+            }
+          ],
+          "papers": [
+            {
+              "paper_id": "smith2020_ab12",
+              "title": "A Source Paper"
+            }
+          ],
+          "producer": "paragraph_extraction"
+        },
+        "missing": [],
+        "stack": "fidelity",
+        "subject_id": "claim:c04"
+      },
+      "history": null,
+      "proposal_ref": null,
+      "question": "Does the extracted claim stay faithful to the displayed source paragraph(s)?",
+      "rubric_version": "fidelity-rubric/1",
+      "stack": "fidelity",
+      "subject_id": "claim:c04",
+      "task_id": "fidelity:claim:c04:fidelity-rubric/1",
+      "task_revision": "sha256:228283672b32a86a06dd7943ed7d42d415bc738b324c1c95655e690239395e88"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:bdf360240f9fa06ed3cb7fa7251baf8019fffbbd32178377f7a5b87ec8ff4264",
+        "complete": true,
+        "evidence_digest": "sha256:af357d82f5a11a3f92591a1ac5826414e64b2a124102635242cebb5be9af32d7",
+        "fields": {
+          "claim_id": "c09",
+          "claim_text": "the method improves accuracy (c09)",
+          "claim_type": null,
+          "locator_note": "page numbers are stored values, not verified PDF pages",
+          "origins": [
+            {
+              "page": 4,
+              "page_verified": false,
+              "paper": "smith2020_ab12",
+              "paragraph_id": "p-c09",
+              "section": "Results",
+              "text": "the method improved accuracy in the controlled setting"
+            }
+          ],
+          "papers": [
+            {
+              "paper_id": "smith2020_ab12",
+              "title": "A Source Paper"
+            }
+          ],
+          "producer": "paragraph_extraction"
+        },
+        "missing": [],
+        "stack": "fidelity",
+        "subject_id": "claim:c09"
+      },
+      "history": null,
+      "proposal_ref": null,
+      "question": "Does the extracted claim stay faithful to the displayed source paragraph(s)?",
+      "rubric_version": "fidelity-rubric/1",
+      "stack": "fidelity",
+      "subject_id": "claim:c09",
+      "task_id": "fidelity:claim:c09:fidelity-rubric/1",
+      "task_revision": "sha256:742478b0bc87dd560ec763c4e015ffcf959f0b9c58e5f4015f32d22a2be8d395"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:bdf360240f9fa06ed3cb7fa7251baf8019fffbbd32178377f7a5b87ec8ff4264",
+        "complete": true,
+        "evidence_digest": "sha256:0e14f1aab221fed31b2feef1e6d29f3510cfe49cad80dd2300efc800d63d070d",
+        "fields": {
+          "claim_id": "c10",
+          "claim_text": "the method improves accuracy (c10)",
+          "claim_type": null,
+          "locator_note": "page numbers are stored values, not verified PDF pages",
+          "origins": [
+            {
+              "page": 4,
+              "page_verified": false,
+              "paper": "smith2020_ab12",
+              "paragraph_id": "p-c10",
+              "section": "Results",
+              "text": "the method improved accuracy in the controlled setting"
+            }
+          ],
+          "papers": [
+            {
+              "paper_id": "smith2020_ab12",
+              "title": "A Source Paper"
+            }
+          ],
+          "producer": "paragraph_extraction"
+        },
+        "missing": [],
+        "stack": "fidelity",
+        "subject_id": "claim:c10"
+      },
+      "history": null,
+      "proposal_ref": null,
+      "question": "Does the extracted claim stay faithful to the displayed source paragraph(s)?",
+      "rubric_version": "fidelity-rubric/1",
+      "stack": "fidelity",
+      "subject_id": "claim:c10",
+      "task_id": "fidelity:claim:c10:fidelity-rubric/1",
+      "task_revision": "sha256:8e79bdd5d36bc14cd7198d02b24e35a3250cdac35c86745144296d9a4d04d37c"
+    }
+  ],
+  "catalogue": {
+    "complete": true,
+    "items": [],
+    "kind": "claim",
+    "read_at": "2026-09-21T18:00:00Z"
+  },
+  "compiled_at": "2026-09-21T18:00:00Z",
+  "compiler_version": "desk-compiler/1",
+  "counts": {
+    "cards": 4,
+    "coverage": {
+      "claims": 12,
+      "retained_text": 12
+    },
+    "eligible": 11,
+    "excluded": 1,
+    "frame": 12,
+    "selected": 4
+  },
+  "frame": {
+    "algorithm": "uniform-without-replacement/1",
+    "eligible_ids": [
+      "c01",
+      "c02",
+      "c03",
+      "c04",
+      "c05",
+      "c06",
+      "c07",
+      "c08",
+      "c09",
+      "c10",
+      "c11"
+    ],
+    "excluded_ids": [
+      "c00"
+    ],
+    "frame_digest": "sha256:623d5aea02792fc446ac2c67f296879afa85546f2e943cea443bcaa3b427ac09",
+    "frame_size": 11,
+    "seed": 3,
+    "selected_ids": [
+      "c03",
+      "c04",
+      "c09",
+      "c10"
+    ],
+    "selection_digest": "sha256:a052befd82e3149316d2819714cb1f4b6b424cb89debd1540bcd1363e92df9b1"
+  },
+  "mode": "blind",
+  "policy": {
+    "exclusions_declared": true,
+    "fresh_sample": true,
+    "population": "retained-paragraph decomposer claims",
+    "version": "fidelity-frame/1"
+  },
+  "queue_id": "fidelity-active-20260921T180000Z-a052befd",
+  "read_window": {
+    "end": "2026-09-21T18:00:00Z",
+    "start": "2026-09-21T18:00:00Z"
+  },
+  "rubric_version": "fidelity-rubric/1",
+  "schema": "monad-knowledge/desk-bank/1",
+  "sources": {
+    "graph": "ok"
+  },
+  "stack": "fidelity",
+  "view": "active"
+}

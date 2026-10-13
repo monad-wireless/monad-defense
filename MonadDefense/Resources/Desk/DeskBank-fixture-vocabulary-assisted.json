@@ -1,0 +1,301 @@
+{
+  "bank_id": "sha256:bcd2d7ccede2260c367daa407cc951fb9aefea92850b2b3ab5a25a3b93cc9a39",
+  "cards": [
+    {
+      "evidence": {
+        "change_key": "sha256:1d7da77b0eb52ac90c00a762b3e839ac182d096b593580798a25fec7ae5f8f94",
+        "complete": false,
+        "evidence_digest": "sha256:902447c679b853755d6a9d373fba14e883f0575b132d65a8d9246a3f90143f00",
+        "fields": {
+          "excerpt_policy": "literal-name-match/1",
+          "excerpts": [
+            {
+              "load_bearing": false,
+              "page": 1,
+              "paper_id": "jones2021_cd34",
+              "paragraph_id": "p2",
+              "section": null,
+              "text": "Canon Variant and machine learning.",
+              "text_available": true,
+              "title": "Another Paper"
+            }
+          ],
+          "excerpts_remaining": 0,
+          "kind": "method",
+          "load_bearing": 1,
+          "name": "machine learning",
+          "near_matches": [],
+          "paper_list": [
+            {
+              "load_bearing": true,
+              "matching_paragraphs": 0,
+              "paper_id": "smith2020_ab12",
+              "title": "A Source Paper",
+              "year": 2020
+            },
+            {
+              "load_bearing": false,
+              "matching_paragraphs": 1,
+              "paper_id": "jones2021_cd34",
+              "title": "Another Paper",
+              "year": 2021
+            },
+            {
+              "load_bearing": false,
+              "matching_paragraphs": 0,
+              "paper_id": "zed2022_ef56",
+              "title": "Third",
+              "year": 2022
+            }
+          ],
+          "papers": 3,
+          "slug": "machine-learning",
+          "stored_slug": true
+        },
+        "missing": [
+          "excerpt_unavailable:smith2020_ab12",
+          "excerpt_unavailable:zed2022_ef56"
+        ],
+        "stack": "vocabulary",
+        "subject_id": "method:machine-learning"
+      },
+      "history": null,
+      "proposal": {
+        "action": "set_aside",
+        "payload": {
+          "reason": "too_broad"
+        },
+        "payload_digest": "sha256:83814ef9d051c4df8a5c743e280b23a32636c850f2c237b3c65f24cb37abe425",
+        "proposal_id": "55af6681-c5ec-4197-856f-da56a4096090",
+        "provenance": {
+          "client": "fixture",
+          "created_at": "2026-09-21T18:00:00Z",
+          "editorial_standard": "curated-definition/1",
+          "model": null,
+          "queue_id": "vocabulary-active-20260921T180000Z-d1cac7ab",
+          "skill_revision": null
+        },
+        "rationale": "Too broad for a method vocabulary.",
+        "source_refs": [],
+        "supersedes": null,
+        "task_id": "vocabulary:method:machine-learning:vocabulary-rubric/1",
+        "task_revision": "sha256:3cd0733f2065276add9996f0cd9dd7230c2f7f4fd8dabc9060c467084d23da1e"
+      },
+      "question": "Should 'machine learning' become a curated method term, an alias of an existing term, or be set aside?",
+      "rubric_version": "vocabulary-rubric/1",
+      "stack": "vocabulary",
+      "subject_id": "method:machine-learning",
+      "task_id": "vocabulary:method:machine-learning:vocabulary-rubric/1",
+      "task_revision": "sha256:3cd0733f2065276add9996f0cd9dd7230c2f7f4fd8dabc9060c467084d23da1e"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:bd493cc77e75e360a0a9cd8c59e71d1377207ab0c7188493e587ad594d9b13a0",
+        "complete": false,
+        "evidence_digest": "sha256:572e48c03f94cbf9784eeb1acaf1080aa2f00ee839edb505fa98cd1a17ac0129",
+        "fields": {
+          "excerpt_policy": "literal-name-match/1",
+          "excerpts": [
+            {
+              "load_bearing": false,
+              "page": 1,
+              "paper_id": "jones2021_cd34",
+              "paragraph_id": "p2",
+              "section": null,
+              "text": "Canon Variant and machine learning.",
+              "text_available": true,
+              "title": "Another Paper"
+            }
+          ],
+          "excerpts_remaining": 0,
+          "kind": "method",
+          "load_bearing": 1,
+          "name": "Canon Variant",
+          "near_matches": [],
+          "paper_list": [
+            {
+              "load_bearing": true,
+              "matching_paragraphs": 0,
+              "paper_id": "smith2020_ab12",
+              "title": "A Source Paper",
+              "year": 2020
+            },
+            {
+              "load_bearing": false,
+              "matching_paragraphs": 1,
+              "paper_id": "jones2021_cd34",
+              "title": "Another Paper",
+              "year": 2021
+            }
+          ],
+          "papers": 2,
+          "slug": "canon-variant",
+          "stored_slug": true
+        },
+        "missing": [
+          "excerpt_unavailable:smith2020_ab12"
+        ],
+        "stack": "vocabulary",
+        "subject_id": "method:canon-variant"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Should 'Canon Variant' become a curated method term, an alias of an existing term, or be set aside?",
+      "rubric_version": "vocabulary-rubric/1",
+      "stack": "vocabulary",
+      "subject_id": "method:canon-variant",
+      "task_id": "vocabulary:method:canon-variant:vocabulary-rubric/1",
+      "task_revision": "sha256:7df152dd809faa63a06b1475f1e56156f1cc02c499c6ff347fcebc69bf9109a6"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:bd493cc77e75e360a0a9cd8c59e71d1377207ab0c7188493e587ad594d9b13a0",
+        "complete": false,
+        "evidence_digest": "sha256:5afe61b1c3f00c192dab30fbb8b285289dc06ee4daaf88d208090ec230acc6e0",
+        "fields": {
+          "excerpt_policy": "literal-name-match/1",
+          "excerpts": [
+            {
+              "load_bearing": true,
+              "page": 3,
+              "paper_id": "smith2020_ab12",
+              "paragraph_id": "p1",
+              "section": "Method",
+              "text": "We apply Linear Discriminant Analysis to the CSI amplitude features in the controlled setting.",
+              "text_available": true,
+              "title": "A Source Paper"
+            }
+          ],
+          "excerpts_remaining": 0,
+          "kind": "method",
+          "load_bearing": 1,
+          "name": "Linear Discriminant Analysis",
+          "near_matches": [],
+          "paper_list": [
+            {
+              "load_bearing": true,
+              "matching_paragraphs": 1,
+              "paper_id": "smith2020_ab12",
+              "title": "A Source Paper",
+              "year": 2020
+            },
+            {
+              "load_bearing": false,
+              "matching_paragraphs": 0,
+              "paper_id": "jones2021_cd34",
+              "title": "Another Paper",
+              "year": 2021
+            }
+          ],
+          "papers": 2,
+          "slug": "linear-discriminant-analysis",
+          "stored_slug": true
+        },
+        "missing": [
+          "excerpt_unavailable:jones2021_cd34"
+        ],
+        "stack": "vocabulary",
+        "subject_id": "method:linear-discriminant-analysis"
+      },
+      "history": null,
+      "proposal": {
+        "action": "promote",
+        "payload": {
+          "aliases": [
+            "LDA"
+          ],
+          "definition": "A supervised linear projection that maximises between-class separation relative to within-class scatter.",
+          "entity_type": "method",
+          "name": "Linear Discriminant Analysis",
+          "slug": "linear-discriminant-analysis",
+          "source_refs": [
+            "smith2020_ab12",
+            "jones2021_cd34"
+          ]
+        },
+        "payload_digest": "sha256:0950f86dc87565d3db8b846fbfa8b3cee88a8a7da5bfe274531f1b3a02273d64",
+        "proposal_id": "6ac8c684-aa39-4ffe-af3f-f26d7d1f0668",
+        "provenance": {
+          "client": "fixture",
+          "created_at": "2026-09-21T18:00:00Z",
+          "editorial_standard": "curated-definition/1",
+          "model": null,
+          "queue_id": "vocabulary-active-20260921T180000Z-d1cac7ab",
+          "skill_revision": null
+        },
+        "rationale": "Both papers use the term for the same projection.",
+        "source_refs": [
+          "smith2020_ab12",
+          "jones2021_cd34"
+        ],
+        "supersedes": null,
+        "task_id": "vocabulary:method:linear-discriminant-analysis:vocabulary-rubric/1",
+        "task_revision": "sha256:98bedbabb437b0a15e1569e7d47dbcad4f949eb8b7b66cb48d61a33623593590"
+      },
+      "question": "Should 'Linear Discriminant Analysis' become a curated method term, an alias of an existing term, or be set aside?",
+      "rubric_version": "vocabulary-rubric/1",
+      "stack": "vocabulary",
+      "subject_id": "method:linear-discriminant-analysis",
+      "task_id": "vocabulary:method:linear-discriminant-analysis:vocabulary-rubric/1",
+      "task_revision": "sha256:98bedbabb437b0a15e1569e7d47dbcad4f949eb8b7b66cb48d61a33623593590"
+    }
+  ],
+  "catalogue": {
+    "complete": true,
+    "items": [
+      {
+        "aliases": [
+          "canonical"
+        ],
+        "definition": "A canonical method.",
+        "name": "Canonical",
+        "slug": "canonical",
+        "vault_note": false
+      }
+    ],
+    "kind": "method",
+    "native": 0,
+    "read_at": "2026-09-21T20:59:29.101257+00:00"
+  },
+  "compiled_at": "2026-09-21T18:00:00Z",
+  "compiler_version": "desk-compiler/1",
+  "counts": {
+    "after_in_flight_filter": 3,
+    "after_view_filter": 3,
+    "by_view": {
+      "active": 3,
+      "changed": 0,
+      "exploratory": 0,
+      "research": 0,
+      "set-aside": 0
+    },
+    "cards": 3,
+    "enumerated": 3,
+    "population": 3,
+    "selected": 3,
+    "window_complete": true
+  },
+  "frame": null,
+  "mode": "assisted",
+  "policy": {
+    "excerpts": "literal-name-match/1",
+    "marked_papers": 1,
+    "max_candidates": 400,
+    "min_papers": 2,
+    "ordering": "load_bearing desc, papers desc, subject_id",
+    "selection": "top max_candidates of the view under the ordering, over the complete census",
+    "version": "vocabulary-queue/1"
+  },
+  "queue_id": "vocabulary-active-20260921T180000Z-d1cac7ab",
+  "read_window": {
+    "end": "2026-09-21T18:00:00Z",
+    "start": "2026-09-21T18:00:00Z"
+  },
+  "rubric_version": "vocabulary-rubric/1",
+  "schema": "monad-knowledge/desk-bank/1",
+  "sources": {
+    "graph": "ok"
+  },
+  "stack": "vocabulary",
+  "view": "active"
+}

@@ -19,7 +19,7 @@ struct BayesGridWidget: View {
         let s = GuideMath.summary(post)
         WidgetLayout(
             formula: "\\mathbb{E}[N\\mid L]=\(tex(s.mean, 2)),\\quad 90\\,\\%\\ [\(s.lo),\(s.hi)]",
-            words: "make the likelihood wide, then move $K_{\\max}$. The posterior mean follows the support, not the data. That is what §6.1.1 finds in the thesis's own pilot configuration."
+            words: "make the likelihood wide, then move $K_{\\max}$. The posterior mean follows the support, not the data. A confident answer can then come from the prior, not from the observation."
         ) {
             Chart {
                 ForEach(ks, id: \.self) { k in

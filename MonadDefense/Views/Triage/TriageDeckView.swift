@@ -6,42 +6,66 @@ import UIKit
 // The gesture grammar is fixed so the hand learns it once:
 //   right      yes / keep / include            green
 //   left       no / cut / exclude              red
-//   up         send back for rework, with a note   orange
-//   long-press the rare fourth verb, when a spec declares one   blue
+//   up         send back for rework, with a note   orange   (the button bar)
+//   fourth     the rare fourth verb, when a spec declares one   blue   (the button bar)
 //   tap        flip or expand the card — no decision
+//
+// Only horizontal drags decide. A vertical drag scrolls the card, so long
+// evidence can be read without a stray "up" commit, and holding a finger on
+// the text never decides anything (2026-10-13: both did, mid-read).
 //
 // A stack is a `TriageSpec`: what cards, what each gesture does, and what the
 // card SHOWS — which is what the judgement is about, not always the whole
 // card. Every action writes SwiftData first and exports later.
+//
+// The deck is generic over the item (IP-161): study `Card`s for the IP-151
+// stacks, `DeskCard`s for the Desk. An action reports what happened. Only a
+// saved action advances; a failed one keeps the card and shows why; an action
+// that needs input first returns an editor, and the card advances only when
+// that editor reports a save. Cancelling an editor leaves the card untouched.
 
-struct TriageAction {
+enum TriageOutcome {
+    case saved
+    case failed(String)
+    /// Present this editor. It calls `finish` after it has saved.
+    case edit((_ finish: @escaping () -> Void) -> AnyView)
+}
+
+struct TriageAction<Item> {
     let label: String
     let symbol: String
     let tint: Color
-    /// Called with the card and the note the curator typed (up-swipe opens the
-    /// note sheet; the others pass any pending note).
-    let perform: (Card, String) -> Void
+    /// Called with the item and the note the curator typed (up-swipe opens the
+    /// note sheet unless the spec turns that off; the others pass any pending note).
+    let perform: (Item, String) -> TriageOutcome
 }
 
-struct TriageSpec {
+struct TriageSpec<Item: Identifiable> {
     let title: String
-    let cards: [Card]
+    let cards: [Item]
     /// What the card shows. `expanded` toggles on tap.
-    let render: (Card, _ expanded: Bool) -> AnyView
-    let right: TriageAction
-    let left: TriageAction
-    let up: TriageAction
-    var longPress: TriageAction? = nil
+    let render: (Item, _ expanded: Bool) -> AnyView
+    let right: TriageAction<Item>
+    let left: TriageAction<Item>
+    let up: TriageAction<Item>
+    var longPress: TriageAction<Item>? = nil
     /// Canned phrases for the note sheet.
     var quickNotes: [String] = []
     /// What the finished screen tells the curator to do next.
     var finishedHint: String = "Export from Curate."
+    /// Up opens the free-text note sheet before `up.perform`. Off when the
+    /// up action brings its own editor.
+    var upOpensNote: Bool = true
+    /// Reverse the decision on an item decided in this sitting. Nil hides undo.
+    var undo: ((Item) -> TriageOutcome)? = nil
+    /// The finished-screen noun.
+    var noun: String = "card(s)"
 }
 
-struct TriageDeckView: View {
+struct TriageDeckView<Item: Identifiable>: View {
     @Environment(\.dismiss) private var dismiss
 
-    let spec: TriageSpec
+    let spec: TriageSpec<Item>
 
     @State private var index = 0
     @State private var offset: CGSize = .zero
@@ -52,11 +76,22 @@ struct TriageDeckView: View {
     @State private var noteSheetShown = false
     @State private var pendingNote = ""
     @State private var flyOut: CGSize?
+    @State private var editor: EditorRequest?
+    @State private var errorText: String?
+    /// Indices decided in this sitting, newest last, for undo.
+    @State private var decided: [Int] = []
+
+    private struct EditorRequest: Identifiable {
+        let id = UUID()
+        let view: AnyView
+    }
+
+    private enum Slot { case right, left, up, hold }
 
     private let commitDistance: CGFloat = 110
 
-    private var card: Card? { index < spec.cards.count ? spec.cards[index] : nil }
-    private var next: Card? { index + 1 < spec.cards.count ? spec.cards[index + 1] : nil }
+    private var card: Item? { index < spec.cards.count ? spec.cards[index] : nil }
+    private var next: Item? { index + 1 < spec.cards.count ? spec.cards[index + 1] : nil }
 
     var body: some View {
         NavigationStack {
@@ -76,6 +111,11 @@ struct TriageDeckView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("Close", systemImage: "xmark") { dismiss() }
+                }
+                if spec.undo != nil, !decided.isEmpty {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button("Undo", systemImage: "arrow.uturn.backward") { undoLast() }
+                    }
                 }
                 if card != nil {
                     ToolbarItem(placement: .topBarTrailing) {
@@ -100,13 +140,24 @@ struct TriageDeckView: View {
             .sheet(isPresented: $noteSheetShown) {
                 noteEditor
             }
+            .sheet(item: $editor) { request in
+                request.view
+            }
+            .alert(
+                "Not saved",
+                isPresented: Binding(get: { errorText != nil }, set: { if !$0 { errorText = nil } })
+            ) {
+                Button("OK", role: .cancel) { errorText = nil }
+            } message: {
+                Text(errorText ?? "")
+            }
         }
     }
 
     // MARK: Stage
 
     @ViewBuilder
-    private func stage(_ card: Card) -> some View {
+    private func stage(_ card: Item) -> some View {
         VStack(spacing: 0) {
             ZStack {
                 if let next {
@@ -122,13 +173,8 @@ struct TriageDeckView: View {
                     .overlay(alignment: .bottom) { cueUp }
                     .offset(flyOut ?? offset)
                     .rotationEffect(.degrees(Double((flyOut ?? offset).width / 18)))
-                    .gesture(drag(card))
+                    .simultaneousGesture(drag(card))
                     .onTapGesture { withAnimation(.snappy) { expanded.toggle() } }
-                    .onLongPressGesture(minimumDuration: 0.5) {
-                        guard let action = spec.longPress else { return }
-                        haptic(.rigid)
-                        commit(action, card, swipe: nil)
-                    }
                     .animation(.interactiveSpring(), value: offset)
                     .id(card.id)
             }
@@ -141,7 +187,7 @@ struct TriageDeckView: View {
         .background(.background.secondary)
     }
 
-    private func cardFace(_ card: Card, expanded: Bool) -> some View {
+    private func cardFace(_ card: Item, expanded: Bool) -> some View {
         ScrollView {
             spec.render(card, expanded)
                 .padding(18)
@@ -182,25 +228,26 @@ struct TriageDeckView: View {
 
     private var legend: some View {
         HStack(spacing: 0) {
-            legendItem(spec.left, hint: "swipe left")
-            legendItem(spec.up, hint: "swipe up")
-            legendItem(spec.right, hint: "swipe right")
+            legendItem(spec.left, slot: .left, hint: "swipe left")
+            legendItem(spec.up, slot: .up, hint: "tap")
+            legendItem(spec.right, slot: .right, hint: "swipe right")
             if let lp = spec.longPress {
-                legendItem(lp, hint: "hold")
+                legendItem(lp, slot: .hold, hint: "tap")
             }
         }
         .padding(.vertical, 10)
         .background(.bar)
     }
 
-    private func legendItem(_ action: TriageAction, hint: String) -> some View {
+    private func legendItem(_ action: TriageAction<Item>, slot: Slot, hint: String) -> some View {
         Button {
             guard let card else { return }
             haptic(.medium)
-            if action.label == spec.up.label {
-                showNote(for: .up)
-            } else {
-                commit(action, card, swipe: action.label == spec.right.label ? .right : (action.label == spec.left.label ? .left : nil))
+            switch slot {
+            case .up: up(card)
+            case .right: commit(action, card, swipe: .right)
+            case .left: commit(action, card, swipe: .left)
+            case .hold: commit(action, card, swipe: nil)
             }
         } label: {
             VStack(spacing: 3) {
@@ -216,35 +263,87 @@ struct TriageDeckView: View {
             .foregroundStyle(action.tint)
         }
         .buttonStyle(.plain)
+        .accessibilityLabel(Text(action.label))
+        .accessibilityHint(Text(hint))
     }
 
     // MARK: Gesture
 
-    private func drag(_ card: Card) -> some Gesture {
-        DragGesture(minimumDistance: 8)
+    /// Horizontal only: the card follows a drag that is mostly sideways, and a
+    /// vertical drag stays with the scroll view underneath.
+    private func drag(_ card: Item) -> some Gesture {
+        DragGesture(minimumDistance: 16)
             .onChanged { value in
-                offset = value.translation
+                let t = value.translation
+                guard flyOut == nil, abs(t.width) > abs(t.height) * 1.4 else { return }
+                offset = CGSize(width: t.width, height: t.height * 0.15)
             }
             .onEnded { value in
                 let t = value.translation
+                guard flyOut == nil, abs(t.width) > abs(t.height) * 1.4 else {
+                    offset = .zero
+                    return
+                }
                 if t.width > commitDistance {
                     haptic(.medium)
                     commit(spec.right, card, swipe: .right)
                 } else if t.width < -commitDistance {
                     haptic(.medium)
                     commit(spec.left, card, swipe: .left)
-                } else if t.height < -commitDistance, abs(t.width) < commitDistance {
-                    haptic(.light)
-                    offset = .zero
-                    showNote(for: .up)
                 } else {
                     offset = .zero
                 }
             }
     }
 
-    private func commit(_ action: TriageAction, _ card: Card, swipe: TriageSwipe?) {
-        let note = pendingNote
+    private func up(_ card: Item) {
+        if spec.upOpensNote {
+            showNote(for: .up)
+        } else {
+            commit(spec.up, card, swipe: .up)
+        }
+    }
+
+    /// Run the action first; only a save moves the deck on. A second tap while
+    /// the card is still flying out would decide the same card twice.
+    private func commit(_ action: TriageAction<Item>, _ card: Item, swipe: TriageSwipe?) {
+        guard flyOut == nil, editor == nil else { return }
+        switch action.perform(card, pendingNote) {
+        case .saved:
+            advance(swipe)
+        case .failed(let message):
+            offset = .zero
+            haptic(.heavy)
+            errorText = message
+        case .edit(let build):
+            offset = .zero
+            editor = EditorRequest(view: build {
+                editor = nil
+                advance(swipe)
+            })
+        }
+    }
+
+    private func undoLast() {
+        guard let undo = spec.undo, let last = decided.last else { return }
+        switch undo(spec.cards[last]) {
+        case .saved:
+            decided.removeLast()
+            haptic(.light)
+            withAnimation(.snappy) {
+                index = last
+                expanded = false
+                offset = .zero
+            }
+        case .failed(let message):
+            errorText = message
+        case .edit:
+            break
+        }
+    }
+
+    private func advance(_ swipe: TriageSwipe?) {
+        decided.append(index)
         let direction: CGSize = switch swipe {
         case .right: CGSize(width: 700, height: -40)
         case .left: CGSize(width: -700, height: -40)
@@ -252,7 +351,6 @@ struct TriageDeckView: View {
         case nil: CGSize(width: 0, height: 700)
         }
         withAnimation(.easeIn(duration: 0.22)) { flyOut = direction }
-        action.perform(card, note)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.22) {
             flyOut = nil
             offset = .zero
@@ -322,7 +420,7 @@ struct TriageDeckView: View {
                 .foregroundStyle(.green)
             Text("Stack empty")
                 .font(.title2.weight(.semibold))
-            Text("\(spec.cards.count) card(s) decided. \(spec.finishedHint)")
+            Text("\(spec.cards.count) \(spec.noun) decided. \(spec.finishedHint)")
                 .font(.callout)
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.secondary)

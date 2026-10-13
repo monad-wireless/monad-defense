@@ -21,11 +21,12 @@ struct CurationPassView: View {
         TriageDeckView(spec: spec)
     }
 
-    private var spec: TriageSpec {
+    private var spec: TriageSpec<Card> {
         let store = store
-        func act(_ verdict: CurationVerdict) -> TriageAction {
+        func act(_ verdict: CurationVerdict) -> TriageAction<Card> {
             TriageAction(label: verdict.displayName, symbol: verdict.symbol, tint: verdict.tint) { card, note in
                 store.setNote(note, verdict: verdict, for: card.id)
+                return .saved
             }
         }
         return TriageSpec(

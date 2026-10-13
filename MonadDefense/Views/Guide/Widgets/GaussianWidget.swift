@@ -13,7 +13,7 @@ struct GaussianWidget: View {
         WidgetLayout(
             formula: "z_{1-\\alpha/2}=\(tex(z, 3)),\\quad W=2z\\sigma=\(tex(2 * half, 3))",
             readout: ["interval μ ± \(fmt(half, 3)) · full width \(fmt(2 * half, 3))"],
-            words: "the shaded mass is the coverage. At 90 % the full width is about 3.29 σ; Eq. (6.6) uses exactly this, with σ the count uncertainty."
+            words: "the shaded mass is the coverage. At 90 % the full width is about 3.29 σ; a count interval built this way follows the same rule, with σ the count uncertainty."
         ) {
             Chart {
                 ForEach(curve.filter { abs($0.x) <= half }) { p in

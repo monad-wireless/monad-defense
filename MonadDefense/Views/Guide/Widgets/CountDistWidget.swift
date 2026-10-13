@@ -22,7 +22,7 @@ struct CountDistWidget: View {
                 : "\\mathrm{Var}_{\\mathrm{NegBin}}=\\mu+\\frac{\\mu^2}{\\phi}=\(tex(variance, 2))",
             readout: ["mean \(fmt(mu, 2)) · NegBin variance \(fmt(variance, 2)) · Poisson variance \(fmt(mu, 2))"],
             words: devices
-                ? "the mean depends on $N$ and $r$ only through $rN$. Double $N$ and halve $r$: the bars do not move. That is half of the scale symmetry of Eq. (3.2)."
+                ? "the mean depends on $N$ and $r$ only through $rN$. Double $N$ and halve $r$: the bars do not move. That is the scale ambiguity: a device count alone does not fix the number of people."
                 : "a small $\\phi$ spreads the counts far beyond the Poisson; a large $\\phi$ makes the two agree."
         ) {
             Chart {

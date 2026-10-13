@@ -18,7 +18,7 @@ struct PathLossWidget: View {
         WidgetLayout(
             formula: "\\hat d=10^{\\frac{R(d_0)-R}{10n}}=10^{\\frac{-60-(\(tex(measured, 0)))}{10\\cdot\(tex(n, 1))}}=\(tex(dHat, 2))\\,\\mathrm{m}",
             readout: ["90 % interval \(fmt(dLo, 1))–\(fmt(dHi, 1)) m"],
-            words: "distance sits inside a logarithm, so ±4 dB of shadowing is a factor of distance, not a few centimetres. A point estimate without this interval is the \"unjustifiably precise location\" of §4.9."
+            words: "distance sits inside a logarithm, so ±4 dB of shadowing is a factor of distance, not a few centimetres. A point estimate without this interval claims more precision than the data hold."
         ) {
             Chart {
                 RectangleMark(xStart: .value("lo", dLo), xEnd: .value("hi", min(dHi, 20)))

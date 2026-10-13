@@ -69,7 +69,7 @@ MonadDefense/
   Store/StudyStore.swift    the only reader of content and writer of progress
   Views/                    screens
   Views/Widgets/            one figure widget per file
-  Resources/                DeckBank.json + Figures/ — generated, never hand-edited
+  Resources/                DeckBank.json + Figures/ + Desk/DeskBank-*.json — generated, never hand-edited
   Assets.xcassets/          icon and accent colour
 Configuration/              Base.xcconfig (tracked) + Local.xcconfig (ignored)
 design/                     icon sources (SVG) and the screenshot script
@@ -93,7 +93,10 @@ hold no model logic, and nothing below a layer imports anything above it.
 - **Correct in both appearances.** Every colour comes from `Views/Theme.swift`
   or the asset catalogue. A hardcoded colour is a dark-mode bug waiting.
 - **Never hand-edit `Resources/`.** It is compiled output. See
-  [CONTENT.md](CONTENT.md).
+  [CONTENT.md](CONTENT.md). Desk banks come from `kb desk compile --out
+  MonadDefense/Resources/Desk/DeskBank-<name>.json` in monad-knowledge. The four
+  `DeskBank-fixture-*.json` are copies of monad-knowledge `tests/fixtures/desk/`;
+  no test checks them here, so copy them again with `cp` after a fixture change.
 
 ## Screenshots
 

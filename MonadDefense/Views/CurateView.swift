@@ -35,9 +35,10 @@ struct CurateView: View {
         NavigationStack {
             List {
                 Section { header } footer: {
-                    Text("A curation pass shows each card with its answer open — nothing is graded, no review schedule moves. Swipe right to keep, left to cut, up to fix with a note, hold for more. Export when you are done and run `edu deck curation <file>` in the vault.")
+                    Text("A curation pass shows each card with its answer open — nothing is graded, no review schedule moves. Swipe right to keep, left to cut; tap Fix to send a note, tap More to ask for more. Export when you are done and run `edu deck curation <file>` in the vault.")
                 }
                 phoneSection
+                deskSection
                 notesSections
             }
             .navigationTitle("Curate")
@@ -204,7 +205,21 @@ struct CurateView: View {
         } header: {
             Text("Phone")
         } footer: {
-            Text("What a participant reads during a probe dwell. Right includes, left excludes, up sends the text back with a note. Export and run `edu deck select <file>` in the vault.")
+            Text("What a participant reads during a probe dwell. Swipe right to include, left to exclude; tap Rework to send the text back with a note. Export and run `edu deck select <file>` in the vault.")
+        }
+    }
+
+    // MARK: Desk (IP-161)
+
+    private var deskSection: some View {
+        Section {
+            NavigationLink {
+                DeskHomeView()
+            } label: {
+                Label("Desk · claim-graph curation", systemImage: "tray.full")
+            }
+        } footer: {
+            Text("Vocabulary, fidelity and citation tasks compiled by `kb desk compile`. Separate from the card decisions above.")
         }
     }
 

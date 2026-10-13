@@ -5,11 +5,12 @@ Four layers, one direction of dependency.
 ```
 Views/          SwiftUI screens and figure widgets
    ↓
-Store/          StudyStore — the one place that reads content and writes progress
+Store/          StudyStore — reads content, writes progress · DeskStore — writes desk sessions
    ↓
 Models/         ContentModels (bundled, read-only) · ProgressModels (SwiftData) · FSRS
+                DeskModels (bundled banks, rules, event chain) · DeskRecords (SwiftData)
    ↓
-Resources/      DeckBank.json + Figures/ — compiled elsewhere, never edited here
+Resources/      DeckBank.json + Figures/ + Desk/DeskBank-*.json — compiled elsewhere, never edited here
 ```
 
 Nothing below a layer imports anything above it. There is no networking layer,
@@ -23,7 +24,7 @@ design decision.
 
 | | Content | Progress |
 |---|---|---|
-| what | cards, decks, figures, formulas | FSRS schedule, review log, curation notes |
+| what | cards, decks, figures, formulas, desk banks | FSRS schedule, review log, curation notes, desk events |
 | where | `DeckBank.json` in the app bundle | SwiftData on the device |
 | written by | the `edu deck compile` pipeline, in the parent repo | the app, as you study |
 | lifetime | replaced whole on every content refresh | survives every content refresh |
@@ -150,6 +151,39 @@ made against, so a stale export is detectable rather than silently applied to
 cards that have since changed.
 
 See [CONTENT.md](CONTENT.md) for the loop this closes.
+
+All three card stacks (curation pass, dwell review, eggs) and the Desk run on
+one generic deck, `TriageDeckView<Item>` (`Views/Triage/`). An action returns a
+`TriageOutcome`: `.saved` advances the deck, `.failed` keeps the card and shows
+why, `.edit` presents an editor sheet and advances only after that editor saved.
+
+## Desk (IP-161)
+
+The Desk curates the claim graph offline: Vocabulary, Fidelity and Citation
+tasks compiled in the parent repo by `kb desk compile --out
+MonadDefense/Resources/Desk/DeskBank-<name>.json`. The bundle is flat, so the
+`DeskBank-` prefix is how `DeskStore` finds them. `DeskBank-fixture-*.json` are
+copies of `tests/fixtures/desk/` for development; the importer refuses them
+because no archive holds their bank.
+
+- `Models/DeskModels.swift` is Foundation only: bank decoding (unknown schema,
+  stack or mode, a duplicate task and a proposal in a blind bank reject the
+  file), `DeskRules` (a mirror of `domain/desk.py:validate_payload`) and
+  `DeskLedger` (the event chain and the `monad-defense/desk/1` export).
+- `Models/DeskRecords.swift` holds `DeskSession` and the append-only
+  `DeskDecisionEvent`. They are separate from `TriageDecision` and are never
+  pruned when a bank leaves the bundle.
+- `Store/DeskStore.swift` is the only writer. Every decision is saved
+  explicitly before the card advances; a failed save rolls back.
+
+Each task's events form one linear chain: a new event supersedes the task's
+current terminal event, and undo is a `retract` event that keeps the retracted
+action with an empty payload. The importer therefore never sees two unlinked
+terminals, which would block the task. `sequence` is session-wide and
+`decided_at` is stored as a string and re-emitted verbatim, so a re-export is a
+no-op at import. Only a locked session exports; locking is final. A receipt
+(`monad-knowledge/desk-receipt/1`) attaches to its session through the file
+importer; without one, application status is unknown.
 
 ## Thesis guide
 

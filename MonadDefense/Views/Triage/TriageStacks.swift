@@ -13,7 +13,7 @@ struct DwellReviewView: View {
         TriageDeckView(spec: spec)
     }
 
-    private var spec: TriageSpec {
+    private var spec: TriageSpec<Card> {
         let store = store
         return TriageSpec(
             title: title,
@@ -28,12 +28,15 @@ struct DwellReviewView: View {
             },
             right: TriageAction(label: "Include", symbol: "iphone.badge.checkmark", tint: .green) { card, note in
                 store.setTriage(.dwell, .right, for: card, note: note)
+                return .saved
             },
             left: TriageAction(label: "Exclude", symbol: "iphone.slash", tint: .red) { card, note in
                 store.setTriage(.dwell, .left, for: card, note: note)
+                return .saved
             },
             up: TriageAction(label: "Rework", symbol: "wrench.adjustable", tint: .orange) { card, note in
                 store.setTriage(.dwell, .up, for: card, note: note)
+                return .saved
             },
             quickNotes: [
                 "Too long", "Definition again", "No instance", "Jargon", "Wrong emphasis",
@@ -56,7 +59,7 @@ struct EggTriageView: View {
         TriageDeckView(spec: spec)
     }
 
-    private var spec: TriageSpec {
+    private var spec: TriageSpec<Card> {
         let store = store
         return TriageSpec(
             title: title,
@@ -69,12 +72,15 @@ struct EggTriageView: View {
             },
             right: TriageAction(label: "Egg", symbol: "sparkles", tint: .green) { card, note in
                 store.setTriage(.egg, .right, for: card, note: note)
+                return .saved
             },
             left: TriageAction(label: "Plain", symbol: "circle", tint: .red) { card, note in
                 store.setTriage(.egg, .left, for: card, note: note)
+                return .saved
             },
             up: TriageAction(label: "Could be", symbol: "wand.and.sparkles", tint: .orange) { card, note in
                 store.setTriage(.egg, .up, for: card, note: note)
+                return .saved
             },
             quickNotes: ["Lead with the number", "Drier", "Too clever", "The instance is the joke", "Cut the quip"],
             finishedHint: "Export from Curate and run `edu deck select <file>` — right-swipes land as the `wtf` tag."

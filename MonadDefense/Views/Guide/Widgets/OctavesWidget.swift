@@ -14,7 +14,7 @@ struct OctavesWidget: View {
                 ? "\\tfrac12\\log_2 \(tex(ratio, 2))=\\log_2\\sqrt{\(tex(ratio, 2))}=\(tex(oct, 3))"
                 : "\\log_2 \(tex(ratio, 2))=\(tex(oct, 3))\\ \\text{octaves}",
             readout: ["\(fmt(oct, 3)) octaves · \(fmt(db, 2)) dB"],
-            words: "each doubling of an amplitude adds one octave and about 6 dB. A variance doubles when the amplitude grows by √2, so a variance doubling is half an octave of amplitude: the ½ in Eq. (3.1)."
+            words: "each doubling of an amplitude adds one octave and about 6 dB. A variance doubles when the amplitude grows by √2, so a variance doubling is half an octave of amplitude: that is why a level built from a variance carries a factor ½."
         ) {
             Chart {
                 ForEach(sample(0.25, 16, 200) { log2($0) }) { p in
