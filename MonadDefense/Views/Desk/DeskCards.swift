@@ -24,6 +24,7 @@ struct DeskCardFace: View {
             case .fidelity: FidelityEvidence(card: card, expanded: expanded, review: review)
             case .citation: CitationEvidence(card: card, expanded: expanded)
             case .reference: ReferenceEvidence(card: card, expanded: expanded)
+            case .proposition: PropositionEvidence(card: card, expanded: expanded)
             }
             if bank.mode == .assisted, let proposal = card.proposal {
                 ProposalBlock(proposal: proposal)
@@ -722,6 +723,61 @@ private struct ReferenceEvidence: View {
                     .font(.caption2)
                     .foregroundStyle(.secondary)
             }
+        }
+    }
+}
+
+// MARK: Proposition (IP-171 Phase 3)
+
+private struct PropositionEvidence: View {
+    let card: DeskCard
+    let expanded: Bool
+
+    private var f: DeskEvidence { card.evidence }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            claim(f["a"])
+            Image(systemName: "equal.circle")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+            claim(f["b"])
+            let shared = (f["shared_entities"]?.array ?? []).compactMap { $0.string }
+            Text(
+                [
+                    f["cosine"]?.double.map { String(format: "cosine %.2f", $0) },
+                    shared.isEmpty ? nil : "both mention " + shared.joined(separator: ", "),
+                ].compactMap { $0 }.joined(separator: " · ")
+            )
+            .font(.caption)
+            .foregroundStyle(.secondary)
+            Text("Same proposition means one paper's statement would count as support for the other's. A narrower or broader claim, another condition, population or value, or the opposite direction is a different proposition.")
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+        }
+    }
+
+    private func claim(_ value: JSONValue?) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(value?["text"]?.string ?? "")
+                .font(.headline)
+            if let evidence = value?["evidence"]?.string, !evidence.isEmpty {
+                SourceQuote(text: evidence, caption: "evidence")
+                    .lineLimit(expanded ? nil : 4)
+            } else {
+                Text("evidence sentence not available")
+                    .font(.caption)
+                    .foregroundStyle(.orange)
+            }
+            HStack(spacing: 6) {
+                Text([value?["title"]?.string, value?["year"]?.int.map(String.init)].compactMap { $0 }.joined(separator: ", "))
+                if value?["attribution"]?.string == "cited" {
+                    Label("restates cited work", systemImage: "quote.bubble")
+                        .foregroundStyle(.orange)
+                }
+            }
+            .font(.caption)
+            .foregroundStyle(.secondary)
         }
     }
 }

@@ -11,6 +11,7 @@ import SwiftUI
 //   fidelity              faithful            wrong (defect)          partial (defect)           cannot assess (reason)
 //   citation              related             not related (reason)    cited but missed (where)   cannot assess (reason)
 //   reference             same work           different work (reason) other version              cannot assess (reason)
+//   proposition           same proposition    different (reason)      one is narrower            cannot assess (reason)
 //
 // Right on an assisted vocabulary card accepts the shown definition only when
 // the agent proposed one that passes the rules; otherwise it opens the editor.
@@ -101,6 +102,7 @@ private struct DeskActions {
         case .fidelity: fidelity()
         case .citation: citation()
         case .reference: reference()
+        case .proposition: proposition()
         }
     }
 
@@ -258,5 +260,29 @@ private struct DeskActions {
                 prompt: "What prevents a verdict?", footer: "For example: the reference list is not on hand.", note: note)
         }
         return (same, different, version, cannot)
+    }
+
+    // MARK: Proposition
+
+    /// IP-171 Phase 3. Recorded only; monad-knowledge builds a :Proposition from
+    /// reviewed same-proposition pairs on every run, so it survives a rebuilt graph.
+    private func proposition() -> (Action, Action, Action, Action) {
+        let same = Action(label: "Same proposition", symbol: "equal.circle", tint: .green) { card, note in
+            direct(card, "same_proposition", [:], note)
+        }
+        let different = Action(label: "Different", symbol: "notequal.circle", tint: .red) { card, note in
+            reasonSheet(
+                card, title: "Different proposition", action: "different_proposition",
+                reasons: DeskRules.propositionRejectionReasons, explanationKey: "explanation", note: note)
+        }
+        let narrower = Action(label: "One is narrower", symbol: "scope", tint: .orange) { card, note in
+            direct(card, "different_proposition", ["reason": "narrower"], note)
+        }
+        let cannot = Action(label: "Cannot assess", symbol: "questionmark.circle", tint: .blue) { card, note in
+            textSheet(
+                card, title: "Cannot assess", action: "cannot_assess", key: "reason",
+                prompt: "What prevents a verdict?", footer: "For example: an evidence sentence is missing.", note: note)
+        }
+        return (same, different, narrower, cannot)
     }
 }

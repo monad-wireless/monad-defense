@@ -25,6 +25,8 @@ enum DeskStack: String, Codable, Sendable, CaseIterable, Identifiable {
     case citation
     /// IP-171 Phase 3: "is this external reference that vault paper?"
     case reference
+    /// IP-171 Phase 3: "do these two claims of different papers state the same thing?"
+    case proposition
 
     var id: String { rawValue }
 
@@ -34,6 +36,7 @@ enum DeskStack: String, Codable, Sendable, CaseIterable, Identifiable {
         case .fidelity: "Fidelity"
         case .citation: "Citation"
         case .reference: "Reference"
+        case .proposition: "Proposition"
         }
     }
 
@@ -43,6 +46,7 @@ enum DeskStack: String, Codable, Sendable, CaseIterable, Identifiable {
         case .fidelity: "text.quote"
         case .citation: "arrow.triangle.branch"
         case .reference: "link"
+        case .proposition: "equal.circle"
         }
     }
 }
@@ -330,9 +334,10 @@ enum DeskRules {
     static let setAsideReasons = ["parser_noise", "outside_scope", "too_broad", "other"]
     static let citationRejectionReasons = ["different_topic", "too_generic", "superseded_work", "other"]
     static let referenceRejectionReasons = ["namesake", "other_version", "other"]
+    static let propositionRejectionReasons = ["narrower", "related_not_same", "opposite", "other"]
     static let fidelityDefects = [
         "dropped_condition", "dropped_hedge", "population_changed", "quantity_changed",
-        "attribution_wrong", "direction_wrong", "unsupported", "corruption",
+        "attribution_wrong", "dropped_attribution", "direction_wrong", "unsupported", "corruption",
         "source_anchor_mismatch", "table_parser", "other",
     ]
     static let termVerdicts: Set<String> = ["fits", "wrong_term"]
@@ -344,6 +349,7 @@ enum DeskRules {
         case .fidelity: ["faithful", "partial", "wrong", "cannot_assess"]
         case .citation: ["related", "not_related", "cited_but_missed", "cannot_assess"]
         case .reference: ["same_work", "different_work", "cannot_assess"]
+        case .proposition: ["same_proposition", "different_proposition", "cannot_assess"]
         case .vocabulary:
             mode == .assisted
                 ? ["promote", "alias", "set_aside", "defer", "needs_research", "restore", "keep_aside"]
@@ -441,6 +447,16 @@ enum DeskRules {
                     problems.append("different_work needs a reason")
                 } else if reason == "other", text(p, "explanation").isEmpty {
                     problems.append("different_work with reason 'other' needs an explanation")
+                }
+            }
+            if action == "cannot_assess", text(p, "reason").isEmpty { problems.append("cannot_assess needs a reason") }
+        case .proposition:
+            if action == "different_proposition" {
+                let reason = p["reason"] as? String ?? ""
+                if !propositionRejectionReasons.contains(reason) {
+                    problems.append("different_proposition needs a reason")
+                } else if reason == "other", text(p, "explanation").isEmpty {
+                    problems.append("different_proposition with reason 'other' needs an explanation")
                 }
             }
             if action == "cannot_assess", text(p, "reason").isEmpty { problems.append("cannot_assess needs a reason") }

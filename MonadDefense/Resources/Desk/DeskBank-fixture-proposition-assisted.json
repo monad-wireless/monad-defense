@@ -1,0 +1,307 @@
+{
+  "bank_id": "sha256:b96db4040ff8530feb98c910641c1274d09fc0ddb647f5ea0324a7bc8516ef49",
+  "cards": [
+    {
+      "evidence": {
+        "change_key": "sha256:0dd56257d00ac53c425f6dd3f11f26d30673e3be1d4cbf311aebf150bf1356e0",
+        "complete": true,
+        "evidence_digest": "sha256:43bebc149536bfe729311a3d587c9c985bcd05cf22813e1b84c3b2db76d4bb71",
+        "fields": {
+          "a": {
+            "attribution": "own",
+            "claim_id": "atagong2025_0071_claim_a2ca96f534c3",
+            "claim_type": "definition",
+            "evidence": "The F1-score, as a harmonic mean of precision and recall, offers a balanced view of a model's overall effectiveness.",
+            "paper_id": "atagong2025_0071",
+            "text": "The F1-score is the harmonic mean of precision and recall.",
+            "title": "A review on knowledge and information extraction from PDF documents and storage approaches",
+            "year": 2025
+          },
+          "b": {
+            "attribution": "own",
+            "claim_id": "lu2026_fb07_claim_c68c2c3f3e74",
+            "claim_type": "definition",
+            "evidence": "(3) F1 score, which is the harmonic mean of precision and recall.",
+            "paper_id": "lu2026_fb07",
+            "text": "The F1 score is the harmonic mean of precision and recall.",
+            "title": "An extended cellular automaton model for crowd evacuation under multi-storey building with ControlNet",
+            "year": 2026
+          },
+          "branch": "neighbour",
+          "cosine": 0.9972,
+          "lexical": 1.0,
+          "shared_entities": []
+        },
+        "missing": [],
+        "stack": "proposition",
+        "subject_id": "proposition:atagong2025_0071_claim_a2ca96f534c3|lu2026_fb07_claim_c68c2c3f3e74"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Do these two claims of different papers state the same proposition?",
+      "rubric_version": "proposition-rubric/1",
+      "stack": "proposition",
+      "subject_id": "proposition:atagong2025_0071_claim_a2ca96f534c3|lu2026_fb07_claim_c68c2c3f3e74",
+      "task_id": "proposition:proposition:atagong2025_0071_claim_a2ca96f534c3|lu2026_fb07_claim_c68c2c3f3e74:proposition-rubric/1",
+      "task_revision": "sha256:2dcb48b5a02e0fbe08d406c6aadbee288b0fec0813293628f5c011d72c109d14"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:296a3944ccc4ef9c633668e4a36ab318ed0d51749935525cd8ab3564d0955080",
+        "complete": true,
+        "evidence_digest": "sha256:fe7b876d524a2afccdb5ae0d40fc5d3093e2f55e1b678dfc700bc23cff538f3b",
+        "fields": {
+          "a": {
+            "attribution": "own",
+            "claim_id": "chen2023_5cbd_claim_80dc70d025c9",
+            "claim_type": "definition",
+            "evidence": "WiFi signals typically operate in the 2.4GHz or 5GHz ISM radio band, which is also occupied by other devices (e.g., Bluetooth, Zigbee, and microwave ovens).",
+            "paper_id": "chen2023_5cbd",
+            "text": "WiFi signals typically operate in the 2.4 GHz or 5 GHz ISM radio band.",
+            "title": "Cross-Domain WiFi Sensing with Channel State Information: A Survey",
+            "year": 2023
+          },
+          "b": {
+            "attribution": "own",
+            "claim_id": "zheng2017_7e31_claim_a117f693bd4b",
+            "claim_type": "definition",
+            "evidence": "WiFi signals typically operate in the 2.4 GHz ISM radio band.",
+            "paper_id": "zheng2017_7e31",
+            "text": "WiFi signals typically operate in the 2.4 GHz ISM radio band.",
+            "title": "Detecting radio frequency interference for CSI measurements on COTS WiFi devices",
+            "year": 2017
+          },
+          "branch": "both",
+          "cosine": 0.9884,
+          "lexical": 0.9556,
+          "shared_entities": []
+        },
+        "missing": [],
+        "stack": "proposition",
+        "subject_id": "proposition:chen2023_5cbd_claim_80dc70d025c9|zheng2017_7e31_claim_a117f693bd4b"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Do these two claims of different papers state the same proposition?",
+      "rubric_version": "proposition-rubric/1",
+      "stack": "proposition",
+      "subject_id": "proposition:chen2023_5cbd_claim_80dc70d025c9|zheng2017_7e31_claim_a117f693bd4b",
+      "task_id": "proposition:proposition:chen2023_5cbd_claim_80dc70d025c9|zheng2017_7e31_claim_a117f693bd4b:proposition-rubric/1",
+      "task_revision": "sha256:586f11e44a7ff375dd54ad08a92343e9b7bfa202ec8dbdd85d70e65ce76b286d"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:55366464e75d4ab066744d4b14ee9ce4c544c8c8e8e3fd2f1710210fc9f541a6",
+        "complete": true,
+        "evidence_digest": "sha256:a8e26d6d9da5d475279c6eea747dd49fa58eef3530e27aba6f44a0f85b475988",
+        "fields": {
+          "a": {
+            "attribution": "cited",
+            "claim_id": "chi2016_b4a3_claim_dd13154e6e1b",
+            "claim_type": "finding",
+            "evidence": "According to the research by Gartner, the number of internet of things (IoT) devices will grow exponentially to reach 26 billion by 2020  [1] .",
+            "paper_id": "chi2016_b4a3",
+            "text": "According to Gartner, the number of internet of things (IoT) devices will grow exponentially to reach 26 billion by 2020.",
+            "title": "B2W2",
+            "year": 2016
+          },
+          "b": {
+            "attribution": "cited",
+            "claim_id": "ray2018_a47e_claim_937ee1aee4dc",
+            "claim_type": "finding",
+            "evidence": "As per Gartner, 25 billion devices will be connected to the internet by 2020 and those connections will facilitate the used data to analyze, preplan, manage, and make intelligent decisions autonomously.",
+            "paper_id": "ray2018_a47e",
+            "text": "According to Gartner, 25 billion devices will be connected to the internet by 2020.",
+            "title": "A survey on Internet of Things architectures",
+            "year": 2018
+          },
+          "branch": "neighbour",
+          "cosine": 0.9613,
+          "lexical": 0.6489,
+          "shared_entities": []
+        },
+        "missing": [],
+        "stack": "proposition",
+        "subject_id": "proposition:chi2016_b4a3_claim_dd13154e6e1b|ray2018_a47e_claim_937ee1aee4dc"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Do these two claims of different papers state the same proposition?",
+      "rubric_version": "proposition-rubric/1",
+      "stack": "proposition",
+      "subject_id": "proposition:chi2016_b4a3_claim_dd13154e6e1b|ray2018_a47e_claim_937ee1aee4dc",
+      "task_id": "proposition:proposition:chi2016_b4a3_claim_dd13154e6e1b|ray2018_a47e_claim_937ee1aee4dc:proposition-rubric/1",
+      "task_revision": "sha256:57eac7bdc7bbddad5cceaa2b5549da8d6fa3184b89e67ab56b50f6ac29cf857e"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:36c924e48da0c34040613d87b5ba4b6410e19492ff49b2a0e454aa66de9bc596",
+        "complete": true,
+        "evidence_digest": "sha256:adbf42207fa31abe2bddbf59cd1b7d535c14371cbc1907cc8f52b900056d10c5",
+        "fields": {
+          "a": {
+            "attribution": "own",
+            "claim_id": "alqaness2019_397d_claim_fc732a16a509",
+            "claim_type": "comparison",
+            "evidence": "Compared to RSSI, CSI is fine-grained channel information, whereas RSSI is coarse-grained channel information.",
+            "paper_id": "alqaness2019_397d",
+            "text": "CSI is fine-grained channel information, whereas RSSI is coarse-grained channel information.",
+            "title": "Channel State Information from Pure Communication to Sense and Track Human Motion: A Survey",
+            "year": 2019
+          },
+          "b": {
+            "attribution": "cited",
+            "claim_id": "wang2019_5b6a_claim_9114f1c08cec",
+            "claim_type": "comparison",
+            "evidence": "RSS is coarse-grained information about communication links while CSI provides us with fine-grained information about the communication channel state  [34] .",
+            "paper_id": "wang2019_5b6a",
+            "text": "RSS provides coarse-grained information about communication links, whereas CSI provides fine-grained information about the communication channel state.",
+            "title": "A Survey on CSI-Based Human Behavior Recognition in Through-the-Wall Scenario",
+            "year": 2019
+          },
+          "branch": "both",
+          "cosine": 0.9601,
+          "lexical": 0.7068,
+          "shared_entities": []
+        },
+        "missing": [],
+        "stack": "proposition",
+        "subject_id": "proposition:alqaness2019_397d_claim_fc732a16a509|wang2019_5b6a_claim_9114f1c08cec"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Do these two claims of different papers state the same proposition?",
+      "rubric_version": "proposition-rubric/1",
+      "stack": "proposition",
+      "subject_id": "proposition:alqaness2019_397d_claim_fc732a16a509|wang2019_5b6a_claim_9114f1c08cec",
+      "task_id": "proposition:proposition:alqaness2019_397d_claim_fc732a16a509|wang2019_5b6a_claim_9114f1c08cec:proposition-rubric/1",
+      "task_revision": "sha256:a651ddb2826670ae15629b9e29689124affc75232a2a20b2c70a990353b58241"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:4c20276c14f87b106efe9864c6a7371afb3c06ccd8e3122cb44317e9ff8db86f",
+        "complete": true,
+        "evidence_digest": "sha256:22f9d5b4b305497085d0eb6fb022d46f588267fc63b1f43f2a8b9457812913df",
+        "fields": {
+          "a": {
+            "attribution": "cited",
+            "claim_id": "aziz2015_0adb_claim_6dca5a2213e3",
+            "claim_type": "finding",
+            "evidence": "generating over 700 billion Euros in revenue by 2020  [5]",
+            "paper_id": "aziz2015_0adb",
+            "text": "IoT is estimated to generate over 700 billion Euros in revenue by 2020.",
+            "title": "A formal model and analysis of an IoT protocol",
+            "year": 2015
+          },
+          "b": {
+            "attribution": "cited",
+            "claim_id": "malik2019_11ec_claim_e5455872ec8e",
+            "claim_type": "finding",
+            "evidence": "The IoT is poised for explosive growth, with about 50 billion smart devices connected to the Internet by 2020, and estimated to generate over $1.7 trillion revenue per year  [1] .",
+            "paper_id": "malik2019_11ec",
+            "text": "The IoT is estimated to generate over $1.7 trillion revenue per year.",
+            "title": "A Survey of Key Bootstrapping Protocols Based on Public Key Cryptography in the Internet of Things",
+            "year": 2019
+          },
+          "branch": "neighbour",
+          "cosine": 0.96,
+          "lexical": 0.4471,
+          "shared_entities": []
+        },
+        "missing": [],
+        "stack": "proposition",
+        "subject_id": "proposition:aziz2015_0adb_claim_6dca5a2213e3|malik2019_11ec_claim_e5455872ec8e"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Do these two claims of different papers state the same proposition?",
+      "rubric_version": "proposition-rubric/1",
+      "stack": "proposition",
+      "subject_id": "proposition:aziz2015_0adb_claim_6dca5a2213e3|malik2019_11ec_claim_e5455872ec8e",
+      "task_id": "proposition:proposition:aziz2015_0adb_claim_6dca5a2213e3|malik2019_11ec_claim_e5455872ec8e:proposition-rubric/1",
+      "task_revision": "sha256:29e33c8e89cd53be3a8ba5b33fbafd1226de339a5a38cfe90220b549a28a1a26"
+    },
+    {
+      "evidence": {
+        "change_key": "sha256:243374b196891b34e4096475e9004bb78d91aa5cfa249599b79079f8a17d4f24",
+        "complete": true,
+        "evidence_digest": "sha256:6ee79c38d7521cabaac1d45476329ed723c9f2756fbc70c0b2ac104a577060de",
+        "fields": {
+          "a": {
+            "attribution": "cited",
+            "claim_id": "alqaness2019_397d_claim_8c9c2fba92e3",
+            "claim_type": "limitation",
+            "evidence": "However, RSSI faces performance degradation in complex indoor environments that may lead to false detections  [88] .",
+            "paper_id": "alqaness2019_397d",
+            "text": "RSSI faces performance degradation in complex indoor environments that may lead to false detections.",
+            "title": "Channel State Information from Pure Communication to Sense and Track Human Motion: A Survey",
+            "year": 2019
+          },
+          "b": {
+            "attribution": "own",
+            "claim_id": "li2018_64e3_claim_600a8e8ff6ac",
+            "claim_type": "limitation",
+            "evidence": "However, the RSSI is only applicable to the MAC layer information at the packet level, and its value will not remain stable with time fluctuation, and it meanwhile, does not provide sufficient recognition and robustness in complex indoor environments, thus the counting error will exist.",
+            "paper_id": "li2018_64e3",
+            "text": "RSSI does not provide sufficient recognition and robustness in complex indoor environments.",
+            "title": "A Novel Device-Free Counting Method Based on Channel Status Information",
+            "year": 2018
+          },
+          "branch": "neighbour",
+          "cosine": 0.9556,
+          "lexical": 0.2961,
+          "shared_entities": []
+        },
+        "missing": [],
+        "stack": "proposition",
+        "subject_id": "proposition:alqaness2019_397d_claim_8c9c2fba92e3|li2018_64e3_claim_600a8e8ff6ac"
+      },
+      "history": null,
+      "proposal": null,
+      "question": "Do these two claims of different papers state the same proposition?",
+      "rubric_version": "proposition-rubric/1",
+      "stack": "proposition",
+      "subject_id": "proposition:alqaness2019_397d_claim_8c9c2fba92e3|li2018_64e3_claim_600a8e8ff6ac",
+      "task_id": "proposition:proposition:alqaness2019_397d_claim_8c9c2fba92e3|li2018_64e3_claim_600a8e8ff6ac:proposition-rubric/1",
+      "task_revision": "sha256:1b4137283b2da7aecf62bf63c40d76beb60147975889688e725a3e2c74972d5d"
+    }
+  ],
+  "catalogue": {
+    "complete": true,
+    "items": [],
+    "kind": "proposition",
+    "read_at": "2026-10-14T12:00:00Z"
+  },
+  "compiled_at": "2026-10-14T12:00:00Z",
+  "compiler_version": "desk-compiler/1",
+  "counts": {
+    "by_branch": {
+      "both": 2,
+      "neighbour": 4
+    },
+    "candidates": 6,
+    "cards": 6,
+    "tasks": 6
+  },
+  "frame": null,
+  "mode": "assisted",
+  "policy": {
+    "fixture": true,
+    "floor": 0.95,
+    "max_cards": 200,
+    "version": "proposition-queue/1"
+  },
+  "queue_id": "proposition-active-20261014T120000Z-1d8c3e06",
+  "read_window": {
+    "end": "2026-10-14T12:00:00Z",
+    "start": "2026-10-14T12:00:00Z"
+  },
+  "rubric_version": "proposition-rubric/1",
+  "schema": "monad-knowledge/desk-bank/1",
+  "sources": {
+    "graph": "ok",
+    "vectors": "ok"
+  },
+  "stack": "proposition",
+  "view": "active"
+}
