@@ -323,7 +323,12 @@ private struct FidelityEvidence: View {
         let origins = f["origins"]?.array ?? []
         let twins = f["same_text"]?.array ?? []
         VStack(alignment: .leading, spacing: 10) {
-            Text(twins.isEmpty ? "Where it was made" : "Where it was made · \(origins.count + twins.count) articles")
+            // IP-171 citation fidelity: origins carry a role ("citing" or "cited"); the question is
+            // whether the cited paper says what the citing sentence attributes to it.
+            let isCitation = origins.contains { $0["role"]?.string == "cited" }
+            Text(isCitation
+                 ? "The citing sentence, then the cited paper"
+                 : (twins.isEmpty ? "Where it was made" : "Where it was made · \(origins.count + twins.count) articles"))
                 .font(.subheadline.weight(.semibold))
             ForEach(Array(origins.enumerated()), id: \.offset) { _, o in
                 ArticleBlock(
@@ -332,7 +337,9 @@ private struct FidelityEvidence: View {
                         .compactMap { $0 }.joined(separator: " · "),
                     paragraph: o["text"]?.string ?? "",
                     claim: claim,
-                    badge: "extracted here",
+                    badge: o["role"]?.string == "cited"
+                        ? "cited paper"
+                        : (o["role"]?.string == "citing" ? "citing sentence" : "extracted here"),
                     expanded: expanded,
                     terms: [])
             }
