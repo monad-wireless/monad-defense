@@ -1,53 +1,11 @@
 import SwiftUI
 
-// MARK: - Curation pass — sweep every card, answers open, verdict per card
-//
-// Not a study session: nothing is graded and no FSRS state moves. The whole
-// card (prompt *and* answer *and* explanation) is on screen so the judgement
-// is about the content, not about recall.
-//
-// IP-151 moved the pass onto the triage component. The verdicts are the same
-// four (`CardNote` is still the store, `monad-defense/curation/1` is still the
-// export), only the hand motion changed: right = keep, left = cut, up = fix
-// with a note, hold = more.
-
-struct CurationPassView: View {
-    @Environment(StudyStore.self) private var store
-
-    let cards: [Card]
-    let title: String
-
-    var body: some View {
-        TriageDeckView(spec: spec)
-    }
-
-    private var spec: TriageSpec<Card> {
-        let store = store
-        func act(_ verdict: CurationVerdict) -> TriageAction<Card> {
-            TriageAction(label: verdict.displayName, symbol: verdict.symbol, tint: verdict.tint) { card, note in
-                store.setNote(note, verdict: verdict, for: card.id)
-                return .saved
-            }
-        }
-        return TriageSpec(
-            title: title,
-            cards: cards,
-            render: { card, _ in
-                AnyView(CurationCardBody(card: card, deckTitle: store.decksBySlug[card.deck]?.title))
-            },
-            right: act(.keep),
-            left: act(.cut),
-            up: act(.fix),
-            longPress: act(.more),
-            quickNotes: StudyStore.quickNotes,
-            finishedHint: "Export from Curate and run `edu deck curation <file>` in the vault."
-        )
-    }
-}
-
 // MARK: - Full card content (prompt + answer + provenance)
+//
+// The whole card with its answer open, for the swipe stacks: the judgement is
+// about the content, not about recall.
 
-struct CurationCardBody: View {
+struct FullCardBody: View {
     let card: Card
     var deckTitle: String?
 
@@ -158,7 +116,6 @@ struct CurationCardBody: View {
             if let fields = card.fields, !fields.isEmpty {
                 FormulaFieldsTable(fields: fields)
             }
-
         }
     }
 }

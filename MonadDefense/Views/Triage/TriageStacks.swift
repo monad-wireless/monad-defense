@@ -20,7 +20,7 @@ struct DwellReviewView: View {
             cards: cards,
             render: { card, expanded in
                 if expanded || card.dwell == nil {
-                    return AnyView(CurationCardBody(card: card, deckTitle: store.decksBySlug[card.deck]?.title))
+                    return AnyView(FullCardBody(card: card, deckTitle: store.decksBySlug[card.deck]?.title))
                 }
                 return AnyView(
                     DwellPanelMock(card: card, block: card.dwell!, status: store.dwellSelection.status(of: card))
@@ -42,7 +42,7 @@ struct DwellReviewView: View {
                 "Too long", "Definition again", "No instance", "Jargon", "Wrong emphasis",
                 "Quip is weak", "Needs a number", "Split the idea",
             ],
-            finishedHint: "Export from Curate and run `edu deck select <file>` in the vault."
+            finishedHint: "Share the swipes from Curate and run `edu deck select <file>` in the vault."
         )
     }
 }
@@ -66,7 +66,7 @@ struct EggTriageView: View {
             cards: cards,
             render: { card, expanded in
                 if expanded || card.dwell == nil {
-                    return AnyView(CurationCardBody(card: card, deckTitle: store.decksBySlug[card.deck]?.title))
+                    return AnyView(FullCardBody(card: card, deckTitle: store.decksBySlug[card.deck]?.title))
                 }
                 return AnyView(DwellPanelMock(card: card, block: card.dwell!, status: .included))
             },
@@ -83,7 +83,7 @@ struct EggTriageView: View {
                 return .saved
             },
             quickNotes: ["Lead with the number", "Drier", "Too clever", "The instance is the joke", "Cut the quip"],
-            finishedHint: "Export from Curate and run `edu deck select <file>` — right-swipes land as the `wtf` tag."
+            finishedHint: "Share the swipes from Curate and run `edu deck select <file>`; right-swipes land as the `wtf` tag."
         )
     }
 }

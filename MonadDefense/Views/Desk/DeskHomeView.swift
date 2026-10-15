@@ -1,13 +1,14 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
-// MARK: - Desk home (IP-161): bundled banks, sessions, receipts
+// MARK: - Curate tab (IP-161, IP-172): the server, banks, sessions, phone texts
 //
-// "Exported" and "applied" stay distinct until a receipt comes back. A
-// session without a receipt has an unknown application status.
+// "Sent" and "applied" stay distinct until a receipt comes back. A session
+// without a receipt has an unknown application status.
 
 struct DeskHomeView: View {
     @Environment(DeskStore.self) private var desk
+    @Environment(DeskConnection.self) private var connection
 
     /// A bundled bank resource to open on appear (debug launch argument only).
     var autoOpen: String? = nil
@@ -15,6 +16,9 @@ struct DeskHomeView: View {
     @State private var sitting: Sitting?
     @State private var importing = false
     @State private var message: String?
+    @State private var connecting = false
+    @State private var refreshing = false
+    @State private var refreshProblem: String?
 
     struct Sitting: Identifiable {
         let id = UUID()
@@ -25,6 +29,7 @@ struct DeskHomeView: View {
 
     var body: some View {
         List {
+            serverSection
             banksSection
             if !desk.bankProblems.isEmpty {
                 Section("Banks that did not load") {
@@ -36,11 +41,20 @@ struct DeskHomeView: View {
                 }
             }
             sessionsSection
+            PhoneTextsSection()
         }
-        .navigationTitle("Desk")
+        .navigationTitle("Curate")
+        .refreshable { await refresh() }
+        .task { if desk.lastRefresh == nil { await refresh() } }
+        .sheet(isPresented: $connecting, onDismiss: { Task { await refresh() } }) { ConnectionSheet() }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button("Import receipt", systemImage: "doc.badge.arrow.up") { importing = true }
+                Menu {
+                    Button("Desk server", systemImage: "server.rack") { connecting = true }
+                    Button("Import a receipt file", systemImage: "doc.badge.arrow.up") { importing = true }
+                } label: {
+                    Image(systemName: "ellipsis.circle")
+                }
             }
         }
         .fileImporter(isPresented: $importing, allowedContentTypes: [.json]) { result in
@@ -62,12 +76,60 @@ struct DeskHomeView: View {
     }
 
     @ViewBuilder
+    private var serverSection: some View {
+        Section {
+            if connection.isConfigured {
+                HStack(spacing: 10) {
+                    Image(systemName: refreshProblem == nil ? "checkmark.icloud" : "exclamationmark.icloud")
+                        .foregroundStyle(refreshProblem == nil ? .green : .orange)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(URL(string: connection.address)?.host() ?? connection.address)
+                            .font(.subheadline.weight(.medium))
+                        Text(refreshProblem ?? lastRefreshText)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                    Spacer()
+                    if refreshing { ProgressView() }
+                }
+            } else {
+                Button {
+                    connecting = true
+                } label: {
+                    Label("Connect the Desk server", systemImage: "server.rack")
+                }
+            }
+        } footer: {
+            if !connection.isConfigured {
+                Text("New banks arrive from the server without a rebuild, and locked sessions go back to the vault from here.")
+            }
+        }
+    }
+
+    private var lastRefreshText: String {
+        guard let at = desk.lastRefresh else { return "Pull down to fetch new banks" }
+        return "Banks checked \(at.formatted(.relative(presentation: .named)))"
+    }
+
+    private func refresh() async {
+        guard connection.isConfigured else { return }
+        refreshing = true
+        defer { refreshing = false }
+        do {
+            try await desk.refresh(from: connection)
+            refreshProblem = nil
+        } catch {
+            refreshProblem = error.localizedDescription
+        }
+    }
+
+    @ViewBuilder
     private var banksSection: some View {
         Section {
             if desk.banks.isEmpty {
                 ContentUnavailableView(
                     "No bank on this phone", systemImage: "tray",
-                    description: Text("Compile one with `kb desk compile --out MonadDefense/Resources/DeskBank-<name>.json` and rebuild."))
+                    description: Text("Publish one with `kb desk publish <bank.json>` and pull down here."))
             }
             ForEach(desk.banks) { bank in
                 Button {
@@ -80,38 +142,49 @@ struct DeskHomeView: View {
         } header: {
             Text("Banks")
         } footer: {
-            Text("A sitting resumes the open session of its bank. The mode is fixed by the bank. Blind banks carry no proposal.")
+            Text("A sitting resumes the open session of its bank. Blind banks carry no proposal.")
         }
     }
 
     private func bankRow(_ bank: DeskBank) -> some View {
+        let guide = BankGuide(bank)
         let open = desk.sessions(for: bank).first { !$0.isLocked }
-        let pending = open.map { desk.pending($0, bank: bank).count }
-        return HStack(spacing: 12) {
+        let decided = open.map { bank.cards.count - desk.pending($0, bank: bank).count } ?? 0
+        let finished = desk.sessions(for: bank).contains { $0.isLocked }
+        return HStack(alignment: .top, spacing: 12) {
             Image(systemName: bank.stack.symbol)
                 .font(.title3)
                 .foregroundStyle(Theme.accent)
                 .frame(width: 30)
-            VStack(alignment: .leading, spacing: 3) {
+                .padding(.top, 2)
+            VStack(alignment: .leading, spacing: 4) {
                 HStack(spacing: 6) {
-                    Text(bank.title)
+                    Text(guide.title)
                         .font(.headline)
-                    if bank.isFixture { DeskBadge(text: "fixture", tint: .gray) }
+                    DeskBadge(text: bank.mode == .blind ? "blind" : "with proposal", tint: bank.mode == .blind ? .purple : .teal)
+                    if guide.exploratory { DeskBadge(text: "practice", tint: .gray) }
                 }
-                Text("\(bank.cards.count) tasks · compiled \(bank.compiledAt?.prefix(10) ?? "?")")
+                Text(guide.question)
+                    .font(.subheadline)
+                Text(guide.effect)
                     .font(.caption)
                     .foregroundStyle(.secondary)
-                if let pending {
-                    Text("open session · \(pending) left")
-                        .font(.caption.weight(.semibold))
-                        .foregroundStyle(.orange)
-                }
+                ProgressView(value: Double(decided), total: Double(max(bank.cards.count, 1)))
+                    .tint(decided == bank.cards.count ? .green : Theme.accent)
+                Text(
+                    finished && open == nil
+                        ? "Done: session locked · \(bank.cards.count) cards"
+                        : "\(decided) of \(bank.cards.count) decided · compiled \(bank.compiledAt?.prefix(10) ?? "?")"
+                )
+                .font(.caption2.monospacedDigit())
+                .foregroundStyle(.secondary)
             }
-            Spacer()
+            Spacer(minLength: 4)
             Image(systemName: "play.circle.fill")
                 .font(.title2)
                 .foregroundStyle(Theme.accent)
         }
+        .padding(.vertical, 4)
         .contentShape(.rect)
     }
 
@@ -175,16 +248,20 @@ struct DeskHomeView: View {
 
 struct DeskSessionView: View {
     @Environment(DeskStore.self) private var desk
+    @Environment(DeskConnection.self) private var connection
 
     let session: DeskSession
 
     @State private var confirmLock = false
     @State private var sitting: DeskHomeView.Sitting?
     @State private var problem: String?
+    @State private var notice: String?
+    @State private var busy = false
 
     static func state(_ session: DeskSession) -> String {
-        if session.receiptJSON != nil { return "receipt imported" }
-        if session.isLocked { return "locked, application unknown" }
+        if session.receiptJSON != nil { return "receipt back" }
+        if session.sentAt != nil { return "sent, waiting for the vault" }
+        if session.isLocked { return "locked, not sent" }
         return "open"
     }
 
@@ -211,6 +288,12 @@ struct DeskSessionView: View {
         } message: {
             Text(problem ?? "")
         }
+        .alert("Desk", isPresented: Binding(get: { notice != nil }, set: { if !$0 { notice = nil } })) {
+            Button("OK", role: .cancel) { notice = nil }
+        } message: {
+            Text(notice ?? "")
+        }
+        .overlay { if busy { ProgressView() } }
         .fullScreenCover(item: $sitting) { s in
             DeskDeckView(bank: s.bank, session: s.session, cards: s.cards)
         }
@@ -251,20 +334,56 @@ struct DeskSessionView: View {
                 Button("Lock session", systemImage: "lock") { confirmLock = true }
                     .disabled(desk.eventRows(session).isEmpty)
             }
-            if session.isLocked, bank != nil {
+            if session.isLocked, bank != nil, session.receiptJSON == nil {
+                Button(session.sentAt == nil ? "Send to the vault" : "Send again", systemImage: "paperplane") {
+                    Task { await send() }
+                }
+                .disabled(busy || !connection.isConfigured)
+                if session.sentAt != nil {
+                    Button("Check for the receipt", systemImage: "arrow.down.doc") {
+                        Task { await checkReceipt() }
+                    }
+                    .disabled(busy || !connection.isConfigured)
+                }
                 ShareLink(
-                    item: CurationJSONFile(text: desk.exportText(session), filename: desk.exportFilename(session)),
+                    item: JSONExportFile(text: desk.exportText(session), filename: desk.exportFilename(session)),
                     preview: SharePreview("Desk decisions (JSON)", image: Image(systemName: "tray.and.arrow.up"))
                 ) {
-                    Label("Share export — for `kb desk select`", systemImage: "square.and.arrow.up")
+                    Label("Share the file instead", systemImage: "square.and.arrow.up")
                 }
             }
         } footer: {
             if session.isLocked {
-                Text("Run `kb desk select <file> --dry-run`, then without `--dry-run`. Import the receipt here.")
+                Text("A sent session waits in the server inbox until `kb desk pull` imports it on the Mac; its receipt then comes back here.")
             } else {
                 Text("Every decision is already saved on the phone. Undo appends a retraction; the original stays in the record.")
             }
+        }
+    }
+
+    private func send() async {
+        busy = true
+        defer { busy = false }
+        do {
+            try await desk.send(session, via: connection)
+            notice = "Sent. Run `kb desk pull` on the Mac to import it."
+        } catch {
+            problem = error.localizedDescription
+        }
+    }
+
+    private func checkReceipt() async {
+        busy = true
+        defer { busy = false }
+        do {
+            switch try await desk.checkReceipt(session, via: connection) {
+            case .receipt: notice = "The receipt is attached."
+            case .pending: notice = "Still waiting in the inbox: run `kb desk pull` on the Mac."
+            case .rejected(let why): problem = "The vault importer refused this session:\n\(why)"
+            case .unknown: problem = "The server has no record of this session. Send it again."
+            }
+        } catch {
+            problem = error.localizedDescription
         }
     }
 

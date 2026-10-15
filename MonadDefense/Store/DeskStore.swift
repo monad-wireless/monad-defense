@@ -2,22 +2,28 @@ import Foundation
 import SwiftData
 import SwiftUI
 
-// MARK: - Desk store (IP-161) — the only writer of desk sessions and events
+// MARK: - Desk store (IP-161, IP-172) — the only writer of desk sessions and events
 //
-// Bundled banks are read-only `DeskBank-*.json` resources. Every decision is
-// saved explicitly before the card advances; a failed save rolls back and
-// throws, and the deck keeps the card on screen. Nothing here touches the
-// study progress models, and no desk row is pruned when its bank disappears.
+// Banks come from two places: read-only `DeskBank-*.json` resources in the
+// bundle, and banks downloaded from the Desk API into Application Support
+// (`DeskBanks/`), which survive without a network. A downloaded bank wins over
+// a bundled one with the same id. Every decision is saved explicitly before
+// the card advances; a failed save rolls back and throws, and the deck keeps
+// the card on screen. Nothing here touches the study progress models, and no
+// desk row is pruned when its bank disappears.
 
 @MainActor
 @Observable
 final class DeskStore {
-    let banks: [DeskBank]
-    /// Bundled files that failed to load, with the reason. Shown, never hidden.
-    let bankProblems: [String]
+    private(set) var banks: [DeskBank] = []
+    /// Files that failed to load, with the reason. Shown, never hidden.
+    private(set) var bankProblems: [String] = []
+    /// When the server's bank list was last read, for the status row.
+    private(set) var lastRefresh: Date?
     let actorID = "researcher"
     let deviceID: String
     private let context: ModelContext
+    private let bundle: Bundle
     /// Bumped after every write so views that read through this store refresh.
     private(set) var revision = 0
 
@@ -26,21 +32,7 @@ final class DeskStore {
 
     init(context: ModelContext, bundle: Bundle = .main) {
         self.context = context
-        var loaded: [DeskBank] = []
-        var problems: [String] = []
-        let urls = (bundle.urls(forResourcesWithExtension: "json", subdirectory: nil) ?? [])
-            .filter { $0.lastPathComponent.hasPrefix(Self.resourcePrefix) }
-            .sorted { $0.lastPathComponent < $1.lastPathComponent }
-        for url in urls {
-            let name = url.deletingPathExtension().lastPathComponent
-            do {
-                loaded.append(try DeskBank.load(try Data(contentsOf: url), resourceName: name))
-            } catch {
-                problems.append("\(name): \(error.localizedDescription)")
-            }
-        }
-        self.banks = loaded
-        self.bankProblems = problems
+        self.bundle = bundle
         if let stored = UserDefaults.standard.string(forKey: Self.deviceKey) {
             self.deviceID = stored
         } else {
@@ -48,6 +40,94 @@ final class DeskStore {
             UserDefaults.standard.set(fresh, forKey: Self.deviceKey)
             self.deviceID = fresh
         }
+        reloadBanks()
+    }
+
+    // MARK: Banks
+
+    /// Where downloaded banks live: one file per bank, named by a digest of its id.
+    static var cacheDirectory: URL {
+        URL.applicationSupportDirectory.appending(path: "DeskBanks", directoryHint: .isDirectory)
+    }
+
+    private func reloadBanks() {
+        var byID: [String: DeskBank] = [:]
+        var problems: [String] = []
+        func load(_ url: URL, name: String) {
+            do {
+                let bank = try DeskBank.load(try Data(contentsOf: url), resourceName: name)
+                byID[bank.bankID] = bank
+            } catch {
+                problems.append("\(name): \(error.localizedDescription)")
+            }
+        }
+        let bundled = (bundle.urls(forResourcesWithExtension: "json", subdirectory: nil) ?? [])
+            .filter { $0.lastPathComponent.hasPrefix(Self.resourcePrefix) }
+            .sorted { $0.lastPathComponent < $1.lastPathComponent }
+        for url in bundled { load(url, name: url.deletingPathExtension().lastPathComponent) }
+        let cached = (try? FileManager.default.contentsOfDirectory(at: Self.cacheDirectory, includingPropertiesForKeys: nil)) ?? []
+        for url in cached where url.pathExtension == "json" { load(url, name: "server") }
+        banks = byID.values.sorted { ($0.compiledAt ?? "") > ($1.compiledAt ?? "") }
+        bankProblems = problems
+    }
+
+    /// Download every bank the server lists that is not cached at its current version.
+    /// Returns how many banks changed. Throws when the server cannot be read.
+    @discardableResult
+    func refresh(from connection: DeskConnection) async throws -> Int {
+        let list = try await connection.decode(BankList.self, "/api/banks")
+        try FileManager.default.createDirectory(at: Self.cacheDirectory, withIntermediateDirectories: true)
+        var changed = 0
+        for summary in list.banks {
+            let file = Self.cacheDirectory.appending(path: "\(Self.fileStem(summary.bankID)).json")
+            let tagFile = file.appendingPathExtension("etag")
+            if (try? String(contentsOf: tagFile, encoding: .utf8)) == summary.etag,
+                FileManager.default.fileExists(atPath: file.path())
+            {
+                continue
+            }
+            let data = try await connection.get("/api/banks/\(summary.bankID)")
+            _ = try DeskBank.load(data, resourceName: "server")  // refuse what the phone cannot use
+            try data.write(to: file, options: .atomic)
+            try summary.etag.write(to: tagFile, atomically: true, encoding: .utf8)
+            changed += 1
+        }
+        // A bank the server no longer lists was unpublished (`kb desk unpublish`).
+        // Its cached copy goes, unless a session on this phone still needs it to
+        // show or export its decisions.
+        let listed = Set(list.banks.map { "\(Self.fileStem($0.bankID)).json" })
+        let inUse = Set(sessions.map { "\(Self.fileStem($0.bankID)).json" })
+        let cached = (try? FileManager.default.contentsOfDirectory(at: Self.cacheDirectory, includingPropertiesForKeys: nil)) ?? []
+        for url in cached where url.pathExtension == "json" {
+            let name = url.lastPathComponent
+            guard !listed.contains(name), !inUse.contains(name) else { continue }
+            try? FileManager.default.removeItem(at: url)
+            try? FileManager.default.removeItem(at: url.appendingPathExtension("etag"))
+            changed += 1
+        }
+        lastRefresh = .now
+        reloadBanks()
+        return changed
+    }
+
+    private static func fileStem(_ bankID: String) -> String {
+        String(bankID.unicodeScalars.map { CharacterSet.alphanumerics.contains($0) ? Character($0) : "-" })
+    }
+
+    // MARK: Sending to the vault (IP-172)
+
+    /// Send a locked session to the Desk API inbox; `kb desk pull` imports it.
+    func send(_ session: DeskSession, via connection: DeskConnection) async throws {
+        try await connection.sendExport(try exportData(session))
+        session.sentAt = .now
+        try save()
+    }
+
+    /// Ask the server for the session's receipt and attach it when it has come back.
+    func checkReceipt(_ session: DeskSession, via connection: DeskConnection) async throws -> ReceiptState {
+        let state = try await connection.receipt(sessionID: session.sessionID)
+        if case .receipt(let data) = state { try importReceipt(data) }
+        return state
     }
 
     func bank(_ id: String) -> DeskBank? { banks.first { $0.bankID == id } }
@@ -138,7 +218,7 @@ final class DeskStore {
     func exportData(_ session: DeskSession) throws -> Data {
         guard session.isLocked else { throw DeskError.receiptMismatch("Lock the session before exporting it.") }
         guard let bank = bank(session.bankID) else {
-            throw DeskError.receiptMismatch("The bank of this session is no longer bundled; its events are kept.")
+            throw DeskError.receiptMismatch("The bank of this session is no longer on the phone; its events are kept.")
         }
         return try DeskLedger.export(
             bank: bank, sessionID: session.sessionID, actorID: session.actorID, deviceID: session.deviceID,

@@ -14,7 +14,6 @@ struct SessionView: View {
     @State private var selectedChoice: Int?
     @State private var choiceOrder: [Int] = []
     @State private var feedback: FeedbackKind?
-    @State private var noteTarget: Card?
     @State private var readingTarget: Card?
 
     enum FeedbackKind { case success, warning, error }
@@ -42,28 +41,13 @@ struct SessionView: View {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("Close", systemImage: "xmark") { finish() }
                 }
-                if let card {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        let existing = store.note(for: card.id)
-                        Button {
-                            noteTarget = card
-                        } label: {
-                            Image(
-                                systemName: existing.map(\.verdict.symbol)
-                                    ?? "square.and.pencil")
-                        }
-                        .tint(existing?.verdict.tint)
-                        .accessibilityLabel("Note on this card")
-                    }
+                if card != nil {
                     ToolbarItem(placement: .topBarTrailing) {
                         Text("\(index + 1)/\(session.cards.count)")
                             .font(.subheadline.monospacedDigit())
                             .foregroundStyle(.secondary)
                     }
                 }
-            }
-            .sheet(item: $noteTarget) { card in
-                CardNoteEditor(card: card)
             }
             .sheet(item: $readingTarget) { card in
                 CardReaderView(card: card)

@@ -65,6 +65,25 @@ enum DebugRouter {
     /// a chart is not pushed below the fold by the prose. `-DemoWidgetOnly`.
     static var widgetOnly: Bool { arguments.contains("-DemoWidgetOnly") }
 
+    private static func value(after flag: String) -> String? {
+        guard let index = arguments.firstIndex(of: flag), arguments.indices.contains(index + 1) else { return nil }
+        return arguments[index + 1]
+    }
+
+    /// Open on a tab: `-DemoTab curate|library|defense`.
+    static var demoTab: String? { value(after: "-DemoTab") }
+
+    /// Open the Library on one paper: `-DemoPaper traag2019_c386`.
+    static var demoPaper: String? { value(after: "-DemoPaper") }
+
+    /// Point the app at a Desk API without typing: `-DeskServer <url> -DeskToken <token>`.
+    /// For a simulator against a local `uvicorn`; the token lands in the Keychain.
+    @MainActor
+    static func configureServer(_ connection: DeskConnection) {
+        guard let server = value(after: "-DeskServer"), let token = value(after: "-DeskToken") else { return }
+        connection.save(address: server, token: token)
+    }
+
     /// The session `-DemoCards` asks for, or nil when the flag is absent.
     @MainActor
     static func demoSession(from store: StudyStore) -> StudySession? {

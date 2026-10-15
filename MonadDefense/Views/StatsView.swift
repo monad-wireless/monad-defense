@@ -16,7 +16,7 @@ struct StatsView: View {
                 .padding()
             }
             .background(.background.secondary.opacity(0.4))
-            .navigationTitle("Stats")
+            .navigationTitle("Progress")
         }
     }
 

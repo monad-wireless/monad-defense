@@ -1,24 +1,19 @@
 import SwiftUI
 
+// IP-172: three jobs, three tabs. Curate decides, Library reads, Defense prepares.
 struct RootView: View {
     @State private var selection = RootView.initialTab
 
     var body: some View {
         TabView(selection: $selection) {
-            Tab("Today", systemImage: "sun.max", value: "today") {
-                TodayView()
+            Tab("Curate", systemImage: "tray.full", value: "curate") {
+                NavigationStack { DeskHomeView() }
             }
-            Tab("Tracks", systemImage: "books.vertical", value: "tracks") {
-                TracksView()
+            Tab("Library", systemImage: "books.vertical", value: "library") {
+                LibraryView()
             }
-            Tab("Thesis", systemImage: "function", value: "thesis") {
-                GuideView()
-            }
-            Tab("Curate", systemImage: "square.and.pencil", value: "curate") {
-                CurateView()
-            }
-            Tab("Stats", systemImage: "chart.xyaxis.line", value: "stats") {
-                StatsView()
+            Tab("Defense", systemImage: "graduationcap", value: "defense") {
+                DefenseView()
             }
         }
         .tint(Theme.accent)
@@ -26,9 +21,16 @@ struct RootView: View {
 
     private static var initialTab: String {
         #if DEBUG
-        if DebugRouter.demoGuideStepID != nil { return "thesis" }
+        if let tab = DebugRouter.demoTab { return tab }
+        if DebugRouter.demoPaper != nil { return "library" }
+        // The screenshot launch arguments open screens that live under Defense.
+        if DebugRouter.demoGuideStepID != nil || !DebugRouter.demoCardIDs.isEmpty
+            || DebugRouter.demoReaderID != nil || DebugRouter.demoFiguresID != nil
+        {
+            return "defense"
+        }
         #endif
-        return "today"
+        return "curate"
     }
 }
 

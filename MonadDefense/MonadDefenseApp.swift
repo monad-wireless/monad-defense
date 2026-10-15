@@ -6,9 +6,14 @@ struct MonadDefenseApp: App {
     let container: ModelContainer
     let store: StudyStore
     let desk: DeskStore
+    let connection: DeskConnection
+    let spans = ClaimSpanCache()
 
     init() {
         do {
+            // `CardNote` stays registered although nothing writes it since
+            // IP-172 removed the card-note pass: dropping a model from an
+            // existing store is a migration this app does not need to risk.
             container = try ModelContainer(
                 for: CardProgress.self, ReviewLog.self, SessionResult.self, CardNote.self,
                 TriageDecision.self, DeskSession.self, DeskDecisionEvent.self)
@@ -19,6 +24,10 @@ struct MonadDefenseApp: App {
         // Its own context: autosave off (explicit saves), and a rollback after a
         // failed desk save cannot discard pending study progress.
         desk = DeskStore(context: ModelContext(container))
+        connection = DeskConnection()
+        #if DEBUG
+        DebugRouter.configureServer(connection)
+        #endif
     }
 
     var body: some Scene {
@@ -26,6 +35,8 @@ struct MonadDefenseApp: App {
             root
                 .environment(store)
                 .environment(desk)
+                .environment(connection)
+                .environment(spans)
                 .modelContainer(container)
         }
     }

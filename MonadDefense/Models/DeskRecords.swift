@@ -21,6 +21,9 @@ final class DeskSession {
     /// The receipt `kb desk select` returned for this session, verbatim.
     var receiptJSON: String?
     var receiptImportedAt: Date?
+    /// When the locked session reached the Desk API inbox (IP-172). Optional, so
+    /// stores from before IP-172 open by lightweight migration.
+    var sentAt: Date?
 
     init(bank: DeskBank, actorID: String, deviceID: String, date: Date = .now) {
         self.sessionID = DeskLedger.newID()

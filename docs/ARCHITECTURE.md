@@ -7,15 +7,41 @@ Views/          SwiftUI screens and figure widgets
    ↓
 Store/          StudyStore — reads content, writes progress · DeskStore — writes desk sessions
    ↓
+Net/            DeskConnection — the Desk API (IP-172), bearer token in the Keychain
+   ↓
 Models/         ContentModels (bundled, read-only) · ProgressModels (SwiftData) · FSRS
-                DeskModels (bundled banks, rules, event chain) · DeskRecords (SwiftData)
+                DeskModels (banks, rules, event chain) · DeskRecords (SwiftData)
    ↓
 Resources/      DeckBank.json + Figures/ + Desk/DeskBank-*.json — compiled elsewhere, never edited here
 ```
 
-Nothing below a layer imports anything above it. There is no networking layer,
-no dependency-injection container and no third-party package. The whole app is
-4,400 lines of Swift.
+Nothing below a layer imports anything above it. There is no dependency-injection
+container and no third-party package.
+
+## Three tabs (IP-172)
+
+| Tab | Job | Root |
+|---|---|---|
+| Curate | Decide: Desk banks and sessions, phone texts | `Views/Desk/DeskHomeView` |
+| Library | Read: papers and claims with evidence marked | `Views/Library/LibraryView` |
+| Defense | Prepare: Today, Tracks, Thesis guide, Progress | `Views/Defense/DefenseView` |
+
+The four Defense screens keep their own navigation stacks under a segmented
+control: the thesis guide drives its path programmatically for deep links.
+
+`Views/Evidence/EvidenceText.swift` is the one highlighting component. Server
+offsets (`evidence_start`, `evidence_end`) count Unicode scalars, the indices of
+a Python string, so the component indexes `unicodeScalars`, never UTF-16.
+
+## The Desk API (IP-172)
+
+`monad_knowledge/desk_api` on `desk.monad.dubec.dev`. The app reads banks
+(`GET /api/banks`, cached under Application Support `DeskBanks/` with their
+ETag), sends a locked session (`POST /api/exports`), fetches its receipt
+(`GET /api/receipts/<session>`), and reads the Library (`/api/papers`,
+`/api/claims`, `/api/search`). On the Mac, `kb desk publish` uploads a bank and
+`kb desk pull` imports the inbox. Without a token the app works from what it
+bundled and cached.
 
 ## Two stores that never mix
 
@@ -138,22 +164,13 @@ you can walk back.
 `RelatedCards` opens a read-only reader on the target, which can be walked
 onward to any depth. It grades nothing, for the reason given under `explore`.
 
-## Curation
+## Swipe stacks
 
-`Views/CurateView.swift` and `CurationPassView.swift` sweep the whole bank with
-the answers open. One verdict per card — `keep`, `more`, `fix`, `cut` — plus a
-free-text note, stored as one `CardNote` row per card, upserted on edit.
+The card-note curation pass was removed by IP-172. `CardNote` stays registered
+in the SwiftData container so existing stores open without a migration; nothing
+writes it.
 
-`StudyStore.curationExportJSON` emits `monad-defense/curation/1`, which
-`monad-knowledge edu deck curation` reads in the parent repo. The Markdown twin
-is for pasting into a note. Both carry the `bank_version` the verdicts were
-made against, so a stale export is detectable rather than silently applied to
-cards that have since changed.
-
-See [CONTENT.md](CONTENT.md) for the loop this closes.
-
-All three card stacks (curation pass, dwell review, eggs) and the Desk run on
-one generic deck, `TriageDeckView<Item>` (`Views/Triage/`). An action returns a
+The phone-text stacks (dwell review, eggs) and the Desk run on one generic deck, `TriageDeckView<Item>` (`Views/Triage/`). An action returns a
 `TriageOutcome`: `.saved` advances the deck, `.failed` keeps the card and shows
 why, `.edit` presents an editor sheet and advances only after that editor saved.
 

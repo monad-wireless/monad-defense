@@ -20,7 +20,7 @@ struct TodayView: View {
                 .padding()
             }
             .background(.background.secondary.opacity(0.4))
-            .navigationTitle("Defense")
+            .navigationTitle("Today")
             .fullScreenCover(item: $session) { session in
                 SessionView(session: session)
             }

@@ -96,15 +96,33 @@ struct DeskBadge: View {
     }
 }
 
-/// A labelled quote of retained source text.
+/// A labelled quote of retained source text, marked with the shared evidence
+/// style: a vocabulary term wherever it occurs, or the whole quote when the
+/// quote is itself a stored evidence span.
 private struct SourceQuote: View {
+    enum Mark {
+        case none
+        case term(String)
+        case whole
+    }
+
     let text: String
     let caption: String
+    var mark: Mark = .none
+
+    private var attributed: AttributedString {
+        switch mark {
+        case .none: AttributedString(text)
+        case .term(let term): Evidence.marked(text, term: term)
+        case .whole: Evidence.marked(text, range: text.startIndex..<text.endIndex, exact: true)
+        }
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(text)
-                .font(.callout)
+            Text(attributed)
+                .font(EvidenceStyle.serif)
+                .lineSpacing(3)
                 .textSelection(.enabled)
             Text(caption)
                 .font(.caption2)
@@ -160,7 +178,8 @@ private struct VocabularyEvidence: View {
                                 e["section"]?.string,
                                 pageText(e["page"], verified: false),
                                 e["load_bearing"]?.bool == true ? "load-bearing" : nil,
-                            ].compactMap { $0 }.joined(separator: " · "))
+                            ].compactMap { $0 }.joined(separator: " · "),
+                            mark: .term(f["name"]?.string ?? ""))
                     }
                 }
             }
@@ -337,6 +356,7 @@ private struct FidelityEvidence: View {
                         .compactMap { $0 }.joined(separator: " · "),
                     paragraph: o["text"]?.string ?? "",
                     claim: claim,
+                    claimID: f["claim_id"]?.string,
                     badge: o["role"]?.string == "cited"
                         ? "cited paper"
                         : (o["role"]?.string == "citing" ? "citing sentence" : "extracted here"),
@@ -350,6 +370,7 @@ private struct FidelityEvidence: View {
                         .compactMap { $0 }.joined(separator: " · "),
                     paragraph: t["text"]?.string ?? "",
                     claim: claim,
+                    claimID: t["claim_id"]?.string,
                     badge: "same words",
                     expanded: expanded,
                     terms: t["terms"]?.array ?? [])
@@ -421,17 +442,32 @@ private struct FidelityEvidence: View {
 }
 
 /// One article that carries the claim: title, locator, the paragraph with the
-/// claim's words marked when they occur verbatim, and that record's own terms.
+/// claim marked, and that record's own terms. The mark is the stored evidence
+/// span when the Desk API knows the claim and this is its paragraph; otherwise
+/// a word match, underlined dotted, and said so.
 private struct ArticleBlock: View {
+    @Environment(DeskConnection.self) private var connection
+    @Environment(ClaimSpanCache.self) private var spans
+
     let title: String
     let meta: String
     let paragraph: String
     let claim: String
+    var claimID: String? = nil
     let badge: String
     let expanded: Bool
     let terms: [JSONValue]
 
     var body: some View {
+        let exact = claimID.flatMap { spans.range($0, in: paragraph) }
+        let hit = exact ?? Evidence.locate(claim, in: paragraph)
+        content(hit: hit, exact: exact != nil)
+            .task(id: claimID) {
+                if let claimID { await spans.load(claimID, via: connection) }
+            }
+    }
+
+    private func content(hit: Range<String.Index>?, exact: Bool) -> some View {
         HStack(alignment: .top, spacing: 10) {
             Image(systemName: "arrow.turn.down.right")
                 .font(.callout.weight(.semibold))
@@ -452,16 +488,24 @@ private struct ArticleBlock: View {
                     Text("Paragraph text was not kept.")
                         .font(.caption)
                         .foregroundStyle(.orange)
-                } else if !expanded, let window = Self.window(paragraph, claim) {
+                } else if !expanded, let hit {
                     // No text selection here: a press-and-drag during a swipe
                     // selected paragraph text instead of moving the card.
-                    Text(Self.marked(window, claim))
-                        .font(.callout)
-                        .lineLimit(5)
+                    let window = Evidence.sentence(paragraph, around: hit)
+                    Text(Evidence.marked(window, range: window.range(of: String(paragraph[hit])), exact: exact))
+                        .font(EvidenceStyle.serif)
+                        .lineSpacing(3)
+                        .lineLimit(6)
                 } else {
-                    Text(Self.marked(paragraph, claim))
-                        .font(.callout)
-                        .lineLimit(expanded ? nil : 3)
+                    Text(Evidence.marked(paragraph, range: hit, exact: exact))
+                        .font(EvidenceStyle.serif)
+                        .lineSpacing(3)
+                        .lineLimit(expanded ? nil : 4)
+                }
+                if !paragraph.isEmpty, hit != nil {
+                    Text(exact ? "stored evidence span" : "located by matching words")
+                        .font(.caption2)
+                        .foregroundStyle(.tertiary)
                 }
                 if !terms.isEmpty {
                     FlowLayout(spacing: 4) {
@@ -479,63 +523,6 @@ private struct ArticleBlock: View {
         .padding(10)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(.quaternary.opacity(0.45), in: .rect(cornerRadius: 12))
-    }
-
-    /// The longest run of the claim's leading words (five or more) that occurs
-    /// verbatim in the paragraph. A literal locator for the eye, not a verdict:
-    /// a paraphrased claim simply gets no mark.
-    static func overlap(_ paragraph: String, _ claim: String) -> Range<String.Index>? {
-        let words = claim.trimmingCharacters(in: CharacterSet(charactersIn: ". ")).split(separator: " ")
-        guard words.count >= 5 else { return nil }
-        for n in stride(from: words.count, through: 5, by: -1) {
-            if let hit = paragraph.range(of: words.prefix(n).joined(separator: " "), options: .caseInsensitive) {
-                return hit
-            }
-        }
-        return closestSentence(paragraph, claim)
-    }
-
-    /// For a paraphrase: the sentence sharing the most content words (four or
-    /// more letters, at least three of them) with the claim.
-    static func closestSentence(_ paragraph: String, _ claim: String) -> Range<String.Index>? {
-        func words(_ s: Substring) -> Set<String> {
-            Set(s.lowercased().split(whereSeparator: { !$0.isLetter && !$0.isNumber }).map(String.init).filter { $0.count >= 4 })
-        }
-        let wanted = words(Substring(claim))
-        var best: (score: Int, range: Range<String.Index>)?
-        var start = paragraph.startIndex
-        while start < paragraph.endIndex {
-            let stop = paragraph.range(of: ". ", range: start..<paragraph.endIndex)?.upperBound ?? paragraph.endIndex
-            let score = words(paragraph[start..<stop]).intersection(wanted).count
-            if score > (best?.score ?? 2) { best = (score, start..<stop) }
-            start = stop
-        }
-        return best?.range
-    }
-
-    /// The sentence that holds the claim's exact words, with ellipses where the
-    /// paragraph goes on. Nil when the words do not occur verbatim.
-    static func window(_ paragraph: String, _ claim: String) -> String? {
-        guard let hit = overlap(paragraph, claim) else { return nil }
-        let start = paragraph.range(of: ". ", options: .backwards, range: paragraph.startIndex..<hit.lowerBound)?.upperBound
-            ?? paragraph.startIndex
-        let end = paragraph.range(of: ". ", range: hit.upperBound..<paragraph.endIndex)?.lowerBound
-            ?? paragraph.endIndex
-        let sentence = String(paragraph[start..<end]).trimmingCharacters(in: .whitespaces)
-        let head = start > paragraph.startIndex ? "… " : ""
-        let tail = end < paragraph.endIndex ? ". …" : ""
-        return head + sentence + tail
-    }
-
-    /// The paragraph with the claim's exact words highlighted, if they occur.
-    static func marked(_ paragraph: String, _ claim: String) -> AttributedString {
-        var text = AttributedString(paragraph)
-        guard let hit = overlap(paragraph, claim),
-            let range = text.range(of: paragraph[hit], options: .caseInsensitive)
-        else { return text }
-        text[range].backgroundColor = .yellow.opacity(0.45)
-        text[range].font = .callout.weight(.semibold)
-        return text
     }
 }
 
@@ -769,7 +756,7 @@ private struct PropositionEvidence: View {
             Text(value?["text"]?.string ?? "")
                 .font(.headline)
             if let evidence = value?["evidence"]?.string, !evidence.isEmpty {
-                SourceQuote(text: evidence, caption: "evidence")
+                SourceQuote(text: evidence, caption: "stored evidence span", mark: .whole)
                     .lineLimit(expanded ? nil : 4)
             } else {
                 Text("evidence sentence not available")
