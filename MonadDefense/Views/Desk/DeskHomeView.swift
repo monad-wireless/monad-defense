@@ -205,15 +205,23 @@ struct DeskHomeView: View {
     }
 
     private func sessionRow(_ session: DeskSession) -> some View {
-        VStack(alignment: .leading, spacing: 3) {
-            Text(session.bankTitle)
+        let bank = desk.bank(session.bankID)
+        let decided = bank.map { desk.decidedCount(session, bank: $0) } ?? 0
+        let unsent = !session.isLocked && decided > 0
+        return VStack(alignment: .leading, spacing: 3) {
+            Text(bank.map { BankGuide($0).title } ?? session.bankTitle)
                 .font(.subheadline.weight(.medium))
             HStack(spacing: 8) {
                 Text(session.created, format: .dateTime.day().month().hour().minute())
-                Text(DeskSessionView.state(session))
+                Text("\(decided) decided · \(DeskSessionView.state(session))")
             }
             .font(.caption)
             .foregroundStyle(.secondary)
+            if unsent {
+                Label("Not sent yet. Open to lock and send.", systemImage: "paperplane")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.orange)
+            }
         }
     }
 
@@ -277,11 +285,18 @@ struct DeskSessionView: View {
         }
         .navigationTitle(session.bankTitle)
         .navigationBarTitleDisplayMode(.inline)
-        .confirmationDialog("Lock this session?", isPresented: $confirmLock, titleVisibility: .visible) {
-            Button("Lock session", role: .destructive) { lock() }
+        .confirmationDialog(
+            connection.isConfigured ? "Lock and send these decisions?" : "Lock this session?",
+            isPresented: $confirmLock, titleVisibility: .visible
+        ) {
+            if connection.isConfigured {
+                Button("Lock and send") { Task { await lockAndSend() } }
+            } else {
+                Button("Lock session", role: .destructive) { lock() }
+            }
             Button("Cancel", role: .cancel) {}
         } message: {
-            Text("Locking is final. A locked session takes no more decisions, and only a locked session can be exported.")
+            Text("This batch goes to the vault as it is. Opening the bank again starts a new session with only the cards you have not decided.")
         }
         .alert("Not done", isPresented: Binding(get: { problem != nil }, set: { if !$0 { problem = nil } })) {
             Button("OK", role: .cancel) { problem = nil }
@@ -304,8 +319,10 @@ struct DeskSessionView: View {
             LabeledContent("State", value: Self.state(session))
             LabeledContent("Mode", value: session.modeRaw)
             if let bank {
-                let decided = bank.cards.count - desk.pending(session, bank: bank).count
-                LabeledContent("Decided", value: "\(decided) of \(bank.cards.count)")
+                LabeledContent("Decided here", value: "\(desk.decidedCount(session, bank: bank))")
+                if !session.isLocked {
+                    LabeledContent("Left in the bank", value: "\(desk.pending(session, bank: bank).count) of \(bank.cards.count)")
+                }
                 ForEach(desk.dispositions(session, bank: bank), id: \.action) { row in
                     LabeledContent(row.action.replacingOccurrences(of: "_", with: " "), value: "\(row.count)")
                         .font(.callout)
@@ -331,8 +348,11 @@ struct DeskSessionView: View {
                         sitting = DeskHomeView.Sitting(bank: bank, session: session, cards: cards)
                     }
                 }
-                Button("Lock session", systemImage: "lock") { confirmLock = true }
-                    .disabled(desk.eventRows(session).isEmpty)
+                Button(
+                    connection.isConfigured ? "Lock and send to the vault" : "Lock session",
+                    systemImage: connection.isConfigured ? "paperplane" : "lock"
+                ) { confirmLock = true }
+                .disabled(busy || desk.decidedCount(session, bank: bank) == 0)
             }
             if session.isLocked, bank != nil, session.receiptJSON == nil {
                 Button(session.sentAt == nil ? "Send to the vault" : "Send again", systemImage: "paperplane") {
@@ -358,6 +378,17 @@ struct DeskSessionView: View {
             } else {
                 Text("Every decision is already saved on the phone. Undo appends a retraction; the original stays in the record.")
             }
+        }
+    }
+
+    private func lockAndSend() async {
+        busy = true
+        defer { busy = false }
+        do {
+            try await desk.lockAndSend(session, via: connection)
+            notice = "Sent. Run `kb desk pull` on the Mac to import it."
+        } catch {
+            problem = "\(error.localizedDescription)\nThe session is locked; use Send again when the server answers."
         }
     }
 

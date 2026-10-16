@@ -170,10 +170,30 @@ final class DeskStore {
     }
 
     /// Cards with no effective decision, in bank order. Resuming a session
-    /// starts here.
+    /// starts here. A card decided in an earlier, locked session of the same
+    /// bank is not shown again: a bank can be worked through and sent in batches.
     func pending(_ session: DeskSession, bank: DeskBank) -> [DeskCard] {
         let events = events(session)
-        return bank.cards.filter { DeskLedger.effective(events, task: $0.taskID) == nil }
+        let earlier = Set(
+            sessions(for: bank)
+                .filter { $0.isLocked && $0.sessionID != session.sessionID }
+                .flatMap { s in
+                    let past = self.events(s)
+                    return bank.cards.compactMap { DeskLedger.effective(past, task: $0.taskID) != nil ? $0.taskID : nil }
+                })
+        return bank.cards.filter { !earlier.contains($0.taskID) && DeskLedger.effective(events, task: $0.taskID) == nil }
+    }
+
+    /// Decisions in force in this session (retractions excluded).
+    func decidedCount(_ session: DeskSession, bank: DeskBank) -> Int {
+        let events = events(session)
+        return bank.cards.filter { DeskLedger.effective(events, task: $0.taskID) != nil }.count
+    }
+
+    /// Lock, then send: the one-step way a batch of decisions leaves the phone.
+    func lockAndSend(_ session: DeskSession, via connection: DeskConnection) async throws {
+        try lock(session)
+        try await send(session, via: connection)
     }
 
     /// Effective decisions per action, for the session summary.
