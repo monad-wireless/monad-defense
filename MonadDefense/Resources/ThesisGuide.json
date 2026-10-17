@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-10-10T23:17:38+00:00",
+  "generated_at": "2026-10-16T21:59:33+00:00",
   "guide": "thesis-math",
-  "guide_version": "0b02d580de25",
+  "guide_version": "fa4ee9169541",
   "modules": [
     {
       "id": "m0",
@@ -1340,10 +1340,9 @@
             },
             {
               "anchors": [
-                "estimator.abstention",
                 "estimator.level-and-band-outputs"
               ],
-              "body": "Sort the bands by probability, highest first, and keep adding bands until their total reaches 90 %. That set is the stated answer: \"90 % sure it is 31–60 or 61–100\".\n\nA set that spans many bands is an honest \"I cannot tell more precisely\". When it spans more bands than a declared limit, the estimator abstains, and the abstention rate is reported. An always-wide answer cannot win, because width is scored too.",
+              "body": "Sort the bands by probability, highest first, and keep adding bands until their total reaches 90 %. That set is the stated answer: \"90 % sure it is 31–60 or 61–100\".\n\nA set that spans many bands is an honest \"I cannot tell more precisely\". The estimator always answers; it never withholds a minute. An always-wide answer cannot win, because width is scored too.",
               "id": "m4-credible-set",
               "implies": [
                 "Coverage without width is cheap: the set of all bands always covers."
@@ -1356,7 +1355,7 @@
                   "symbol": "S_t"
                 }
               ],
-              "title": "The 90 % band set and abstention"
+              "title": "The 90 % band set"
             },
             {
               "anchors": [
@@ -1436,7 +1435,7 @@
               "title": "Coverage and width"
             }
           ],
-          "summary": "The ranked probability score rewards putting probability near the true band. Coverage checks whether the 90 % sets hold 90 % of the time. Width and abstention keep both honest.",
+          "summary": "The ranked probability score rewards putting probability near the true band. Coverage checks whether the 90 % sets hold 90 % of the time. Width keeps coverage honest.",
           "thesis": "Blind Evaluation (H2, H3)",
           "title": "Scoring probabilities, not just guesses"
         },
