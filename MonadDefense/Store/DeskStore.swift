@@ -11,6 +11,13 @@ import SwiftUI
 // the card advances; a failed save rolls back and throws, and the deck keeps
 // the card on screen. Nothing here touches the study progress models, and no
 // desk row is pruned when its bank disappears.
+//
+// Sync: sessions and events from other devices arrive through `apply` and are
+// read-only here. A session is written (events, lock, send) only by the device
+// that opened it, because a session is one linear event chain and two devices
+// appending offline would fork it. What another device decided still counts:
+// `pending` leaves out every task with an effective decision in ANY session of
+// the bank, so the Mac picks up where the phone stopped.
 
 @MainActor
 @Observable
@@ -118,6 +125,9 @@ final class DeskStore {
 
     /// Send a locked session to the Desk API inbox; `kb desk pull` imports it.
     func send(_ session: DeskSession, via connection: DeskConnection) async throws {
+        // An export carries `exported_at`, so another device's copy would be
+        // other bytes for the same session id, and the inbox refuses those (409).
+        try requireOwn(session)
         try await connection.sendExport(try exportData(session))
         session.sentAt = .now
         try save()
@@ -143,9 +153,32 @@ final class DeskStore {
         sessions.filter { $0.bankID == bank.bankID }
     }
 
-    /// Resume the newest unlocked session on this bank, or start one.
+    func isOwn(_ session: DeskSession) -> Bool { session.deviceID == deviceID }
+
+    /// "this device", or the name another device sent with its sync batches.
+    func deviceName(_ session: DeskSession) -> String {
+        isOwn(session) ? "this device" : (deviceLabels[session.deviceID] ?? "another device")
+    }
+
+    private static let labelsKey = "desk.deviceLabels"
+
+    /// Names other devices sent with their sync batches, by device id.
+    private(set) var deviceLabels: [String: String] =
+        (UserDefaults.standard.dictionary(forKey: DeskStore.labelsKey) as? [String: String]) ?? [:]
+
+    func learn(device id: String, label: String) {
+        guard id != deviceID, deviceLabels[id] != label else { return }
+        deviceLabels[id] = label
+        UserDefaults.standard.set(deviceLabels, forKey: Self.labelsKey)
+    }
+
+    private func requireOwn(_ session: DeskSession) throws {
+        guard isOwn(session) else { throw DeskError.foreignSession(deviceName(session)) }
+    }
+
+    /// Resume this device's newest unlocked session on this bank, or start one.
     func openSession(for bank: DeskBank) throws -> DeskSession {
-        if let open = sessions(for: bank).first(where: { !$0.isLocked }) { return open }
+        if let open = sessions(for: bank).first(where: { !$0.isLocked && isOwn($0) }) { return open }
         let session = DeskSession(bank: bank, actorID: actorID, deviceID: deviceID)
         context.insert(session)
         try save()
@@ -170,19 +203,28 @@ final class DeskStore {
     }
 
     /// Cards with no effective decision, in bank order. Resuming a session
-    /// starts here. A card decided in an earlier, locked session of the same
-    /// bank is not shown again: a bank can be worked through and sent in batches.
+    /// starts here. A card decided in any other session of the same bank (an
+    /// earlier locked one, or one on another device) is not shown again: a
+    /// bank can be worked through in batches and on several devices.
     func pending(_ session: DeskSession, bank: DeskBank) -> [DeskCard] {
         let events = events(session)
-        let earlier = Set(
+        let elsewhere = decidedTasks(bank, excluding: session.sessionID)
+        return bank.cards.filter { !elsewhere.contains($0.taskID) && DeskLedger.effective(events, task: $0.taskID) == nil }
+    }
+
+    /// Tasks with an effective decision in some session of the bank.
+    private func decidedTasks(_ bank: DeskBank, excluding sessionID: String? = nil) -> Set<String> {
+        Set(
             sessions(for: bank)
-                .filter { $0.isLocked && $0.sessionID != session.sessionID }
+                .filter { $0.sessionID != sessionID }
                 .flatMap { s in
                     let past = self.events(s)
                     return bank.cards.compactMap { DeskLedger.effective(past, task: $0.taskID) != nil ? $0.taskID : nil }
                 })
-        return bank.cards.filter { !earlier.contains($0.taskID) && DeskLedger.effective(events, task: $0.taskID) == nil }
     }
+
+    /// Tasks of the bank decided anywhere, on any device: the bank row's progress.
+    func decidedAnywhere(_ bank: DeskBank) -> Int { decidedTasks(bank).count }
 
     /// Decisions in force in this session (retractions excluded).
     func decidedCount(_ session: DeskSession, bank: DeskBank) -> Int {
@@ -210,6 +252,7 @@ final class DeskStore {
         _ session: DeskSession, bank: DeskBank, card: DeskCard,
         action: String, payload: [String: Any], note: String?
     ) throws {
+        try requireOwn(session)
         guard !session.isLocked else { throw DeskError.sessionLocked }
         let event = try DeskLedger.decision(
             on: card, bank: bank, action: action, payload: payload, note: note, after: events(session))
@@ -219,6 +262,7 @@ final class DeskStore {
 
     /// Undo appends a retraction; the original decision stays in the record.
     func undo(_ session: DeskSession, card: DeskCard) throws {
+        try requireOwn(session)
         guard !session.isLocked else { throw DeskError.sessionLocked }
         let event = try DeskLedger.retraction(of: card, after: events(session))
         context.insert(DeskDecisionEvent(sessionID: session.sessionID, record: event))
@@ -228,6 +272,7 @@ final class DeskStore {
     /// Locking is final: the importer accepts only a locked session, and a
     /// locked session takes no further events.
     func lock(_ session: DeskSession) throws {
+        try requireOwn(session)
         guard !session.isLocked else { return }
         session.lockedAt = .now
         try save()
@@ -238,7 +283,7 @@ final class DeskStore {
     func exportData(_ session: DeskSession) throws -> Data {
         guard session.isLocked else { throw DeskError.receiptMismatch("Lock the session before exporting it.") }
         guard let bank = bank(session.bankID) else {
-            throw DeskError.receiptMismatch("The bank of this session is no longer on the phone; its events are kept.")
+            throw DeskError.receiptMismatch("The bank of this session is no longer on this device; its events are kept.")
         }
         return try DeskLedger.export(
             bank: bank, sessionID: session.sessionID, actorID: session.actorID, deviceID: session.deviceID,
@@ -263,7 +308,7 @@ final class DeskStore {
     func importReceipt(_ data: Data) throws -> DeskSession {
         let receipt = try DeskReceipt.load(data)
         guard let session = sessions.first(where: { $0.sessionID == receipt.sessionID }) else {
-            throw DeskError.receiptMismatch("No session \(receipt.sessionID.prefix(8)) on this phone.")
+            throw DeskError.receiptMismatch("No session \(receipt.sessionID.prefix(8)) on this device.")
         }
         guard session.bankID == receipt.bankID else {
             throw DeskError.receiptMismatch("The receipt names another bank than its session.")
@@ -272,6 +317,57 @@ final class DeskStore {
         session.receiptImportedAt = .now
         try save()
         return session
+    }
+
+    // MARK: Sync
+
+    /// This device's sessions and events that changed at or after `since`.
+    /// Records from other devices are not sent back: they are theirs to send.
+    func syncRecords(since: Date) -> [SyncRecord] {
+        let own = sessions.filter(isOwn)
+        var out = own.filter { $0.lastChanged >= since }.map(\.syncRecord)
+        let parser = ISO8601DateFormatter()
+        for session in own {
+            for e in eventRows(session) {
+                // `decidedAt` has whole seconds; the caller's window overlaps for that.
+                guard let at = parser.date(from: e.decidedAt), at >= since else { continue }
+                out.append(e.syncRecord)
+            }
+        }
+        return out
+    }
+
+    /// Merge another device's sessions and events. Returns how many rows changed.
+    @discardableResult
+    func apply(_ records: [SyncRecord]) throws -> Int {
+        var byID = Dictionary(sessions.map { ($0.sessionID, $0) }, uniquingKeysWith: { a, _ in a })
+        var changed = 0
+        for r in records where r.type == SyncRecord.Kind.deskSession {
+            guard let id = r.sessionID, r.deviceID != deviceID else { continue }
+            if let existing = byID[id] {
+                if existing.absorb(r) { changed += 1 }
+            } else {
+                let session = DeskSession(synced: r)
+                context.insert(session)
+                byID[id] = session
+                changed += 1
+            }
+        }
+        let known = Set(((try? context.fetch(FetchDescriptor<DeskDecisionEvent>())) ?? []).map(\.decisionID))
+        var inserted = Set<String>()
+        for r in records where r.type == SyncRecord.Kind.deskEvent {
+            // An event may arrive before its session (the cursor never re-reads
+            // it), so it is kept either way; only this device's own are skipped.
+            let ownSession = r.sessionID.flatMap { byID[$0] }.map(isOwn) ?? false
+            guard let id = r.decisionID, !known.contains(id), !inserted.contains(id), !ownSession,
+                let event = DeskDecisionEvent.synced(r)
+            else { continue }
+            context.insert(event)
+            inserted.insert(id)
+            changed += 1
+        }
+        if changed > 0 { try save() }
+        return changed
     }
 
     // MARK: Save

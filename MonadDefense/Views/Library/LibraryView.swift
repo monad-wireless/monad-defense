@@ -1,28 +1,60 @@
 import SwiftUI
 
 // MARK: - Library tab (IP-172): find a paper or a claim, read it in place
+//
+// A split view: the list beside the reader on an iPad or a Mac, one pushed
+// stack on a phone (the split collapses). The reader keeps its own stack, so a
+// claim's "From" link can walk on to its paper without losing the list.
 
 struct LibraryView: View {
     @Environment(DeskConnection.self) private var connection
 
-    @State private var path = LibraryView.initialPath
+    /// What the reader column shows.
+    enum Item: Hashable {
+        case paper(String)
+        case claim(ClaimHit)
+    }
+
+    @State private var selection: Item? = LibraryView.initialSelection
     @State private var query = ""
     @State private var results: SearchResult?
     @State private var browse: [PaperSummary] = []
     @State private var problem: String?
     @State private var loading = false
+    @FocusState private var searchFocused: Bool
 
-    private static var initialPath: NavigationPath {
-        var path = NavigationPath()
+    private static var initialSelection: Item? {
         #if DEBUG
-        if let paper = DebugRouter.demoPaper { path.append(paper) }
+        if let paper = DebugRouter.demoPaper { return .paper(paper) }
         #endif
-        return path
+        return nil
     }
 
     var body: some View {
-        NavigationStack(path: $path) {
-            List {
+        NavigationSplitView {
+            list
+                .navigationSplitViewColumnWidth(min: 300, ideal: 360, max: 480)
+        } detail: {
+            NavigationStack {
+                switch selection {
+                case .paper(let key):
+                    PaperView(key: key).id(key)
+                case .claim(let hit):
+                    ClaimView(claimID: hit.id).id(hit.id)
+                case nil:
+                    ContentUnavailableView(
+                        "Nothing open", systemImage: "books.vertical",
+                        description: Text(
+                            Platform.isMac
+                                ? "Choose a paper or a claim. ⌘F searches papers and claims."
+                                : "Choose a paper or a claim."))
+                }
+            }
+        }
+    }
+
+    private var list: some View {
+        List(selection: $selection) {
                 if !connection.isConfigured {
                     ContentUnavailableView(
                         "Not connected", systemImage: "network.slash",
@@ -38,7 +70,7 @@ struct LibraryView: View {
                 } else {
                     Section {
                         ForEach(browse) { paper in
-                            NavigationLink(value: paper.key) { PaperRow(paper: paper) }
+                            NavigationLink(value: Item.paper(paper.key)) { PaperRow(paper: paper) }
                         }
                     } header: {
                         Text("Most claims")
@@ -50,14 +82,25 @@ struct LibraryView: View {
                 }
             }
             .navigationTitle("Library")
-            .navigationDestination(for: String.self) { key in PaperView(key: key) }
-            .navigationDestination(for: ClaimHit.self) { hit in ClaimView(claimID: hit.id) }
             .searchable(text: $query, prompt: "Papers and claims")
+            .searchFocused($searchFocused)
             .overlay { if loading { ProgressView() } }
             .refreshable { await loadBrowse() }
+            .toolbar {
+                if Platform.isMac {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button("Refresh", systemImage: "arrow.clockwise") { Task { await loadBrowse() } }
+                            .keyboardShortcut("r", modifiers: .command)
+                            .disabled(!connection.isConfigured)
+                    }
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button("Search", systemImage: "magnifyingglass") { searchFocused = true }
+                            .keyboardShortcut("f", modifiers: .command)
+                    }
+                }
+            }
             .task(id: query) { await search() }
             .task { if browse.isEmpty { await loadBrowse() } }
-        }
     }
 
     @ViewBuilder
@@ -68,14 +111,14 @@ struct LibraryView: View {
         if !r.papers.isEmpty {
             Section("Papers") {
                 ForEach(r.papers) { paper in
-                    NavigationLink(value: paper.key) { PaperRow(paper: paper) }
+                    NavigationLink(value: Item.paper(paper.key)) { PaperRow(paper: paper) }
                 }
             }
         }
         if !r.claims.isEmpty {
             Section("Claims") {
                 ForEach(r.claims) { hit in
-                    NavigationLink(value: hit) {
+                    NavigationLink(value: Item.claim(hit)) {
                         VStack(alignment: .leading, spacing: 4) {
                             Text(hit.text)
                                 .font(.callout)

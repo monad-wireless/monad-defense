@@ -9,6 +9,7 @@ import UniformTypeIdentifiers
 struct DeskHomeView: View {
     @Environment(DeskStore.self) private var desk
     @Environment(DeskConnection.self) private var connection
+    @Environment(SyncStore.self) private var sync
 
     /// A bundled bank resource to open on appear (debug launch argument only).
     var autoOpen: String? = nil
@@ -46,8 +47,18 @@ struct DeskHomeView: View {
         .navigationTitle("Curate")
         .refreshable { await refresh() }
         .task { if desk.lastRefresh == nil { await refresh() } }
+        // Settings (⌘,) saves the token from the root; fetch as soon as it lands.
+        .onChange(of: connection.hasToken) { _, has in if has { Task { await refresh() } } }
         .sheet(isPresented: $connecting, onDismiss: { Task { await refresh() } }) { ConnectionSheet() }
         .toolbar {
+            if Platform.isMac {
+                // No pull-to-refresh under a pointer: the button is the only way in.
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Refresh", systemImage: "arrow.clockwise") { Task { await refresh() } }
+                        .keyboardShortcut("r", modifiers: .command)
+                        .disabled(refreshing || !connection.isConfigured)
+                }
+            }
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
                     Button("Desk server", systemImage: "server.rack") { connecting = true }
@@ -65,7 +76,8 @@ struct DeskHomeView: View {
         } message: {
             Text(message ?? "")
         }
-        .fullScreenCover(item: $sitting) { s in
+        // A sitting's decisions reach the other devices as soon as it closes.
+        .fullScreenCover(item: $sitting, onDismiss: { Task { await sync.sync() } }) { s in
             DeskDeckView(bank: s.bank, session: s.session, cards: s.cards)
         }
         .task {
@@ -92,6 +104,7 @@ struct DeskHomeView: View {
                     Spacer()
                     if refreshing { ProgressView() }
                 }
+                syncRow
             } else {
                 Button {
                     connecting = true
@@ -106,8 +119,44 @@ struct DeskHomeView: View {
         }
     }
 
+    /// Sessions, reviews and swipes shared with the other devices on this server.
+    private var syncRow: some View {
+        HStack(spacing: 10) {
+            Image(systemName: sync.lastProblem == nil ? "arrow.triangle.2.circlepath" : "exclamationmark.arrow.triangle.2.circlepath")
+                .foregroundStyle(sync.lastProblem == nil ? Theme.accent : .orange)
+                .symbolEffect(.rotate, isActive: sync.syncing)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(syncTitle)
+                    .font(.subheadline.weight(.medium))
+                Text(sync.lastProblem ?? syncDetail)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            Spacer()
+            Button("Sync now") { Task { await sync.sync() } }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+                .disabled(sync.syncing)
+        }
+    }
+
+    private var syncTitle: String {
+        let others = desk.deviceLabels.count
+        return others == 0 ? "Sync" : "Sync with \(others) other device\(others == 1 ? "" : "s")"
+    }
+
+    private var syncDetail: String {
+        if sync.syncing { return "Syncing…" }
+        guard let at = sync.lastSync else { return "Not synced yet" }
+        let moved = sync.lastPushed + sync.lastMerged
+        let what = moved == 0 ? "up to date" : "\(sync.lastPushed) sent, \(sync.lastMerged) merged"
+        return "\(at.formatted(.relative(presentation: .named))) · \(what)"
+    }
+
     private var lastRefreshText: String {
-        guard let at = desk.lastRefresh else { return "Pull down to fetch new banks" }
+        guard let at = desk.lastRefresh else {
+            return Platform.isMac ? "Press ⌘R to fetch new banks" : "Pull down to fetch new banks"
+        }
         return "Banks checked \(at.formatted(.relative(presentation: .named)))"
     }
 
@@ -121,6 +170,7 @@ struct DeskHomeView: View {
         } catch {
             refreshProblem = error.localizedDescription
         }
+        await sync.sync()
     }
 
     @ViewBuilder
@@ -128,8 +178,11 @@ struct DeskHomeView: View {
         Section {
             if desk.banks.isEmpty {
                 ContentUnavailableView(
-                    "No bank on this phone", systemImage: "tray",
-                    description: Text("Publish one with `kb desk publish <bank.json>` and pull down here."))
+                    "No bank on this device", systemImage: "tray",
+                    description: Text(
+                        Platform.isMac
+                            ? "Publish one with `kb desk publish <bank.json>` and press ⌘R here."
+                            : "Publish one with `kb desk publish <bank.json>` and pull down here."))
             }
             ForEach(desk.banks) { bank in
                 Button {
@@ -142,14 +195,15 @@ struct DeskHomeView: View {
         } header: {
             Text("Banks")
         } footer: {
-            Text("A sitting resumes the open session of its bank. Blind banks carry no proposal.")
+            Text("A sitting resumes this device's open session of its bank and skips what any synced device decided. Blind banks carry no proposal.")
         }
     }
 
     private func bankRow(_ bank: DeskBank) -> some View {
         let guide = BankGuide(bank)
-        let open = desk.sessions(for: bank).first { !$0.isLocked }
-        let decided = open.map { bank.cards.count - desk.pending($0, bank: bank).count } ?? 0
+        let open = desk.sessions(for: bank).first { !$0.isLocked && desk.isOwn($0) }
+        // Every device's decisions count: the bar shows the bank, not this device.
+        let decided = desk.decidedAnywhere(bank)
         let finished = desk.sessions(for: bank).contains { $0.isLocked }
         return HStack(alignment: .top, spacing: 12) {
             Image(systemName: bank.stack.symbol)
@@ -207,10 +261,16 @@ struct DeskHomeView: View {
     private func sessionRow(_ session: DeskSession) -> some View {
         let bank = desk.bank(session.bankID)
         let decided = bank.map { desk.decidedCount(session, bank: $0) } ?? 0
-        let unsent = !session.isLocked && decided > 0
+        let own = desk.isOwn(session)
+        let unsent = own && !session.isLocked && decided > 0
         return VStack(alignment: .leading, spacing: 3) {
-            Text(bank.map { BankGuide($0).title } ?? session.bankTitle)
-                .font(.subheadline.weight(.medium))
+            HStack(spacing: 6) {
+                Text(bank.map { BankGuide($0).title } ?? session.bankTitle)
+                    .font(.subheadline.weight(.medium))
+                if !own {
+                    DeskBadge(text: "on \(desk.deviceName(session))", tint: .indigo)
+                }
+            }
             HStack(spacing: 8) {
                 Text(session.created, format: .dateTime.day().month().hour().minute())
                 Text("\(decided) decided · \(DeskSessionView.state(session))")
@@ -265,6 +325,7 @@ struct DeskSessionView: View {
     @State private var problem: String?
     @State private var notice: String?
     @State private var busy = false
+    @State private var saving = false
 
     static func state(_ session: DeskSession) -> String {
         if session.receiptJSON != nil { return "receipt back" }
@@ -316,6 +377,13 @@ struct DeskSessionView: View {
 
     private func summary(_ rows: [DeskDecisionEvent]) -> some View {
         Section {
+            if !desk.isOwn(session) {
+                Label(
+                    "Recorded on \(desk.deviceName(session)). It is read-only here: that device resumes, locks and sends it.",
+                    systemImage: "arrow.triangle.2.circlepath")
+                    .font(.callout)
+                    .foregroundStyle(.indigo)
+            }
             LabeledContent("State", value: Self.state(session))
             LabeledContent("Mode", value: session.modeRaw)
             if let bank {
@@ -328,7 +396,7 @@ struct DeskSessionView: View {
                         .font(.callout)
                 }
             } else {
-                Text("This bank is no longer bundled. Its events are kept on the phone.")
+                Text("This bank is no longer bundled. Its events are kept on this device.")
                     .font(.callout)
                     .foregroundStyle(.orange)
             }
@@ -338,8 +406,9 @@ struct DeskSessionView: View {
 
     @ViewBuilder
     private var actions: some View {
+        let own = desk.isOwn(session)
         Section {
-            if !session.isLocked, let bank {
+            if own, !session.isLocked, let bank {
                 Button("Resume sitting", systemImage: "play.fill") {
                     let cards = desk.pending(session, bank: bank)
                     if cards.isEmpty {
@@ -355,10 +424,12 @@ struct DeskSessionView: View {
                 .disabled(busy || desk.decidedCount(session, bank: bank) == 0)
             }
             if session.isLocked, bank != nil, session.receiptJSON == nil {
-                Button(session.sentAt == nil ? "Send to the vault" : "Send again", systemImage: "paperplane") {
-                    Task { await send() }
+                if own {
+                    Button(session.sentAt == nil ? "Send to the vault" : "Send again", systemImage: "paperplane") {
+                        Task { await send() }
+                    }
+                    .disabled(busy || !connection.isConfigured)
                 }
-                .disabled(busy || !connection.isConfigured)
                 if session.sentAt != nil {
                     Button("Check for the receipt", systemImage: "arrow.down.doc") {
                         Task { await checkReceipt() }
@@ -371,13 +442,26 @@ struct DeskSessionView: View {
                 ) {
                     Label("Share the file instead", systemImage: "square.and.arrow.up")
                 }
+                if Platform.isMac {
+                    // The Mac share menu has no "save to disk"; the vault checkout is a folder away.
+                    Button("Save the file…", systemImage: "square.and.arrow.down") { saving = true }
+                        .keyboardShortcut("s", modifiers: .command)
+                }
             }
         } footer: {
             if session.isLocked {
-                Text("A sent session waits in the server inbox until `kb desk pull` imports it on the Mac; its receipt then comes back here.")
+                Text("A sent session waits in the server inbox until `kb desk pull` imports it on the vault machine; its receipt then comes back here.")
             } else {
-                Text("Every decision is already saved on the phone. Undo appends a retraction; the original stays in the record.")
+                Text("Every decision is already saved on this device. Undo appends a retraction; the original stays in the record.")
             }
+        }
+        .fileExporter(
+            isPresented: $saving,
+            item: JSONExportFile(text: desk.exportText(session), filename: desk.exportFilename(session)),
+            contentTypes: [.json],
+            defaultFilename: desk.exportFilename(session)
+        ) { result in
+            if case .failure(let error) = result { problem = error.localizedDescription }
         }
     }
 
@@ -475,14 +559,17 @@ struct DeskSessionView: View {
                     }
                 }
                 .swipeActions {
-                    if !session.isLocked, effective.contains(e.decisionID),
-                        let card = bank?.cards.first(where: { $0.taskID == e.taskID })
-                    {
-                        Button("Undo", systemImage: "arrow.uturn.backward") {
-                            do { try desk.undo(session, card: card) } catch { problem = error.localizedDescription }
-                        }
-                        .tint(.orange)
+                    if let card = undoable(e, effective: effective) {
+                        Button("Undo", systemImage: "arrow.uturn.backward") { undo(card) }
+                            .tint(.orange)
                     }
+                }
+                // A pointer has no swipe; the same undo on a right click.
+                .contextMenu {
+                    if let card = undoable(e, effective: effective) {
+                        Button("Undo this decision", systemImage: "arrow.uturn.backward") { undo(card) }
+                    }
+                    Button("Copy subject", systemImage: "doc.on.doc") { UIPasteboard.general.string = e.subjectID }
                 }
             }
         }
@@ -490,5 +577,15 @@ struct DeskSessionView: View {
 
     private func lock() {
         do { try desk.lock(session) } catch { problem = error.localizedDescription }
+    }
+
+    /// The card an event can be undone on: open session, still the effective decision.
+    private func undoable(_ e: DeskDecisionEvent, effective: Set<String>) -> DeskCard? {
+        guard desk.isOwn(session), !session.isLocked, effective.contains(e.decisionID) else { return nil }
+        return bank?.cards.first(where: { $0.taskID == e.taskID })
+    }
+
+    private func undo(_ card: DeskCard) {
+        do { try desk.undo(session, card: card) } catch { problem = error.localizedDescription }
     }
 }

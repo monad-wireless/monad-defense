@@ -7,7 +7,9 @@ struct MonadDefenseApp: App {
     let store: StudyStore
     let desk: DeskStore
     let connection: DeskConnection
+    let sync: SyncStore
     let spans = ClaimSpanCache()
+    @Environment(\.scenePhase) private var scenePhase
 
     init() {
         do {
@@ -25,8 +27,10 @@ struct MonadDefenseApp: App {
         // failed desk save cannot discard pending study progress.
         desk = DeskStore(context: ModelContext(container))
         connection = DeskConnection()
+        sync = SyncStore(desk: desk, study: store, connection: connection)
         #if DEBUG
         DebugRouter.configureServer(connection)
+        DebugRouter.recordDemoReview(store)
         #endif
     }
 
@@ -36,8 +40,23 @@ struct MonadDefenseApp: App {
                 .environment(store)
                 .environment(desk)
                 .environment(connection)
+                .environment(sync)
                 .environment(spans)
                 .modelContainer(container)
+                // Sync runs while the app is in front: on launch, on return,
+                // and every five minutes, so a sitting on the phone shows on
+                // the Mac without anyone pressing anything.
+                .task(id: scenePhase) {
+                    guard scenePhase == .active else { return }
+                    while !Task.isCancelled {
+                        await sync.sync()
+                        try? await Task.sleep(for: .seconds(300))
+                    }
+                }
+        }
+        .commands {
+            RootCommands()
+            DeskCommands()
         }
     }
 

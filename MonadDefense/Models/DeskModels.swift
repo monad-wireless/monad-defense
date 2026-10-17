@@ -312,6 +312,8 @@ enum DeskError: LocalizedError, Equatable {
     case invalidPayload([String])
     case receiptMismatch(String)
     case saveFailed(String)
+    /// The session belongs to another device: its events, lock and send are that device's.
+    case foreignSession(String)
 
     var errorDescription: String? {
         switch self {
@@ -323,7 +325,8 @@ enum DeskError: LocalizedError, Equatable {
         case .nothingToUndo: "This card has no decision to undo."
         case .invalidPayload(let problems): problems.joined(separator: "\n")
         case .receiptMismatch(let why): why
-        case .saveFailed(let why): "Not saved on the phone: \(why)"
+        case .saveFailed(let why): "Not saved on this device: \(why)"
+        case .foreignSession(let device): "This session was recorded on \(device). Only that device can change, lock or send it."
         }
     }
 }

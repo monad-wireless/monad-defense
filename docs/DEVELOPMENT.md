@@ -5,7 +5,8 @@
 | | |
 |---|---|
 | Xcode | 26 or later |
-| iOS | 26 deployment target |
+| iOS | 26 deployment target (iPhone and iPad) |
+| macOS | 26, Mac Catalyst with the Mac idiom (`TARGETED_DEVICE_FAMILY = 1,2,6`) |
 | Swift | 6.0, `SWIFT_STRICT_CONCURRENCY = complete` |
 | Dependencies | none |
 
@@ -21,7 +22,19 @@ xcodebuild -project MonadDefense.xcodeproj -scheme MonadDefense \
 
 Or open `MonadDefense.xcodeproj` and press ⌘R.
 
-A simulator build needs no configuration at all.
+A simulator build needs no configuration at all. Build the Mac too after any
+Swift edit; an idiom branch can break one side silently:
+
+```bash
+xcodebuild -project MonadDefense.xcodeproj -scheme MonadDefense \
+  -destination 'platform=macOS,variant=Mac Catalyst,arch=arm64' build
+```
+
+Device differences live in `Views/Platform.swift`: `Platform.isMac`, the
+reading column (`readingColumn()`, 720 pt), `macShortcut` (a key that exists
+only on the Mac), `KeyCap` and `MacWindow.configure()` (minimum window size).
+Branch on what the reader can do (pointer, keyboard, no pull-to-refresh), not
+on the device name, and keep the question in that file.
 
 ## Signing for a device
 

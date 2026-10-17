@@ -87,11 +87,16 @@ final class DeskConnection {
 
     /// Send a locked session. A second send of the same bytes is fine.
     func sendExport(_ data: Data) async throws {
-        var req = try request("/api/exports")
+        _ = try await post("/api/exports", body: data)
+    }
+
+    /// POST a JSON body; the response body on 2xx.
+    func post(_ path: String, body: Data) async throws -> Data {
+        var req = try request(path)
         req.httpMethod = "POST"
         req.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        req.httpBody = data
-        _ = try await send(req)
+        req.httpBody = body
+        return try await send(req)
     }
 
     func receipt(sessionID: String) async throws -> ReceiptState {
@@ -155,8 +160,16 @@ final class DeskConnection {
 
     // MARK: Keychain
 
+    /// The data-protection keychain on every platform. On a Mac the default is
+    /// the legacy login keychain, which ignores the accessibility class and
+    /// ties the item to one code signature, so a rebuild asks for the login
+    /// password. A no-op on iPhone and iPad, where it is the only keychain.
     private static func query() -> [String: Any] {
-        [kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: keychainService]
+        [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: keychainService,
+            kSecUseDataProtectionKeychain as String: true,
+        ]
     }
 
     private static func readToken() -> String? {

@@ -36,7 +36,60 @@ final class DeskSession {
         self.created = date
     }
 
+    /// A session another device recorded, as its sync record carried it.
+    init(synced r: SyncRecord) {
+        self.sessionID = r.sessionID ?? DeskLedger.newID()
+        self.bankID = r.bankID ?? ""
+        self.bankTitle = r.bankTitle ?? ""
+        self.stackRaw = r.stack ?? ""
+        self.modeRaw = r.mode ?? ""
+        self.actorID = r.actorID ?? ""
+        self.deviceID = r.deviceID ?? ""
+        self.created = r.createdMs.map(Date.init(syncMs:)) ?? .now
+        self.lockedAt = r.lockedAtMs.map(Date.init(syncMs:))
+        self.sentAt = r.sentAtMs.map(Date.init(syncMs:))
+        self.receiptJSON = r.receiptJSON
+        self.receiptImportedAt = r.receiptImportedAtMs.map(Date.init(syncMs:))
+    }
+
     var isLocked: Bool { lockedAt != nil }
+
+    var syncRecord: SyncRecord {
+        var r = SyncRecord(type: SyncRecord.Kind.deskSession)
+        r.sessionID = sessionID
+        r.bankID = bankID
+        r.bankTitle = bankTitle
+        r.stack = stackRaw
+        r.mode = modeRaw
+        r.actorID = actorID
+        r.deviceID = deviceID
+        r.createdMs = created.syncMs
+        r.lockedAtMs = lockedAt?.syncMs
+        r.sentAtMs = sentAt?.syncMs
+        r.receiptJSON = receiptJSON
+        r.receiptImportedAtMs = receiptImportedAt?.syncMs
+        return r
+    }
+
+    /// The newest moment this session changed, for "what to push".
+    var lastChanged: Date {
+        [created, lockedAt, sentAt, receiptImportedAt].compactMap { $0 }.max() ?? created
+    }
+
+    /// Fill what another device learned and this one has not: a lock, a send,
+    /// a receipt. Each is set once and never changes, so nothing is overwritten.
+    /// Returns whether anything changed.
+    func absorb(_ r: SyncRecord) -> Bool {
+        var changed = false
+        if lockedAt == nil, let ms = r.lockedAtMs { lockedAt = Date(syncMs: ms); changed = true }
+        if sentAt == nil, let ms = r.sentAtMs { sentAt = Date(syncMs: ms); changed = true }
+        if receiptJSON == nil, let json = r.receiptJSON {
+            receiptJSON = json
+            receiptImportedAt = r.receiptImportedAtMs.map(Date.init(syncMs:)) ?? .now
+            changed = true
+        }
+        return changed
+    }
     var stack: DeskStack? { DeskStack(rawValue: stackRaw) }
     var mode: DeskMode? { DeskMode(rawValue: modeRaw) }
 
@@ -86,5 +139,40 @@ final class DeskDecisionEvent {
             taskRevision: taskRevision, subjectID: subjectID, proposalID: proposalID,
             proposalVisible: proposalVisible, action: action, payloadJSON: payloadJSON,
             note: note, decidedAt: decidedAt, supersedes: supersedes)
+    }
+
+    var syncRecord: SyncRecord {
+        var r = SyncRecord(type: SyncRecord.Kind.deskEvent)
+        r.sessionID = sessionID
+        r.decisionID = decisionID
+        r.sequence = sequence
+        r.kind = kind
+        r.taskID = taskID
+        r.taskRevision = taskRevision
+        r.subjectID = subjectID
+        r.proposalID = proposalID
+        r.proposalVisible = proposalVisible
+        r.action = action
+        r.payloadJSON = payloadJSON
+        r.note = note
+        r.decidedAt = decidedAt
+        r.supersedes = supersedes
+        return r
+    }
+
+    /// The event another device recorded. Nil when a field the ledger needs is missing.
+    static func synced(_ r: SyncRecord) -> DeskDecisionEvent? {
+        guard let sessionID = r.sessionID, let decisionID = r.decisionID, let sequence = r.sequence,
+            let kind = r.kind, let taskID = r.taskID, let taskRevision = r.taskRevision,
+            let subjectID = r.subjectID, let action = r.action, let payloadJSON = r.payloadJSON,
+            let decidedAt = r.decidedAt
+        else { return nil }
+        return DeskDecisionEvent(
+            sessionID: sessionID,
+            record: DeskEventRecord(
+                decisionID: decisionID, sequence: sequence, kind: kind, taskID: taskID,
+                taskRevision: taskRevision, subjectID: subjectID, proposalID: r.proposalID,
+                proposalVisible: r.proposalVisible ?? false, action: action, payloadJSON: payloadJSON,
+                note: r.note, decidedAt: decidedAt, supersedes: r.supersedes))
     }
 }

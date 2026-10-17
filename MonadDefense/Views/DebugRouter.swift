@@ -84,6 +84,14 @@ enum DebugRouter {
         connection.save(address: server, token: token)
     }
 
+    /// Grade one card Good at launch: `-DemoRecordReview <card id>`. A sync
+    /// check between two simulators needs a review without driving the UI.
+    @MainActor
+    static func recordDemoReview(_ store: StudyStore) {
+        guard let id = value(after: "-DemoRecordReview"), let card = store.cardsByID[id] else { return }
+        store.record(rating: .good, for: card)
+    }
+
     /// The session `-DemoCards` asks for, or nil when the flag is absent.
     @MainActor
     static func demoSession(from store: StudyStore) -> StudySession? {

@@ -14,6 +14,11 @@ import UIKit
 // evidence can be read without a stray "up" commit, and holding a finger on
 // the text never decides anything (2026-10-13: both did, mid-read).
 //
+// On a Mac the same grammar is on the arrow keys, so the hand still learns it
+// once: → right, ← left, ↑ up, ↓ the fourth verb (its card flies down), space
+// flips, N opens a note, ⌘Z undoes, esc closes. Keys go dead while any sheet
+// is up: an arrow pressed in the note sheet must never decide the card behind.
+//
 // A stack is a `TriageSpec`: what cards, what each gesture does, and what the
 // card SHOWS — which is what the judgement is about, not always the whole
 // card. Every action writes SwiftData first and exports later.
@@ -92,6 +97,8 @@ struct TriageDeckView<Item: Identifiable>: View {
 
     private var card: Item? { index < spec.cards.count ? spec.cards[index] : nil }
     private var next: Item? { index + 1 < spec.cards.count ? spec.cards[index + 1] : nil }
+    /// Any sheet or alert in front of the deck. Keys and buttons behind it are dead.
+    private var sheetUp: Bool { noteSheetShown || editor != nil || errorText != nil }
 
     var body: some View {
         NavigationStack {
@@ -111,18 +118,37 @@ struct TriageDeckView<Item: Identifiable>: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("Close", systemImage: "xmark") { dismiss() }
+                        .keyboardShortcut(.cancelAction)
+                        .disabled(sheetUp)
                 }
                 if spec.undo != nil, !decided.isEmpty {
                     ToolbarItem(placement: .topBarLeading) {
                         Button("Undo", systemImage: "arrow.uturn.backward") { undoLast() }
+                            .keyboardShortcut("z", modifiers: .command)
+                            .disabled(sheetUp)
                     }
                 }
                 if card != nil {
                     ToolbarItem(placement: .topBarTrailing) {
                         HStack(spacing: 12) {
+                            if Platform.isMac {
+                                // A tap flips the card on a phone; a pointer
+                                // reader needs a control to find, and space.
+                                Button(
+                                    expanded ? "Collapse" : "Expand",
+                                    systemImage: expanded
+                                        ? "arrow.down.right.and.arrow.up.left" : "arrow.up.left.and.arrow.down.right"
+                                ) {
+                                    withAnimation(.snappy) { expanded.toggle() }
+                                }
+                                .macShortcut(.space)
+                                .disabled(sheetUp)
+                            }
                             Button("Note", systemImage: pendingNote.isEmpty ? "square.and.pencil" : "square.and.pencil.circle.fill") {
                                 showNote(for: nil)
                             }
+                            .macShortcut("n")
+                            .disabled(sheetUp)
                             Text("\(index + 1)/\(spec.cards.count)")
                                 .font(.subheadline.monospacedDigit())
                                 .foregroundStyle(.secondary)
@@ -180,6 +206,7 @@ struct TriageDeckView<Item: Identifiable>: View {
             }
             .padding(.horizontal, 14)
             .padding(.top, 10)
+            .readingColumn(Platform.readingWidth + 28)
             .frame(maxHeight: .infinity)
 
             legend
@@ -228,19 +255,31 @@ struct TriageDeckView<Item: Identifiable>: View {
 
     private var legend: some View {
         HStack(spacing: 0) {
-            legendItem(spec.left, slot: .left, hint: "swipe left")
-            legendItem(spec.up, slot: .up, hint: "tap")
-            legendItem(spec.right, slot: .right, hint: "swipe right")
+            legendItem(spec.left, slot: .left)
+            legendItem(spec.up, slot: .up)
+            legendItem(spec.right, slot: .right)
             if let lp = spec.longPress {
-                legendItem(lp, slot: .hold, hint: "tap")
+                legendItem(lp, slot: .hold)
             }
         }
+        .readingColumn(Platform.readingWidth + 28)
         .padding(.vertical, 10)
         .background(.bar)
     }
 
-    private func legendItem(_ action: TriageAction<Item>, slot: Slot, hint: String) -> some View {
-        Button {
+    /// The touch hint and the key for each slot. The key mirrors the swipe.
+    private func binding(_ slot: Slot) -> (hint: String, key: KeyEquivalent, cap: String) {
+        switch slot {
+        case .left: ("swipe left", .leftArrow, "←")
+        case .right: ("swipe right", .rightArrow, "→")
+        case .up: ("tap", .upArrow, "↑")
+        case .hold: ("tap", .downArrow, "↓")
+        }
+    }
+
+    private func legendItem(_ action: TriageAction<Item>, slot: Slot) -> some View {
+        let b = binding(slot)
+        return Button {
             guard let card else { return }
             haptic(.medium)
             switch slot {
@@ -255,16 +294,26 @@ struct TriageDeckView<Item: Identifiable>: View {
                     .font(.title3)
                 Text(action.label)
                     .font(.caption.weight(.semibold))
-                Text(hint)
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
+                if Platform.isMac {
+                    KeyCap(b.cap)
+                        .foregroundStyle(.secondary)
+                } else {
+                    Text(b.hint)
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                }
             }
             .frame(maxWidth: .infinity)
+            .padding(.vertical, 2)
+            .contentShape(.rect)
             .foregroundStyle(action.tint)
         }
         .buttonStyle(.plain)
+        .hoverEffect(.highlight)
+        .macShortcut(b.key)
+        .disabled(sheetUp || flyOut != nil)
         .accessibilityLabel(Text(action.label))
-        .accessibilityHint(Text(hint))
+        .accessibilityHint(Text(Platform.isMac ? "key \(b.cap)" : b.hint))
     }
 
     // MARK: Gesture
@@ -307,7 +356,7 @@ struct TriageDeckView<Item: Identifiable>: View {
     /// Run the action first; only a save moves the deck on. A second tap while
     /// the card is still flying out would decide the same card twice.
     private func commit(_ action: TriageAction<Item>, _ card: Item, swipe: TriageSwipe?) {
-        guard flyOut == nil, editor == nil else { return }
+        guard flyOut == nil, editor == nil, errorText == nil else { return }
         switch action.perform(card, pendingNote) {
         case .saved:
             advance(swipe)
@@ -405,6 +454,8 @@ struct TriageDeckView<Item: Identifiable>: View {
                         }
                     }
                     .fontWeight(.semibold)
+                    // Return types a newline in the note; ⌘↩ commits it.
+                    .keyboardShortcut(.return, modifiers: .command)
                 }
             }
         }

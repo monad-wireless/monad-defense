@@ -1,6 +1,10 @@
 import SwiftUI
 
 // MARK: - Unified study session (flash / mcq / formula)
+//
+// Keys on a Mac: space shows the answer, 1–4 grade it (Again, Hard, Good,
+// Easy), 1–n pick an MCQ option by its shown position (the order is shuffled,
+// so each option carries its number), return moves on, esc closes.
 
 struct SessionView: View {
     @Environment(StudyStore.self) private var store
@@ -40,6 +44,8 @@ struct SessionView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("Close", systemImage: "xmark") { finish() }
+                        .keyboardShortcut(.cancelAction)
+                        .disabled(readingTarget != nil)
                 }
                 if card != nil {
                     ToolbarItem(placement: .topBarTrailing) {
@@ -98,11 +104,13 @@ struct SessionView: View {
                 }
             }
             .padding()
+            .readingColumn()
             .animation(.spring(duration: 0.35), value: revealed)
         }
         .scrollDismissesKeyboard(.interactively)
         .safeAreaInset(edge: .bottom) {
             bottomBar(card)
+                .readingColumn()
                 .padding()
                 .background(.bar)
         }
@@ -150,17 +158,18 @@ struct SessionView: View {
             Text(cardMarkdown(card.prompt))
                 .cardProse()
             VStack(spacing: 10) {
-                ForEach(choiceOrder, id: \.self) { original in
-                    choiceButton(card, original: original)
+                ForEach(Array(choiceOrder.enumerated()), id: \.element) { position, original in
+                    choiceButton(card, original: original, position: position)
                 }
             }
         }
     }
 
-    private func choiceButton(_ card: Card, original: Int) -> some View {
+    private func choiceButton(_ card: Card, original: Int, position: Int) -> some View {
         let text = card.choices?[original] ?? ""
         let isCorrect = original == card.correct
         let isSelected = selectedChoice == original
+        let number = position + 1
 
         return Button {
             guard !revealed else { return }
@@ -172,6 +181,10 @@ struct SessionView: View {
             reveal(recorded: true)
         } label: {
             HStack {
+                if Platform.isMac, number <= 9 {
+                    KeyCap("\(number)")
+                        .foregroundStyle(.secondary)
+                }
                 Text(cardMarkdown(text))
                     .font(.callout)
                     .multilineTextAlignment(.leading)
@@ -191,9 +204,12 @@ struct SessionView: View {
                     : (revealed && isSelected ? Color.red.opacity(0.12) : Color(.tertiarySystemFill)),
                 in: .rect(cornerRadius: 14)
             )
+            .contentShape(.rect(cornerRadius: 14))
         }
         .buttonStyle(.plain)
-        .disabled(revealed)
+        .hoverEffect(.highlight)
+        .macShortcut(number <= 9 ? KeyEquivalent(Character("\(number)")) : nil)
+        .disabled(revealed || readingTarget != nil)
     }
 
     // MARK: Formula
@@ -261,12 +277,13 @@ struct SessionView: View {
                 Button {
                     reveal()
                 } label: {
-                    Label("Show answer", systemImage: "eye")
-                        .frame(maxWidth: .infinity)
+                    revealLabel("Show answer", systemImage: "eye")
                 }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
                 .tint(Theme.accent)
+                .macShortcut(.space)
+                .disabled(readingTarget != nil)
             }
         case .mcq:
             if revealed { nextButton }
@@ -277,14 +294,23 @@ struct SessionView: View {
                 Button {
                     reveal()
                 } label: {
-                    Label("Show the law", systemImage: "function")
-                        .frame(maxWidth: .infinity)
+                    revealLabel("Show the law", systemImage: "function")
                 }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
                 .tint(Theme.accent)
+                .macShortcut(.space)
+                .disabled(readingTarget != nil)
             }
         }
+    }
+
+    private func revealLabel(_ title: String, systemImage: String) -> some View {
+        HStack(spacing: 8) {
+            Label(title, systemImage: systemImage)
+            if Platform.isMac { KeyCap("space").opacity(0.8) }
+        }
+        .frame(maxWidth: .infinity)
     }
 
     private func gradeBar(_ card: Card) -> some View {
@@ -298,8 +324,11 @@ struct SessionView: View {
                     advance()
                 } label: {
                     VStack(spacing: 2) {
-                        Text(rating.label)
-                            .font(.subheadline.weight(.semibold))
+                        HStack(spacing: 5) {
+                            if Platform.isMac { KeyCap("\(rating.rawValue)") }
+                            Text(rating.label)
+                                .font(.subheadline.weight(.semibold))
+                        }
                         Text(FSRS.intervalPreview(snapshot, rating: rating))
                             .font(.caption2.monospacedDigit())
                             .opacity(0.75)
@@ -309,6 +338,8 @@ struct SessionView: View {
                 }
                 .buttonStyle(.bordered)
                 .tint(gradeTint(rating))
+                .macShortcut(KeyEquivalent(Character("\(rating.rawValue)")))
+                .disabled(readingTarget != nil)
             }
         }
     }
@@ -334,6 +365,8 @@ struct SessionView: View {
         .buttonStyle(.borderedProminent)
         .controlSize(.large)
         .tint(Theme.accent)
+        .keyboardShortcut(.defaultAction)
+        .disabled(readingTarget != nil)
     }
 
     // MARK: Summary
@@ -368,6 +401,7 @@ struct SessionView: View {
             .buttonStyle(.borderedProminent)
             .controlSize(.large)
             .tint(Theme.accent)
+            .keyboardShortcut(.defaultAction)
         }
         .padding()
         .onAppear { feedback = .success }

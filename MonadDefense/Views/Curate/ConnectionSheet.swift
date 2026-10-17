@@ -8,6 +8,7 @@ struct ConnectionSheet: View {
 
     @State private var address = ""
     @State private var token = ""
+    @State private var saveFailed = false
 
     var body: some View {
         NavigationStack {
@@ -21,7 +22,7 @@ struct ConnectionSheet: View {
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
                 } footer: {
-                    Text("The token is the password of the 1Password item infra.desk-api. It is kept in this phone's Keychain and sent only to this address.")
+                    Text("The token is the password of the 1Password item infra.desk-api. It is kept in this device's Keychain and sent only to this address.")
                 }
                 if connection.hasToken {
                     Section {
@@ -34,16 +35,31 @@ struct ConnectionSheet: View {
             .navigationTitle("Desk server")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") { dismiss() }
+                        .keyboardShortcut(.cancelAction)
+                }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
                         connection.save(address: address, token: token)
-                        dismiss()
+                        if !token.isEmpty, !connection.hasToken {
+                            // The Keychain refused the write: say so instead of closing.
+                            saveFailed = true
+                        } else {
+                            dismiss()
+                        }
                     }
+                    .keyboardShortcut(.defaultAction)
                     .disabled(URL(string: address) == nil || (!connection.hasToken && token.isEmpty))
                 }
             }
+            .alert("The token was not stored", isPresented: $saveFailed) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text("The Keychain refused it. On a Mac this happens when the build is not signed with a team.")
+            }
             .onAppear { address = connection.address }
         }
+        .frame(minWidth: Platform.isMac ? 460 : nil, minHeight: Platform.isMac ? 300 : nil)
     }
 }

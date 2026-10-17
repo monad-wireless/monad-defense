@@ -43,6 +43,13 @@ ETag), sends a locked session (`POST /api/exports`), fetches its receipt
 `kb desk pull` imports the inbox. Without a token the app works from what it
 bundled and cached.
 
+The same server joins one person's devices (`/api/sync`, `Store/SyncStore.swift`).
+Each device posts the progress rows it wrote and reads everyone else's; the
+server stores batches and never merges. The merge rules, one per record kind,
+are in `Models/SyncModels.swift`. FSRS schedules never travel: they are
+replayed from the merged review log, which is why `StudyStore.record` stamps the
+schedule and the log with one millisecond-rounded `now`.
+
 ## Two stores that never mix
 
 The app holds two kinds of state, and keeping them apart is the load-bearing

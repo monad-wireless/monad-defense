@@ -4,12 +4,12 @@
 
 # Defense
 
-**An offline iOS study companion for a PhD defense.**
+**An offline study companion for a PhD defense, on iPhone, iPad and Mac.**
 
 Flashcards, quizzes, formulas with plots, and a browsable graph of terms —
 compiled from a research vault, scheduled by FSRS, no network.
 
-<sub>iOS 26 · Swift 6 · SwiftUI + SwiftData + Swift Charts · zero dependencies · MIT</sub>
+<sub>iOS 26 · Mac Catalyst (macOS 26) · Swift 6 · SwiftUI + SwiftData + Swift Charts · zero dependencies · MIT</sub>
 
 </div>
 
@@ -31,8 +31,10 @@ A personal, single-user app. It holds the vocabulary, the laws, the hypotheses
 and the committee traps of one thesis, and it drills them on a spaced-repetition
 schedule until they are available under pressure.
 
-- **No network, no analytics, no account.** Content ships in the app bundle;
-  progress lives on-device in SwiftData. Nothing leaves the phone.
+- **No analytics, no account, no third party.** Content ships in the app
+  bundle; progress lives on-device in SwiftData. The only network is your own
+  Desk server, when you set one up: banks, the Library, and sync between your
+  devices.
 - **No third-party dependencies.** The maths typesetter, the figure renderers
   and the FSRS scheduler are all in this repo — 4,400 lines of Swift.
 - **Content is compiled, not written here.** Cards come from Obsidian deck notes
@@ -172,15 +174,63 @@ The **research-question deck is generated, not written**: it is rendered from
 the same declaration the thesis itself renders from, so a rehearsed question
 cannot drift from the asked one.
 
+## On a Mac
+
+One target runs on iPhone, iPad and Mac (Catalyst with the Mac idiom). The
+iPad comes with the Mac: Catalyst requires the iPad device family. On a wide
+window the tabs become a sidebar and the Library becomes a split view. Swipes
+become keys.
+
+| Where | Keys |
+|---|---|
+| Every swipe stack (Desk, dwell, eggs) | → right · ← left · ↑ up · ↓ fourth verb · space expand · N note · ⌘Z undo · esc close |
+| Note sheet | ⌘↩ commits the note |
+| Study session | space reveal · 1–4 Again / Hard / Good / Easy · 1–n MCQ option by shown number · ↩ next · esc close |
+| Curate, Library | ⌘R refresh (no pull-to-refresh under a pointer) · ⌘F search (Library) · ⌘S save a locked session's file |
+| Anywhere | ⌘1 Curate · ⌘2 Library · ⌘3 Defense · ⌘, Desk server |
+
+Keys go dead while a sheet is open, so an arrow pressed in the note sheet
+never decides the card behind it. Bare-letter and arrow keys are Mac-only: on
+a phone a paired keyboard nobody expects to be live must not decide a card.
+
+## Sync between devices
+
+Every device with a Desk server set up shares its history through that
+server (`/api/sync`): Desk sessions and decisions, study reviews and finished
+sessions, and swipes. It runs on launch, on return to the app, every five
+minutes in front, after a sitting closes, and from **Sync now** in Curate. No
+third party is involved; without a server the app works alone as before.
+
+The server stores each device's batches as sent and merges nothing. Every
+device unions what it reads by record identity, so a pass can repeat or break
+off without harm (`Models/SyncModels.swift` holds the merge rules):
+
+- **Reviews, not schedules.** FSRS progress never travels. A card's schedule
+  is replayed from its merged review log, so reviews done offline on two
+  devices both count, in time order.
+- **A Desk session belongs to the device that opened it.** Only that device
+  adds decisions to it, locks it or sends it; elsewhere it shows read-only
+  with an "on iPhone" badge. Its decisions still count: a sitting on the Mac
+  shows only the cards no device has decided yet.
+- **Swipes: the newest wins**, and clearing a swipe is a dated tombstone, so
+  an older swipe arriving late cannot bring it back.
+
+Two devices that decide the same Desk task while both are offline send two
+decisions; the vault's ledger decides which one counts, as it always has.
+
 ## Build
 
 ```bash
 xcodebuild -project MonadDefense.xcodeproj -scheme MonadDefense \
   -destination 'generic/platform=iOS Simulator' build
+xcodebuild -project MonadDefense.xcodeproj -scheme MonadDefense \
+  -destination 'platform=macOS,variant=Mac Catalyst,arch=arm64' build
 ```
 
-Or open `MonadDefense.xcodeproj` in Xcode 26+. A simulator build needs no
-configuration.
+Or open `MonadDefense.xcodeproj` in Xcode 26+ and pick "My Mac (Mac Catalyst)"
+or a simulator. A simulator build needs no configuration. A Mac build needs a
+signing team (see below): the Desk token lives in the data-protection
+keychain, which an unsigned build cannot write.
 
 To sign for a device, copy `Configuration/Local.xcconfig.example` to
 `Configuration/Local.xcconfig` (gitignored) and put your team id in it.
@@ -219,9 +269,8 @@ This is one researcher's instrument, published for reading rather than for use.
 - **No support and no issue triage.** Fork it if it is useful.
 - **No tests.** A stated gap: `FSRS` and the `MathTypeset` parser are the two
   pieces that would repay a test target, and neither is covered.
-- **Single user by construction.** There is no sync, no multi-profile support
-  and no account, and adding any of them would mean adding a network layer the
-  design exists to avoid.
+- **Single user by construction.** Sync joins one person's devices through
+  one Desk server and one token. There are no profiles and no accounts.
 - **The compiler lives elsewhere.** This repo cannot regenerate its own content;
   it can only render a bank somebody else compiled.
 
