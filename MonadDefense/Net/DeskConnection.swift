@@ -48,6 +48,8 @@ final class DeskConnection {
 
     var address: String
     private(set) var hasToken: Bool
+    /// The Keychain's answer when the last save did not store the token, in its own words.
+    private(set) var keychainProblem: String?
     /// The last reachability answer, for the status row. Nil until a call ran.
     private(set) var lastProblem: String?
 
@@ -66,7 +68,14 @@ final class DeskConnection {
         self.address = trimmed.hasSuffix("/") ? String(trimmed.dropLast()) : trimmed
         UserDefaults.standard.set(self.address, forKey: Self.addressKey)
         let t = token.trimmingCharacters(in: .whitespacesAndNewlines)
-        if !t.isEmpty { Self.writeToken(t) }
+        keychainProblem = nil
+        if !t.isEmpty {
+            let status = Self.writeToken(t)
+            if status != errSecSuccess {
+                let message = SecCopyErrorMessageString(status, nil) as String? ?? "unknown error"
+                keychainProblem = "\(message) (OSStatus \(status))"
+            }
+        }
         hasToken = Self.readToken() != nil
     }
 
@@ -160,10 +169,9 @@ final class DeskConnection {
 
     // MARK: Keychain
 
-    /// The data-protection keychain on every platform. On a Mac the default is
-    /// the legacy login keychain, which ignores the accessibility class and
-    /// ties the item to one code signature, so a rebuild asks for the login
-    /// password. A no-op on iPhone and iPad, where it is the only keychain.
+    /// The data-protection keychain on every platform (on Catalyst it is the
+    /// default anyway). On a Mac it answers -34018 unless the build carries
+    /// `keychain-access-groups` (Configuration/MonadDefense.entitlements).
     private static func query() -> [String: Any] {
         [
             kSecClass as String: kSecClassGenericPassword,
@@ -181,12 +189,12 @@ final class DeskConnection {
         return String(data: data, encoding: .utf8)
     }
 
-    private static func writeToken(_ token: String) {
+    private static func writeToken(_ token: String) -> OSStatus {
         deleteToken()
         var q = query()
         q[kSecValueData as String] = Data(token.utf8)
         q[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
-        SecItemAdd(q as CFDictionary, nil)
+        return SecItemAdd(q as CFDictionary, nil)
     }
 
     private static func deleteToken() {

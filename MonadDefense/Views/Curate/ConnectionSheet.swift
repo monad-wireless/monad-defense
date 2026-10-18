@@ -56,7 +56,7 @@ struct ConnectionSheet: View {
             .alert("The token was not stored", isPresented: $saveFailed) {
                 Button("OK", role: .cancel) {}
             } message: {
-                Text("The Keychain refused it. On a Mac this happens when the build is not signed with a team.")
+                Text("The Keychain answered: \(connection.keychainProblem ?? "nothing readable"). -34018 means the build lacks its keychain-access-groups entitlement.")
             }
             .onAppear { address = connection.address }
         }

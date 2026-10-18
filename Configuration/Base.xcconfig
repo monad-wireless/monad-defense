@@ -14,3 +14,6 @@ MONAD_BUNDLE_ID = Sibyx.monad-knowledge
 
 DEVELOPMENT_TEAM = $(MONAD_DEVELOPMENT_TEAM)
 PRODUCT_BUNDLE_IDENTIFIER = $(MONAD_BUNDLE_ID)
+
+// The Keychain group the Desk token needs on a Mac; see the file for why.
+CODE_SIGN_ENTITLEMENTS = Configuration/MonadDefense.entitlements

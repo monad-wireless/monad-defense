@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyLists/1.0.dtd">
+<!--
+  The Desk token lives in the Keychain. On a Mac (Catalyst) every Keychain
+  call fails with errSecMissingEntitlement (-34018) unless the app carries an
+  application identifier, which only a provisioning profile grants; this group
+  is what makes automatic signing fetch one (measured 2026-10-17 in lldb: add
+  with and without kSecUseDataProtectionKeychain both returned -34018).
+  On iPhone the group equals the app's default access group, so a token stored
+  before this file existed stays readable.
+-->
+<plist version="1.0">
+<dict>
+	<key>keychain-access-groups</key>
+	<array>
+		<string>$(AppIdentifierPrefix)$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	</array>
+</dict>
+</plist>
