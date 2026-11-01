@@ -12,6 +12,7 @@ import SwiftUI
 //   citation              related             not related (reason)    cited but missed (where)   cannot assess (reason)
 //   reference             same work           different work (reason) other version              cannot assess (reason)
 //   proposition           same proposition    different (reason)      one is narrower            cannot assess (reason)
+//   acquisition           acquire             skip (reason)           skip: off topic            cannot assess (reason)
 //
 // Right on an assisted vocabulary card accepts the shown definition only when
 // the agent proposed one that passes the rules; otherwise it opens the editor.
@@ -103,6 +104,7 @@ private struct DeskActions {
         case .citation: citation()
         case .reference: reference()
         case .proposition: proposition()
+        case .acquisition: acquisition()
         }
     }
 
@@ -284,5 +286,30 @@ private struct DeskActions {
                 prompt: "What prevents a verdict?", footer: "For example: an evidence sentence is missing.", note: note)
         }
         return (same, different, narrower, cannot)
+    }
+
+    // MARK: Acquisition
+
+    /// Recorded only. An acquire is a to-do for acquire_doi on the Mac; a skip keeps
+    /// the work out of later acquisition queues (`curation/desk.py:prepare_acquisition`).
+    private func acquisition() -> (Action, Action, Action, Action) {
+        let acquire = Action(label: "Acquire", symbol: "tray.and.arrow.down", tint: .green) { card, note in
+            direct(card, "acquire", [:], note)
+        }
+        let skip = Action(label: "Skip", symbol: "xmark.circle", tint: .red) { card, note in
+            reasonSheet(
+                card, title: "Skip", action: "skip",
+                reasons: DeskRules.acquisitionSkipReasons, explanationKey: "explanation", note: note)
+        }
+        let offTopic = Action(label: "Off topic", symbol: "scope", tint: .orange) { card, note in
+            direct(card, "skip", ["reason": "off_topic"], note)
+        }
+        let cannot = Action(label: "Cannot assess", symbol: "questionmark.circle", tint: .blue) { card, note in
+            textSheet(
+                card, title: "Cannot assess", action: "cannot_assess", key: "reason",
+                prompt: "What prevents a verdict?", footer: "For example: the title alone does not say what the work is.",
+                note: note)
+        }
+        return (acquire, skip, offTopic, cannot)
     }
 }

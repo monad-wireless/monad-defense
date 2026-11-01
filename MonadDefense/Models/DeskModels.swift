@@ -27,6 +27,8 @@ enum DeskStack: String, Codable, Sendable, CaseIterable, Identifiable {
     case reference
     /// IP-171 Phase 3: "do these two claims of different papers state the same thing?"
     case proposition
+    /// "Should the vault acquire this external work that its papers keep restating?"
+    case acquisition
 
     var id: String { rawValue }
 
@@ -37,6 +39,7 @@ enum DeskStack: String, Codable, Sendable, CaseIterable, Identifiable {
         case .citation: "Citation"
         case .reference: "Reference"
         case .proposition: "Proposition"
+        case .acquisition: "Acquisition"
         }
     }
 
@@ -47,6 +50,7 @@ enum DeskStack: String, Codable, Sendable, CaseIterable, Identifiable {
         case .citation: "arrow.triangle.branch"
         case .reference: "link"
         case .proposition: "equal.circle"
+        case .acquisition: "tray.and.arrow.down"
         }
     }
 }
@@ -338,6 +342,7 @@ enum DeskRules {
     static let citationRejectionReasons = ["different_topic", "too_generic", "superseded_work", "other"]
     static let referenceRejectionReasons = ["namesake", "other_version", "other"]
     static let propositionRejectionReasons = ["narrower", "related_not_same", "opposite", "other"]
+    static let acquisitionSkipReasons = ["off_topic", "not_a_paper", "already_held", "other"]
     static let fidelityDefects = [
         "dropped_condition", "dropped_hedge", "population_changed", "quantity_changed",
         "attribution_wrong", "dropped_attribution", "direction_wrong", "unsupported", "corruption",
@@ -353,6 +358,7 @@ enum DeskRules {
         case .citation: ["related", "not_related", "cited_but_missed", "cannot_assess"]
         case .reference: ["same_work", "different_work", "cannot_assess"]
         case .proposition: ["same_proposition", "different_proposition", "cannot_assess"]
+        case .acquisition: ["acquire", "skip", "cannot_assess"]
         case .vocabulary:
             mode == .assisted
                 ? ["promote", "alias", "set_aside", "defer", "needs_research", "restore", "keep_aside"]
@@ -460,6 +466,16 @@ enum DeskRules {
                     problems.append("different_proposition needs a reason")
                 } else if reason == "other", text(p, "explanation").isEmpty {
                     problems.append("different_proposition with reason 'other' needs an explanation")
+                }
+            }
+            if action == "cannot_assess", text(p, "reason").isEmpty { problems.append("cannot_assess needs a reason") }
+        case .acquisition:
+            if action == "skip" {
+                let reason = p["reason"] as? String ?? ""
+                if !acquisitionSkipReasons.contains(reason) {
+                    problems.append("skip needs a reason")
+                } else if reason == "other", text(p, "explanation").isEmpty {
+                    problems.append("skip with reason 'other' needs an explanation")
                 }
             }
             if action == "cannot_assess", text(p, "reason").isEmpty { problems.append("cannot_assess needs a reason") }

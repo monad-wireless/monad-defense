@@ -25,6 +25,7 @@ struct DeskCardFace: View {
             case .citation: CitationEvidence(card: card, expanded: expanded)
             case .reference: ReferenceEvidence(card: card, expanded: expanded)
             case .proposition: PropositionEvidence(card: card, expanded: expanded)
+            case .acquisition: AcquisitionEvidence(card: card, expanded: expanded)
             }
             if bank.mode == .assisted, let proposal = card.proposal {
                 ProposalBlock(proposal: proposal)
@@ -717,6 +718,45 @@ private struct ReferenceEvidence: View {
                     .font(.caption2)
                     .foregroundStyle(.secondary)
             }
+        }
+    }
+}
+
+// MARK: Acquisition
+
+/// One external work the vault's papers restate but the vault does not hold.
+/// The graph holds no DOI for these works, so the card says how to find it.
+private struct AcquisitionEvidence: View {
+    let card: DeskCard
+    let expanded: Bool
+
+    private var f: DeskEvidence { card.evidence }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            let work = f["work"]
+            Text(work?["title"]?.string ?? "")
+                .font(.headline)
+            Text([work?["year"]?.int.map(String.init), work?["first_author"]?.string].compactMap { $0 }.joined(separator: " · "))
+                .font(.caption2.monospaced())
+                .foregroundStyle(.tertiary)
+            Text(
+                "Restated by \(f["restating_papers"]?.int ?? 0) vault papers in \(f["restating_claims"]?.int ?? 0) claims"
+            )
+            .font(.caption.weight(.semibold))
+            let citers = f["citers"]?.array ?? []
+            ForEach(Array((expanded ? citers : Array(citers.prefix(3))).enumerated()), id: \.offset) { _, p in
+                Text("• " + [p["title"]?.string, p["year"]?.int.map(String.init)].compactMap { $0 }.joined(separator: ", "))
+                    .font(.caption)
+            }
+            let claims = f["sample_claims"]?.array ?? []
+            ForEach(Array((expanded ? claims : Array(claims.prefix(1))).enumerated()), id: \.offset) { _, c in
+                SourceQuote(text: c["text"]?.string ?? "", caption: c["paper_id"]?.string ?? "restating claim")
+                    .lineLimit(expanded ? nil : 3)
+            }
+            Text("Acquire by \(f["acquire_by"]?.string ?? "title search"). A yes is a to-do for acquire_doi; nothing is fetched from here.")
+                .font(.caption2)
+                .foregroundStyle(.secondary)
         }
     }
 }

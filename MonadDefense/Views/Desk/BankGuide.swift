@@ -42,6 +42,10 @@ struct BankGuide {
             title = "Same statement"
             question = "Do these two claims from different papers state the same thing?"
             effect = "Yes-pairs become propositions: one statement with its supporting papers."
+        case .acquisition:
+            title = "Acquisition"
+            question = "Should the vault acquire this work that its papers keep restating?"
+            effect = "Your answers are recorded; an acquire is a to-do for acquire_doi, a skip keeps the work out of later queues."
         }
     }
 }
